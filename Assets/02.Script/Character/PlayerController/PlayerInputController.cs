@@ -12,7 +12,7 @@ public class PlayerInputController : MonoBehaviour
         
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 #if UNITY_EDITOR
         PC_CameraInput();
@@ -41,7 +41,6 @@ public class PlayerInputController : MonoBehaviour
         horMove = Input.GetAxisRaw("Horizontal");
         verMove = Input.GetAxisRaw("Vertical");
 
-        if ((horMove != 0) || (verMove != 0))
-            movementController.HorizontalMovement(horMove, verMove);
+        movementController.HorizontalMovement(horMove, verMove);
     }
 }
