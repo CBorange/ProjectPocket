@@ -7,11 +7,22 @@ public class PlayerMovementController : MonoBehaviour
     public FollowCamera followCamera;
     public Animator animator;
     public PlayerStatManager statManager;
+    public Rigidbody myRigidbody;
 
+    private bool nowJumped = false;
     private void Start()
     {
+        
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.transform.position.y < transform.position.y)
+        {
+            nowJumped = false;
+            animator.SetBool("FlyAir", false);
+        }
+    }
     public void HorizontalMovement(float moveVecX, float moveVecZ)
     {
         if (moveVecX == 0 && moveVecZ == 0)
@@ -38,6 +49,15 @@ public class PlayerMovementController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
         transform.Translate(transform.forward * statManager.MoveSpeed * Time.deltaTime, Space.World);
         animator.SetBool("Walk", true);
+    }
+    public void Jump()
+    {
+        if (nowJumped)
+            return;
+        myRigidbody.AddForce(Vector3.up * statManager.JumpSpeed, ForceMode.Impulse);
+        nowJumped = true;
+        animator.SetTrigger("Jumped");
+        animator.SetBool("FlyAir", true);
     }
     private float CorrectAngleToSigned(float angle)
     {

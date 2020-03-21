@@ -63,18 +63,44 @@ public class DBConnector
         else
             return "서버에서 데이터를 찾을 수 없습니다.";
     }
-    public string LoadUserData(string accountID)
+    public string LoadUserInfo(string accountID)
     {
-        string query = $"SELECT * FROM dbo.PlayerInfo WHERE UserAccount = '{accountID}'";
+        string query = $"SELECT * FROM dbo.PlayerStatus WHERE UserAccount = '{accountID}'";
         DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
 
         object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
-        UserData.Instance.Initialize(dataArray[0].ToString().Trim(),
+        UserInfoProvider.Instance.Initialize(dataArray[0].ToString().Trim(),
                                      dataArray[1].ToString().Trim(),
-                                     dataArray[2].ToString().Trim());
+                                     dataArray[2].ToString().Trim(),
+                                     dataArray[3].ToString().Trim(),
+                                     dataArray[4].ToString().Trim(),
+                                     dataArray[5].ToString().Trim(),
+                                     dataArray[6].ToString().Trim(),
+                                     dataArray[7].ToString().Trim(),
+                                     dataArray[8].ToString().Trim());
+        return "Success";
+    }
+    public string LoadUserInventory()
+    {
+        string query = $"SELECT * FROM dbo.InventoryItems_{UserInfoProvider.Instance.UserAccount}";
+        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+
+        if (dataSet == null)
+            return "서버에 연결할 수 없습니다.";
+
+        DataRowCollection rowCollection = dataSet.Tables[0].Rows;
+        ItemData[] itemDatas = new ItemData[rowCollection.Count];
+        for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
+        {
+            object[] dataArray = rowCollection[rowIdx].ItemArray;
+            ItemData newItemData = new ItemData(dataArray[0].ToString().Trim(), (int)dataArray[1]);
+            itemDatas[rowIdx] = newItemData;
+        }
+
+        UserInventoryProvider.Instance.Initialize(itemDatas);
         return "Success";
     }
 }

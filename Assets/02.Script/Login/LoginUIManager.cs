@@ -12,7 +12,7 @@ public class LoginUIManager : MonoBehaviour
 
     // 팝업
     public GameObject AlertPopup;
-    public Text Contents_Popup;
+    public Text PopupText;
 
     private void Start()
     {
@@ -25,10 +25,10 @@ public class LoginUIManager : MonoBehaviour
         string accountResult = DBConnector.Instance.ValiadeAccountOnDB(id, pw);
         if (accountResult.Equals("Success"))
         {
-            string userResult = DBConnector.Instance.LoadUserData(id);
+            string userResult = DBConnector.Instance.LoadUserInfo(id);
             if (userResult.Equals("Success"))
             {
-                SceneManager.LoadScene(UserData.Instance.LastMap);
+                SceneManager.LoadScene(UserInfoProvider.Instance.LastMap);
             }
             else
                 ShowPopup($"접속할 수 없습니다.\n\n{userResult}");
@@ -40,7 +40,7 @@ public class LoginUIManager : MonoBehaviour
     // 팝업
     private void ShowPopup(string text)
     {
-        Contents_Popup.text = text;
+        PopupText.text = text;
         AlertPopup.SetActive(true);
     }
     public void ConfirmPopup()

@@ -91,6 +91,19 @@ public class PlayerStatManager : MonoBehaviour, CharacterStat
 
     private void Start()
     {
-        MoveSpeed = 5f;
+        UserInfoProvider userData = UserInfoProvider.Instance;
+        Origin_MoveSpeed = userData.MoveSpeed;
+        Origin_JumpSpeed = userData.JumpSpeed;
+        Origin_HealthPoint = userData.HealthPoint;
+        Origin_ShieldPoint = userData.ShieldPoint;
+        Origin_AttackPoint = userData.AttackPoint;
+        Origin_AttackSpeed = userData.AttackSpeed;
+
+        MoveSpeed = Origin_MoveSpeed;
+        JumpSpeed = Origin_JumpSpeed;
+        HealthPoint = Origin_HealthPoint;
+        ShieldPoint = Origin_ShieldPoint;
+        AttackPoint = Origin_AttackPoint;
+        AttackSpeed = Origin_AttackSpeed;
     }
 }

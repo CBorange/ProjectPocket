@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInputController : MonoBehaviour
 {
     public PlayerMovementController movementController;
+    public PlayerActManager actManager;
     public FollowCamera followCamera;
 
     private void Start()
@@ -17,6 +18,7 @@ public class PlayerInputController : MonoBehaviour
 #if UNITY_EDITOR
         PC_CameraInput();
         PC_PlayerMoveInput();
+        PC_PlayerActionInput();
 #endif
 #if UNITY_ANDROID
 
@@ -42,5 +44,14 @@ public class PlayerInputController : MonoBehaviour
         verMove = Input.GetAxisRaw("Vertical");
 
         movementController.HorizontalMovement(horMove, verMove);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            movementController.Jump();
+    }
+
+    private void PC_PlayerActionInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+            actManager.AttackOnEquipmentWeapon();
     }
 }
