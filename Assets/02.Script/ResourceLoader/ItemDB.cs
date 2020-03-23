@@ -58,7 +58,7 @@ public class ItemDB
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
-            AccesorieData newData = new AccesorieData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2]);
+            AccesorieData newData = new AccesorieData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
             accesorieDatas.Add((int)dataItems[2], newData);
         }
     }

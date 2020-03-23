@@ -22,10 +22,17 @@ public class AccesorieData : ItemData
         get { return itemCode; }
         set { itemCode = value; }
     }
-    public AccesorieData(string name, string introduce, int itemCode)
+    private string accesorieType;
+    public string AccesorieType
+    {
+        get { return accesorieType; }
+        set { accesorieType = value; }
+    }
+    public AccesorieData(string name, string introduce, int itemCode, string accesorieType)
     {
         this.name = name;
         this.introduce = introduce;
         this.itemCode = itemCode;
+        this.accesorieType = accesorieType;
     }
 }
