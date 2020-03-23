@@ -162,7 +162,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4918442644124742699}
         m_MethodName: ItemSelected
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -171,7 +171,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &4918442644124742699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,9 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5cc80bc716064449d21fe4197b622d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IndexInContentView: 0
-  ItemImage: {fileID: 0}
-  ItemName: {fileID: 0}
+  ItemImage: {fileID: 4918442643763740982}
+  ItemName: {fileID: 4918442644660329278}
 --- !u!1 &4918442644660329276
 GameObject:
   m_ObjectHideFlags: 0

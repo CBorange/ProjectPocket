@@ -7,84 +7,56 @@ public enum InventoryCategory
 {
     Weapon,
     Accesorie,
-    Expandable,
+    Expendable,
     Etc
 };
 public class InventoryPanel : MonoBehaviour
 {
+    // Inventory UI 기능 단위
+    public InventoryPanel_ItemTable itemTable;
+
     // UI
-    public Transform contentsView;
-    public GameObject selectTogglePrefab;
-    private List<ItemSelectToggle> selectTogglePool;
+    public Toggle[] itemCategoryToggles;
 
-    // Data
-    private InventoryCategory inventoryCategory;
-    public PlayerInventory playerInventory;
-
-    private void Start()
+    public void Initialize()
     {
-        selectTogglePool = new List<ItemSelectToggle>();
-        selectTogglePool.Capacity = 0;
-        CreateSelectTogglePool(30);
-    }
-    private void CreateSelectTogglePool(int createCount)
-    {
-        int beforeCapacity = selectTogglePool.Capacity;
-        selectTogglePool.Capacity += createCount;
-        for (int i = 0; i < createCount; ++i)
-        {
-            GameObject newSelectToggle = Instantiate(selectTogglePrefab, contentsView);
-            newSelectToggle.GetComponent<Toggle>().group = contentsView.GetComponent<ToggleGroup>();
-
-            ItemSelectToggle itemSelectToggle = newSelectToggle.GetComponent<ItemSelectToggle>();
-            itemSelectToggle.IndexInContentView = beforeCapacity + i;
-            selectTogglePool.Add(newSelectToggle.GetComponent<ItemSelectToggle>());
-            newSelectToggle.SetActive(false);
-        }
-    }
-    private void RefreshInventoryPanel()
-    {
-        switch(inventoryCategory)
-        {
-            case InventoryCategory.Weapon:
-                break;
-            case InventoryCategory.Accesorie:
-                break;
-            case InventoryCategory.Expandable:
-                break;
-            case InventoryCategory.Etc:
-                break;
-        }
+        itemTable.Initialize();
     }
     public void OpenInventoryPanel()
     {
+        // UI 초기화
         gameObject.SetActive(true);
-        RefreshInventoryPanel();
+        itemCategoryToggles[0].isOn = true;
+        ChangeCategoryToWeapon(true);
+    }
+    public void CloseInventoryPanel()
+    {
+        gameObject.SetActive(false);
     }
 
-    // Inventory Category Change Callback
+    // 인벤토리 카테고리 변경 토글 Property Changed Callback
     public void ChangeCategoryToWeapon(bool selected)
     {
         if (!selected)
             return;
-        inventoryCategory = InventoryCategory.Weapon;
+        itemTable.Change_ItemCategory(InventoryCategory.Weapon);
     }
     public void ChangeCategoryToAccesorie(bool selected)
     {
         if (!selected)
             return;
-        inventoryCategory = InventoryCategory.Accesorie;
+        itemTable.Change_ItemCategory(InventoryCategory.Accesorie);
     }
-    public void ChangeCategoryToExpandable(bool selected)
+    public void ChangeCategoryToExpendable(bool selected)
     {
         if (!selected)
             return;
-        inventoryCategory = InventoryCategory.Expandable;
+        itemTable.Change_ItemCategory(InventoryCategory.Expendable);
     }
     public void ChangeCategoryToEtc(bool selected)
     {
         if (!selected)
             return;
-        inventoryCategory = InventoryCategory.Etc;
+        itemTable.Change_ItemCategory(InventoryCategory.Etc);
     }
 }

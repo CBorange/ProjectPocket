@@ -4,35 +4,56 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    private List<ItemData> weaponItems;
-    private List<ItemData> accesorieItems;
-    private List<ItemData> expandableItems;
-    private List<ItemData> etcItems;
+    // Data
+    private List<ImpliedItemData> impliedWeaponDataInfos;
+    public List<ImpliedItemData> ImpliedWeaponDataInfos
+    {
+        get { return impliedWeaponDataInfos; }
+    }
+    private List<ImpliedItemData> impliedAccesorieDataInfos;
+    public List<ImpliedItemData> ImpliedAccesorieDataInfos
+    {
+        get { return impliedAccesorieDataInfos; }
+    }
+    private List<ImpliedItemData> impliedExpendableDataInfos;
+    public List<ImpliedItemData> ImpliedExpendableDataInfos
+    {
+        get { return impliedExpendableDataInfos; }
+    }
+    private List<ImpliedItemData> impliedEtcDataInfos;
+    public List<ImpliedItemData> ImpliedEtcDataInfos
+    {
+        get { return impliedEtcDataInfos; }
+    }
 
     private void Start()
     {
-        DBConnector.Instance.LoadUserInventory();
-        weaponItems = new List<ItemData>();
-        accesorieItems = new List<ItemData>();
-        expandableItems = new List<ItemData>();
-        etcItems = new List<ItemData>();
+        if (!DBConnector.Instance.LoadUserInventory().Equals("Success"))
+            Debug.Log("유저인벤토리 로드 에러");
+        if (!DBConnector.Instance.LoadItemDB().Equals("Success"))
+            Debug.Log("아이템DB 로드 에러");
 
-        ItemData[] dbItems = UserInventoryProvider.Instance.itemsInInventory;
-        for (int i = 0; i < dbItems.Length; ++i)
+        impliedWeaponDataInfos = new List<ImpliedItemData>();
+        impliedAccesorieDataInfos = new List<ImpliedItemData>();
+        impliedExpendableDataInfos = new List<ImpliedItemData>();
+        impliedEtcDataInfos = new List<ImpliedItemData>();
+
+        ImpliedItemData[] inventoryItems = UserInventoryProvider.Instance.ImplitedItemDatas;
+        for (int i = 0; i < inventoryItems.Length; ++i)
         {
-            switch(dbItems[i].ItemType)
+            switch(inventoryItems[i].ItemType)
             {
                 case "Weapon":
-                    weaponItems.Add(dbItems[i]);
+                    impliedWeaponDataInfos.Add(inventoryItems[i]);
                     break;
-                case "Expandable":
-                    expandableItems.Add(dbItems[i]);
+                case "Expendable":
+                    impliedExpendableDataInfos.Add(inventoryItems[i]);
                     break;
                 case "Accesorie":
-                    accesorieItems.Add(dbItems[i]);
+                    impliedAccesorieDataInfos.Add(inventoryItems[i]);
                     break;
                 case "Etc":
-                    etcItems.Add(dbItems[i]);
+                    impliedEtcDataInfos.Add(inventoryItems[i]);
                     break;
             }
         }

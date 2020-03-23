@@ -8,6 +8,8 @@ public class PlayerActManager : MonoBehaviour
 
     public void AttackOnEquipmentWeapon()
     {
+        if (equipedWeaponBehaviour == null)
+            return;
         equipedWeaponBehaviour.PlayAttack();
     }
 }

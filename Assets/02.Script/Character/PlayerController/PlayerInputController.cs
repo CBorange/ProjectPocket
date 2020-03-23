@@ -51,7 +51,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void PC_PlayerActionInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.F)) 
             actManager.AttackOnEquipmentWeapon();
     }
 }

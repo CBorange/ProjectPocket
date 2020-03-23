@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemData
+public interface ItemData
 {
-    public string ItemType;
-    public int ItemCode;
-    public ItemData(string itemType, int itemCode)
-    {
-        ItemType = itemType;
-        ItemCode = itemCode;
-    }
+    string Name { get; set; }
+    string Introduce { get; set; }
+    int ItemCode { get; set; }
 }

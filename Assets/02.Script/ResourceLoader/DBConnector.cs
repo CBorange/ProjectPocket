@@ -44,6 +44,8 @@ public class DBConnector
             return null;
         }
     }
+
+    #region Load Unique DB Data
     public string ValiadeAccountOnDB(string id, string password)
     {
         string query = $"SELECT * FROM dbo.UserAccount WHERE Account_ID = '{id}' AND (Account_Password = '{password}')";
@@ -92,15 +94,47 @@ public class DBConnector
             return "서버에 연결할 수 없습니다.";
 
         DataRowCollection rowCollection = dataSet.Tables[0].Rows;
-        ItemData[] itemDatas = new ItemData[rowCollection.Count];
+        ImpliedItemData[] impliedItemDatas = new ImpliedItemData[rowCollection.Count];
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataArray = rowCollection[rowIdx].ItemArray;
-            ItemData newItemData = new ItemData(dataArray[0].ToString().Trim(), (int)dataArray[1]);
-            itemDatas[rowIdx] = newItemData;
+            ImpliedItemData newData = new ImpliedItemData(dataArray[0].ToString().Trim(), (int)dataArray[1]);
+            impliedItemDatas[rowIdx] = newData;
         }
 
-        UserInventoryProvider.Instance.Initialize(itemDatas);
+        UserInventoryProvider.Instance.Initialize(impliedItemDatas);
         return "Success";
     }
+    #endregion
+
+    #region Load Public DB Data
+    public string LoadItemDB()
+    {
+        string weaponQuery = $"SELECT * FROM dbo.Weapon";
+        DataSet weaponDataset = ConnectToDB("Item_DB", weaponQuery);
+        if (weaponDataset == null)
+            return "Fail";
+        ItemDB.Instance.ContainWeaponData(weaponDataset);
+
+        string expendableQuery = $"SELECT * FROM dbo.Expendable";
+        DataSet expendableDataset = ConnectToDB("Item_DB", expendableQuery);
+        if (expendableDataset == null)
+            return "Fail";
+        ItemDB.Instance.ContainExpandableData(expendableDataset);
+
+        string accesorieQuery = $"SELECT * FROM dbo.Accesorie";
+        DataSet accesorieDataset = ConnectToDB("Item_DB", accesorieQuery);
+        if (accesorieDataset == null)
+            return "Fail";
+        ItemDB.Instance.ContainAccesorieData(accesorieDataset);
+
+        string etcQuery = $"SELECT * FROM dbo.Etc";
+        DataSet etcDataset = ConnectToDB("Item_DB", etcQuery);
+        if (etcDataset == null)
+            return "Fail";
+        ItemDB.Instance.ContainEtcData(etcDataset);
+
+        return "Success";
+    }
+    #endregion
 }

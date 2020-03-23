@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ImpliedItemData
+{
+    public string ItemType;
+    public int ItemCode;
+    public ImpliedItemData(string itemType, int itemCode)
+    {
+        ItemType = itemType;
+        ItemCode = itemCode;
+    }
+}
 public class UserInventoryProvider
 {
     // Singleton
@@ -17,9 +27,13 @@ public class UserInventoryProvider
         }
     }
 
-    public ItemData[] itemsInInventory;
-    public void Initialize(ItemData[] itemInfos)
+    private ImpliedItemData[] impliedItemDatas;
+    public ImpliedItemData[] ImplitedItemDatas
     {
-        itemsInInventory = itemInfos;
+        get { return impliedItemDatas; }
+    }
+    public void Initialize(ImpliedItemData[] datas)
+    {
+        impliedItemDatas = datas;
     }
 }
