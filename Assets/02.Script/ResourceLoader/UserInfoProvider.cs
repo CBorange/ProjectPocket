@@ -71,10 +71,28 @@ public class UserInfoProvider
         get { return attackSpeed; }
         set { attackSpeed = value; }
     }
+    private int levelupExperience;
+    public int LevelupExperience
+    {
+        get { return levelupExperience; }
+        set { levelupExperience = value; }
+    }
+    private int currentExperience;
+    public int CurrentExperience
+    {
+        get { return currentExperience; }
+        set { currentExperience = value; }
+    }
+    private int level;
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
 
 
     public void Initialize(string account, string lastMap, string lastPos, string moveSpeed, string jumpSpeed,
-        string healthPoint, string shieldPoint, string attackPoint, string attackSpeed)
+        string healthPoint, string shieldPoint, string attackPoint, string attackSpeed, int levelupExperience, int currentExperience, int level)
     {
         // Account
         userAccount = account;
@@ -90,5 +108,8 @@ public class UserInfoProvider
         this.shieldPoint = float.Parse(shieldPoint);
         this.attackPoint = float.Parse(attackPoint);
         this.attackSpeed = float.Parse(attackSpeed);
+        this.levelupExperience = levelupExperience;
+        this.currentExperience = currentExperience;
+        this.level = level;
     }
 }

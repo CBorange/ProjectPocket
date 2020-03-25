@@ -4,6 +4,40 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    #region Singleton
+    private static PlayerInventory instance;
+    public static PlayerInventory Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                var obj = FindObjectOfType<PlayerInventory>();
+                if (obj != null)
+                    instance = obj;
+                else
+                {
+                    var newSingleton = new GameObject("PlayerInventory").AddComponent<PlayerInventory>();
+                    instance = newSingleton;
+                }
+            }
+            return instance;
+        }
+        private set
+        {
+            instance = value;
+        }
+    }
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<PlayerInventory>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    #endregion
     // Data
     private List<ImpliedItemData> impliedWeaponDataInfos;
     public List<ImpliedItemData> ImpliedWeaponDataInfos
@@ -29,6 +63,8 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         if (!DBConnector.Instance.LoadUserInventory().Equals("Success"))
+            Debug.Log("유저인벤토리 로드 에러");
+        if (!DBConnector.Instance.LoadUserEquipment(UserInfoProvider.Instance.UserAccount).Equals("Success"))
             Debug.Log("유저인벤토리 로드 에러");
         if (!DBConnector.Instance.LoadItemDB().Equals("Success"))
             Debug.Log("아이템DB 로드 에러");

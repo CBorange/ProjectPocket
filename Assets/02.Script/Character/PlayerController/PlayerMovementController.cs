@@ -6,13 +6,12 @@ public class PlayerMovementController : MonoBehaviour
 {
     public FollowCamera followCamera;
     public Animator animator;
-    public PlayerStatManager statManager;
+    public PlayerStat statManager;
     public Rigidbody myRigidbody;
 
     private bool nowJumped = false;
     private void Start()
     {
-        
     }
 
     private void OnCollisionEnter(Collision collision)

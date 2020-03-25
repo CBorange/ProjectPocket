@@ -5,21 +5,18 @@ using UnityEngine.UI;
 
 public class InventoryPanel_ItemTable : MonoBehaviour
 {
+    // Panel
+    public InventoryPanel inventoryPanel;
+
     // UI : ItemToggle
-    public Transform contentsView;
+    public ToggleGroup contentsView;
     public GameObject selectTogglePrefab;
     private List<ItemSelectToggle> selectTogglePool;
-
-    // UI : ItemIntroduce
-    public Text selectedItemName;
-    public Text selectedItemIntroduce;
-    public Button attachToQuickSlot_Btn;
-    public Button useItem_Btn;
 
     // Data
     private InventoryCategory inventoryCategory;
     private List<ImpliedItemData> currentItemDatas;
-    public PlayerInventory playerInventory;
+    private ItemSelectToggle selectedItemToggle;
 
     // 외부호출 Method
     public void Initialize()
@@ -33,6 +30,35 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         inventoryCategory = category;
         RefreshInventoryPanel();
     }
+    public void DeselectAllToggle()
+    {
+        contentsView.allowSwitchOff = true;
+        for (int i = 0; i < selectTogglePool.Count; ++i)
+        {
+            selectTogglePool[i].GetComponent<Toggle>().isOn = false;
+        }
+    }
+    private void AttachItemToQuickSlot()
+    {
+
+    }
+    private void UseItem()
+    {
+        switch(selectedItemToggle.CurrentItemImpliedData.ItemType)
+        {
+            case "Weapon":
+                PlayerEquipment.Instance.EquipWeapon(selectedItemToggle.CurrentItemImpliedData.ItemCode);
+                break;
+            case "Accesorie":
+                AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(selectedItemToggle.CurrentItemImpliedData.ItemCode);
+
+                if (accesorieData.AccesorieType.Equals("Ring"))
+                    PlayerEquipment.Instance.EquipAccesorie_Ring(accesorieData);
+                else if (accesorieData.AccesorieType.Equals("Necklace"))
+                    PlayerEquipment.Instance.EquipAccesorie_Necklace(accesorieData);
+                break;
+        }
+    }
 
     // 내부 Method
     private void CreateSelectTogglePool(int createCount)
@@ -41,7 +67,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         selectTogglePool.Capacity += createCount;
         for (int i = 0; i < createCount; ++i)
         {
-            GameObject newSelectToggle = Instantiate(selectTogglePrefab, contentsView);
+            GameObject newSelectToggle = Instantiate(selectTogglePrefab, contentsView.transform);
             newSelectToggle.GetComponent<Toggle>().group = contentsView.GetComponent<ToggleGroup>();
 
             ItemSelectToggle itemSelectToggle = newSelectToggle.GetComponent<ItemSelectToggle>();
@@ -53,7 +79,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     private void RefreshInventoryPanel()
     {
-        ResetItemInteractPanel();
+        inventoryPanel.ResetItemInteractPanel();
         for (int i = 0; i < selectTogglePool.Count; ++i)
         {
             selectTogglePool[i].gameObject.SetActive(false);
@@ -62,26 +88,19 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         switch (inventoryCategory)
         {
             case InventoryCategory.Weapon:
-                currentItemDatas = playerInventory.ImpliedWeaponDataInfos;
+                currentItemDatas = PlayerInventory.Instance.ImpliedWeaponDataInfos;
                 break;
             case InventoryCategory.Accesorie:
-                currentItemDatas = playerInventory.ImpliedAccesorieDataInfos;
+                currentItemDatas = PlayerInventory.Instance.ImpliedAccesorieDataInfos;
                 break;
             case InventoryCategory.Expendable:
-                currentItemDatas = playerInventory.ImpliedExpendableDataInfos;
+                currentItemDatas = PlayerInventory.Instance.ImpliedExpendableDataInfos;
                 break;
             case InventoryCategory.Etc:
-                currentItemDatas = playerInventory.ImpliedEtcDataInfos;
+                currentItemDatas = PlayerInventory.Instance.ImpliedEtcDataInfos;
                 break;
         }
         LoadItemToggle();
-    }
-    private void ResetItemInteractPanel()
-    {
-        selectedItemName.text = "아이템 이름";
-        selectedItemIntroduce.text = "아이템 설명";
-        attachToQuickSlot_Btn.gameObject.SetActive(false);
-        useItem_Btn.gameObject.SetActive(false);
     }
     private void LoadItemToggle()
     {
@@ -91,23 +110,23 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         }
         if (currentItemDatas.Count > 0)
         {
+            selectTogglePool[0].GetComponent<Toggle>().isOn = true;
             selectTogglePool[0].ItemSelected(true);
         }
     }
 
     // 아이템 토글이 선택되었을 시 Toggle->Panel로 호출되는 Callback
-    private void ItemSelected(ItemData selectedItem)
+    private void ItemSelected(ItemSelectToggle selectToggle, string itemType)
     {
-        selectedItemName.gameObject.SetActive(true);
-        selectedItemIntroduce.gameObject.SetActive(true);
+        contentsView.allowSwitchOff = false;
+        inventoryPanel.DeselectAllEquipmentToggles();
+        selectedItemToggle = selectToggle;
 
-        if (inventoryCategory == InventoryCategory.Weapon ||
-            inventoryCategory == InventoryCategory.Accesorie)
+        if (!(itemType.Equals("Etc")))  
         {
-            attachToQuickSlot_Btn.gameObject.SetActive(true);
-            useItem_Btn.gameObject.gameObject.SetActive(true);
+            inventoryPanel.ActiveQuickSlotBtn(AttachItemToQuickSlot);
+            inventoryPanel.ActiveUseItemBtn(UseItem);
         }
-        selectedItemName.text = selectedItem.Name;
-        selectedItemIntroduce.text = selectedItem.Introduce;
+        inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
     }
 }

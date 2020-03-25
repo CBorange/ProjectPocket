@@ -2,8 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatManager : MonoBehaviour, CharacterStat
+public class PlayerStat : MonoBehaviour, CharacterStat
 {
+    #region Singleton
+    private static PlayerStat instance;
+    public static PlayerStat Instance
+    {
+        get 
+        {
+            if (instance == null)
+            {
+                var obj = FindObjectOfType<PlayerStat>();
+                if (obj != null)
+                    instance = obj;
+                else
+                {
+                    var newSingleton = new GameObject("PlayerStat").AddComponent<PlayerStat>();
+                    instance = newSingleton;
+                }
+            }
+            return instance;
+        }
+        private set
+        {
+            instance = value;
+        }
+    }
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<PlayerStat>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    #endregion
     // Character Origin Stat
     private float origin_MoveSpeed;
     public float Origin_MoveSpeed
@@ -46,6 +80,7 @@ public class PlayerStatManager : MonoBehaviour, CharacterStat
         get { return origin_AttackSpeed; }
         set { origin_AttackSpeed = value; }
     }
+
     // Character Current Stat
     private float moveSpeed;
     public float MoveSpeed
@@ -89,6 +124,26 @@ public class PlayerStatManager : MonoBehaviour, CharacterStat
         set { attackSpeed = value; }
     }
 
+    // Player Only Stat
+    private int levelupExperience;
+    public int LevelupExperience
+    {
+        get { return levelupExperience; }
+        set { levelupExperience = value; }
+    }
+    private int currentExperience;
+    public int CurrentExperience
+    {
+        get { return currentExperience; }
+        set { currentExperience = value; }
+    }
+    private int level;
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
+
     private void Start()
     {
         UserInfoProvider userData = UserInfoProvider.Instance;
@@ -105,5 +160,8 @@ public class PlayerStatManager : MonoBehaviour, CharacterStat
         ShieldPoint = Origin_ShieldPoint;
         AttackPoint = Origin_AttackPoint;
         AttackSpeed = Origin_AttackSpeed;
+        LevelupExperience = userData.LevelupExperience;
+        CurrentExperience = userData.CurrentExperience;
+        Level = userData.Level;
     }
 }

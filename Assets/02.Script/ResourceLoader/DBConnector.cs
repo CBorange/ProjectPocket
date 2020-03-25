@@ -82,7 +82,10 @@ public class DBConnector
                                      dataArray[5].ToString().Trim(),
                                      dataArray[6].ToString().Trim(),
                                      dataArray[7].ToString().Trim(),
-                                     dataArray[8].ToString().Trim());
+                                     dataArray[8].ToString().Trim(),
+                                     (int)dataArray[9],
+                                     (int)dataArray[10],
+                                     (int)dataArray[11]);
         return "Success";
     }
     public string LoadUserInventory()
@@ -103,6 +106,24 @@ public class DBConnector
         }
 
         UserInventoryProvider.Instance.Initialize(impliedItemDatas);
+        return "Success";
+    }
+    public string LoadUserEquipment(string userAccount)
+    {
+        string query = $"SELECT * FROM dbo.PlayerEquipments WHERE UserAccount = '{userAccount}'";
+        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+
+        if (dataSet == null)
+            return "서버에 연결할 수 없습니다.";
+
+        object[] itemArray = dataSet.Tables[0].Rows[0].ItemArray;
+        ImpliedItemData[] impliedItemDatas = new ImpliedItemData[itemArray.Length];
+
+        impliedItemDatas[0] = new ImpliedItemData("Weapon", (int)itemArray[1]);
+        impliedItemDatas[1] = new ImpliedItemData("Accesorie", (int)itemArray[2]);
+        impliedItemDatas[2] = new ImpliedItemData("Accesorie", (int)itemArray[3]);
+
+        UserEquipmentProvider.Instance.Initialize(impliedItemDatas[0], impliedItemDatas[1], impliedItemDatas[2]);
         return "Success";
     }
     #endregion

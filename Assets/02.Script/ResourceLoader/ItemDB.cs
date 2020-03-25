@@ -4,6 +4,16 @@ using System;
 using UnityEngine;
 using System.Data;
 
+public class ImpliedItemData
+{
+    public string ItemType;
+    public int ItemCode;
+    public ImpliedItemData(string itemType, int itemCode)
+    {
+        ItemType = itemType;
+        ItemCode = itemCode;
+    }
+}
 public class ItemDB
 {
     // Singleton
@@ -82,8 +92,8 @@ public class ItemDB
             return foundData;
         else
         {
-            return null;
             Debug.Log($"{itemCode}아이템을 찾을 수 없습니다.");
+            return null;
         }
     }
     public ExpendableData GetExpendableData(int itemCode)
@@ -94,8 +104,8 @@ public class ItemDB
             return foundData;
         else
         {
-            return null;
             Debug.Log($"{itemCode}아이템을 찾을 수 없습니다.");
+            return null;
         }
     }
     public AccesorieData GetAccesorieData(int itemCode)
@@ -106,8 +116,8 @@ public class ItemDB
             return foundData;
         else
         {
-            return null;
             Debug.Log($"{itemCode}아이템을 찾을 수 없습니다.");
+            return null;
         }
     }
     public EtcData GetEtcData(int itemCode)
@@ -118,8 +128,8 @@ public class ItemDB
             return foundData;
         else
         {
-            return null;
             Debug.Log($"{itemCode}아이템을 찾을 수 없습니다.");
+            return null;
         }
     }
 }

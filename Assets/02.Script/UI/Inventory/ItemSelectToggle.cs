@@ -9,8 +9,16 @@ public class ItemSelectToggle : MonoBehaviour
     public Image ItemImage;
     public Text ItemName;
     private ImpliedItemData impliedItemData;
+    public ImpliedItemData CurrentItemImpliedData
+    {
+        get { return impliedItemData; }
+    }
     private ItemData currentItem;
-    private Action<ItemData> noticeSelectedToPanel_CALLBACK;
+    public ItemData CurrentItem
+    {
+        get { return currentItem; }
+    }
+    private Action<ItemSelectToggle, string> noticeSelectedToPanel_CALLBACK;
 
     public void Refresh(ImpliedItemData impliedData)
     {
@@ -46,7 +54,7 @@ public class ItemSelectToggle : MonoBehaviour
 
         gameObject.SetActive(true);
     }
-    public void Initialize(Action<ItemData> selectedNoticeCallback)
+    public void Initialize(Action<ItemSelectToggle, string> selectedNoticeCallback)
     {
         noticeSelectedToPanel_CALLBACK = selectedNoticeCallback;
     }
@@ -54,6 +62,6 @@ public class ItemSelectToggle : MonoBehaviour
     {
         if (!selected)
             return;
-        noticeSelectedToPanel_CALLBACK(currentItem);
+        noticeSelectedToPanel_CALLBACK(this, impliedItemData.ItemType);
     }
 }
