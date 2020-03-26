@@ -6,7 +6,6 @@ public class PlayerMovementController : MonoBehaviour
 {
     public FollowCamera followCamera;
     public Animator animator;
-    public PlayerStat statManager;
     public Rigidbody myRigidbody;
 
     private bool nowJumped = false;
@@ -46,14 +45,14 @@ public class PlayerMovementController : MonoBehaviour
 
         // 계산된 각도만큼 회전, 플레이어 이동
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
-        transform.Translate(transform.forward * statManager.MoveSpeed * Time.deltaTime, Space.World);
+        transform.Translate(transform.forward * PlayerStat.Instance.MoveSpeed * Time.deltaTime, Space.World);
         animator.SetBool("Walk", true);
     }
     public void Jump()
     {
         if (nowJumped)
             return;
-        myRigidbody.AddForce(Vector3.up * statManager.JumpSpeed, ForceMode.Impulse);
+        myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.JumpSpeed, ForceMode.Impulse);
         nowJumped = true;
         animator.SetTrigger("Jumped");
         animator.SetBool("FlyAir", true);

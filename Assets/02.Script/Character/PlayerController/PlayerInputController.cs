@@ -5,13 +5,7 @@ using UnityEngine;
 public class PlayerInputController : MonoBehaviour
 {
     public PlayerMovementController movementController;
-    public PlayerActManager actManager;
     public FollowCamera followCamera;
-
-    private void Start()
-    {
-        
-    }
 
     private void FixedUpdate()
     {
@@ -52,6 +46,6 @@ public class PlayerInputController : MonoBehaviour
     private void PC_PlayerActionInput()
     {
         if (Input.GetKeyDown(KeyCode.F)) 
-            actManager.AttackOnEquipmentWeapon();
+            PlayerActManager.Instance.AttackOnEquipmentWeapon();
     }
 }

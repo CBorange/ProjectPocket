@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WeaponBehaviourCollection
+public class WeaponBehaviour_OneHand : IWeaponBehaviour
 {
-    public class WeaponBehaviour_OneHand : IWeaponBehaviour
+    private Transform playerTransform;
+    private BoxCollider coliderBox;
+    private Animator playerAnimator;
+    private WeaponData weaponData;
+
+    public void CreateBehaviour(WeaponData weaponData)
     {
-        private Animator playerAnimator;
-        private float attackPoint;
-        private float attackSpeed;
-        private float range;
+        this.weaponData = weaponData;
 
-        public WeaponBehaviour_OneHand(Animator playerAnimator, float attackPoint, float attackSpeed, float range)
-        {
-            this.playerAnimator = playerAnimator;
-            this.attackPoint = attackPoint;
-            this.attackSpeed = attackSpeed;
-            this.range = range;
-        }
-        public void PlayAttack()
-        {
+        GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
+        coliderBox = newColiderBox.AddComponent<BoxCollider>();
+        coliderBox.isTrigger = true;
+        coliderBox.size = new Vector3(1, 1, weaponData.Range);
+        coliderBox.gameObject.SetActive(false);
 
-        }
+        playerTransform = GameObject.Find("Player").transform;
+    }
+    public void PlayAttack()
+    {
+        Debug.Log(weaponData.Name);
+    }
+    public void ReleaseBehaviour()
+    {
+        GameObject.Destroy(coliderBox.gameObject);
     }
 }

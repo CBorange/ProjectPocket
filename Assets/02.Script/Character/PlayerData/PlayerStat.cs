@@ -164,4 +164,8 @@ public class PlayerStat : MonoBehaviour, CharacterStat
         CurrentExperience = userData.CurrentExperience;
         Level = userData.Level;
     }
+    public void AttachUICallback()
+    {
+
+    }
 }

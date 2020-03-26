@@ -58,6 +58,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
                     PlayerEquipment.Instance.EquipAccesorie_Necklace(accesorieData);
                 break;
         }
+        inventoryPanel.RefreshPlayerInfoPanel();
     }
 
     // 내부 Method
@@ -122,11 +123,14 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         inventoryPanel.DeselectAllEquipmentToggles();
         selectedItemToggle = selectToggle;
 
-        if (!(itemType.Equals("Etc")))  
+        if (itemType.Equals("Weapon") || itemType.Equals("Expendable"))
         {
             inventoryPanel.ActiveQuickSlotBtn(AttachItemToQuickSlot);
             inventoryPanel.ActiveUseItemBtn(UseItem);
         }
+        else if (itemType.Equals("Accesorie"))
+            inventoryPanel.ActiveUseItemBtn(UseItem);
+
         inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
     }
 }

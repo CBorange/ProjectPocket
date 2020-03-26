@@ -39,7 +39,7 @@ public class InventoryPanel : MonoBehaviour
 
         itemCategoryToggles[0].isOn = true;
         ChangeCategoryToWeapon(true);
-        playerInfo.RefreshPlayerInfoPanel();
+        RefreshPlayerInfoPanel();
     }
     public void CloseInventoryPanel()
     {
@@ -47,6 +47,10 @@ public class InventoryPanel : MonoBehaviour
     }
 
     // Public Method
+    public void RefreshPlayerInfoPanel()
+    {
+        playerInfo.RefreshPlayerInfoPanel();
+    }
     public void DeselectAllItemTableToggles()
     {
         itemTable.DeselectAllToggle();

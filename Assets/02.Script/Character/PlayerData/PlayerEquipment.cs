@@ -78,15 +78,14 @@ public class PlayerEquipment : MonoBehaviour
         set { equipedNecklaceImpliedData = value; }
     }
 
+    // Weapon Model
+
+
     private void Start()
     {
-        equipedWeaponImpliedData = UserEquipmentProvider.Instance.WeaponItem;
-        equipedRingImpliedData = UserEquipmentProvider.Instance.Accesorie_Ring;
-        equipedNecklaceImpliedData = UserEquipmentProvider.Instance.Accesorie_Necklace;
-
-        equipedWeapon = ItemDB.Instance.GetWeaponData(equipedWeaponImpliedData.ItemCode);
-        equipedRing = ItemDB.Instance.GetAccesorieData(equipedRingImpliedData.ItemCode);
-        equipedNecklace = ItemDB.Instance.GetAccesorieData(equipedNecklaceImpliedData.ItemCode);
+        EquipWeapon(UserEquipmentProvider.Instance.WeaponItem.ItemCode);
+        EquipAccesorie_Ring(ItemDB.Instance.GetAccesorieData(UserEquipmentProvider.Instance.Accesorie_Ring.ItemCode));
+        EquipAccesorie_Necklace(ItemDB.Instance.GetAccesorieData(UserEquipmentProvider.Instance.Accesorie_Necklace.ItemCode));
     }
 
     // UnEquip
@@ -108,13 +107,18 @@ public class PlayerEquipment : MonoBehaviour
     {
         WeaponData weaponData = ItemDB.Instance.GetWeaponData(itemCode);
         equipedWeapon = weaponData;
+        equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode);
+
+        PlayerActManager.Instance.EquipWeapon(equipedWeapon);
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {
         equipedRing = data;
+        equipedRingImpliedData = new ImpliedItemData("Accesorie", data.ItemCode);
     }
     public void EquipAccesorie_Necklace(AccesorieData data)
     {
         equipedNecklace = data;
+        equipedNecklaceImpliedData = new ImpliedItemData("Accesorie", data.ItemCode);
     }
 }

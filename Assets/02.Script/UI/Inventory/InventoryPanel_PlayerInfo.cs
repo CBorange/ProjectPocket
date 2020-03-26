@@ -51,14 +51,14 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
             switch(itemType)
             {
                 case "Weapon":
-                    PlayerEquipment.Instance.EquipWeapon(selectToggle.CurrentItemImpliedData.ItemCode);
+                    PlayerEquipment.Instance.UnequipWeapon();
                     break;
                 case "Accesorie":
                     AccesorieData data = ItemDB.Instance.GetAccesorieData(selectToggle.CurrentItemImpliedData.ItemCode);
                     if (data.AccesorieType.Equals("Ring"))
-                        PlayerEquipment.Instance.EquipAccesorie_Ring(data);
+                        PlayerEquipment.Instance.UnequipAccesorie_Ring();
                     else if (data.AccesorieType.Equals("Necklace"))
-                        PlayerEquipment.Instance.EquipAccesorie_Necklace(data);
+                        PlayerEquipment.Instance.UnequipAccesorie_Necklace();
                     break;
             }
         });

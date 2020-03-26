@@ -47,8 +47,15 @@ public class ItemDB
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
+
+            string[] splitedGrapPoint = dataItems[7].ToString().Split(',');
+            string[] splitedGrapRotation = dataItems[8].ToString().Split(',');
+            Vector3 grapPoint = new Vector3(float.Parse(splitedGrapPoint[0]), float.Parse(splitedGrapPoint[1]), float.Parse(splitedGrapPoint[2]));
+            Vector3 grapRotation = new Vector3(float.Parse(splitedGrapRotation[0]), float.Parse(splitedGrapRotation[1]), float.Parse(splitedGrapRotation[2]));
+
             WeaponData newData = new WeaponData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2],
-                dataItems[3].ToString(), Convert.ToSingle(dataItems[4]), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]));
+                dataItems[3].ToString(), Convert.ToSingle(dataItems[4]), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]),
+                grapPoint, grapRotation);
             weaponDatas.Add((int)dataItems[2], newData);
         }
     }

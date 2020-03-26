@@ -16,6 +16,12 @@ public class WeaponData : ItemData
         get { return introduce; }
         set { introduce = value; }
     }
+    private int itemCode;
+    public int ItemCode
+    {
+        get { return itemCode; }
+        set { itemCode = value; }
+    }
     private string weaponType;
     public string WeaponType
     {
@@ -40,20 +46,30 @@ public class WeaponData : ItemData
         get { return range; }
         set { range = value; }
     }
-    private int itemCode;
-    public int ItemCode
+    private Vector3 grapPoint;
+    public Vector3 GrapPoint
     {
-        get { return itemCode; }
-        set { itemCode = value; }
+        get { return grapPoint; }
+        set { grapPoint = value; }
     }
-    public WeaponData(string name, string introduce, int itemCode, string weaponType, float attackPoint, float attackSpeed, float range)
+    private Vector3 grapRotation;
+    public Vector3 GrapRotation
+    {
+        get { return grapRotation; }
+        set { grapRotation = value; }
+    }
+
+    public WeaponData(string name, string introduce, int itemCode, string weaponType, float attackPoint, float attackSpeed, float range,
+        Vector3 grapPoint, Vector3 grapRotation)
     {
         this.name = name;
         this.introduce = introduce;
+        this.itemCode = itemCode;
         this.weaponType = weaponType;
         this.attackPoint = attackPoint;
         this.attackSpeed = attackSpeed;
         this.range = range;
-        this.itemCode = itemCode;
+        this.grapPoint = grapPoint;
+        this.grapRotation = grapRotation;
     }
 }
