@@ -52,6 +52,8 @@ public class PlayerActManager : MonoBehaviour
 
     public void EquipWeapon(WeaponData weaponData)
     {
+        UnEquipWeapon();
+
         weaponModel = Instantiate(Resources.Load<GameObject>($"Prefab/Weapon/{weaponData.Name}"), WeaponGrapPosition);
         weaponModel.transform.localPosition = weaponData.GrapPoint;
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
@@ -66,8 +68,14 @@ public class PlayerActManager : MonoBehaviour
     }
     public void UnEquipWeapon()
     {
-        Destroy(weaponModel);
-        equipedWeaponBehaviour = null;
+        if (weaponModel != null)
+            Destroy(weaponModel);
+
+        if (equipedWeaponBehaviour != null)
+        {
+            equipedWeaponBehaviour.ReleaseBehaviour();
+            equipedWeaponBehaviour = null;
+        }
     }
     public void AttackOnEquipmentWeapon()
     {

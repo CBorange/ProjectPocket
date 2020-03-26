@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStatusPanel : MonoBehaviour
+public class PlayerStatusPanel : MonoBehaviour, UIPanel
 {
     // UI
     public Slider HP_Slider;
@@ -13,8 +13,24 @@ public class PlayerStatusPanel : MonoBehaviour
     public Text AP_Text;
     public Text SP_Text;
 
-    private void Start()
+    public void Initialize()
     {
-        
+        PlayerStat.Instance.AttachUICallback(Changed_PlayerStat);
+        Changed_PlayerStat();
+    }
+    // Open/Close Panel
+    public void OpenPanel()
+    {
+        // UI 초기화
+        gameObject.SetActive(true);
+
+    }
+    public void ClosePanel()
+    {
+        gameObject.SetActive(false);
+    }
+    private void Changed_PlayerStat()
+    {
+        PlayerStat stat = PlayerStat.Instance;
     }
 }

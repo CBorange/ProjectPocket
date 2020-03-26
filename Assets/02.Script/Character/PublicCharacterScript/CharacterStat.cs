@@ -7,7 +7,7 @@ public interface CharacterStat
     // Max(Original) Stat
     float Origin_MoveSpeed { get; set; }
     float Origin_JumpSpeed { get; set; }
-    float Origin_HealthPoint { get; set; }
+    float Max_HealthPoint { get; set; }
     float Origin_ShieldPoint { get; set; }
     float Origin_AttackPoint { get; set; }
     float Origin_AttackSpeed { get; set; }

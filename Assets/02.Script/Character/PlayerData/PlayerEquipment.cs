@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerEquipment : MonoBehaviour
+public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
 {
     #region Singleton
     private static PlayerEquipment instance;
@@ -78,10 +78,7 @@ public class PlayerEquipment : MonoBehaviour
         set { equipedNecklaceImpliedData = value; }
     }
 
-    // Weapon Model
-
-
-    private void Start()
+    public void Initialize()
     {
         EquipWeapon(UserEquipmentProvider.Instance.WeaponItem.ItemCode);
         EquipAccesorie_Ring(ItemDB.Instance.GetAccesorieData(UserEquipmentProvider.Instance.Accesorie_Ring.ItemCode));

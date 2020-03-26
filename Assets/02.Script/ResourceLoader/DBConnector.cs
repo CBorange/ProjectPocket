@@ -5,20 +5,43 @@ using System.Data;
 using System;
 using System.Data.SqlClient;
 
-public class DBConnector
+public class DBConnector : MonoBehaviour
 {
-    // Singleton
-    private DBConnector() { }
+    #region Singleton
     private static DBConnector instance;
     public static DBConnector Instance
     {
-        get 
+        get
         {
             if (instance == null)
-                instance = new DBConnector();
+            {
+                var obj = FindObjectOfType<DBConnector>();
+                if (obj != null)
+                    instance = obj;
+                else
+                {
+                    var newSingleton = new GameObject("DBConnector").AddComponent<DBConnector>();
+                    instance = newSingleton;
+                }
+            }
             return instance;
         }
+        private set
+        {
+            instance = value;
+        }
     }
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<DBConnector>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(this);
+    }
+    #endregion
 
     private SqlCommand sqlCommand;
     private SqlConnection sqlConnection;

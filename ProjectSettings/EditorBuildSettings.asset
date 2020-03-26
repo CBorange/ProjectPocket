@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/01.Scene/Login.unity
     guid: 63b692b39f18faf489dcbcc580632d2e
   - enabled: 1
-    path: Assets/01.Scene/Map/FirstVillage.unity
+    path: Assets/01.Scene/GameScene.unity
     guid: 2f4c861e7316e914680ebbb5ac698219
   m_configObjects: {}

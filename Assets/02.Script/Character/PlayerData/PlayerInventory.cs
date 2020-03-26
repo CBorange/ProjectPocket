@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
 {
     #region Singleton
     private static PlayerInventory instance;
@@ -60,15 +60,8 @@ public class PlayerInventory : MonoBehaviour
         get { return impliedEtcDataInfos; }
     }
 
-    private void Start()
+    public void Initialize()
     {
-        if (!DBConnector.Instance.LoadUserInventory().Equals("Success"))
-            Debug.Log("유저인벤토리 로드 에러");
-        if (!DBConnector.Instance.LoadUserEquipment(UserInfoProvider.Instance.UserAccount).Equals("Success"))
-            Debug.Log("유저인벤토리 로드 에러");
-        if (!DBConnector.Instance.LoadItemDB().Equals("Success"))
-            Debug.Log("아이템DB 로드 에러");
-
         impliedWeaponDataInfos = new List<ImpliedItemData>();
         impliedAccesorieDataInfos = new List<ImpliedItemData>();
         impliedExpendableDataInfos = new List<ImpliedItemData>();
@@ -77,7 +70,7 @@ public class PlayerInventory : MonoBehaviour
         ImpliedItemData[] inventoryItems = UserInventoryProvider.Instance.ImplitedItemDatas;
         for (int i = 0; i < inventoryItems.Length; ++i)
         {
-            switch(inventoryItems[i].ItemType)
+            switch (inventoryItems[i].ItemType)
             {
                 case "Weapon":
                     impliedWeaponDataInfos.Add(inventoryItems[i]);

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class PlayerStat : MonoBehaviour, CharacterStat
+public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
 {
     #region Singleton
     private static PlayerStat instance;
@@ -38,6 +39,7 @@ public class PlayerStat : MonoBehaviour, CharacterStat
         }
     }
     #endregion
+    #region Stat
     // Character Origin Stat
     private float origin_MoveSpeed;
     public float Origin_MoveSpeed
@@ -53,11 +55,11 @@ public class PlayerStat : MonoBehaviour, CharacterStat
         set { origin_JumpSpeed = value; }
     }
 
-    private float origin_HealthPoint;
-    public float Origin_HealthPoint
+    private float max_HealthPoint;
+    public float Max_HealthPoint
     {
-        get { return origin_HealthPoint; }
-        set { origin_HealthPoint = value; }
+        get { return max_HealthPoint; }
+        set { max_HealthPoint = value; }
     }
 
     private float origin_ShieldPoint;
@@ -143,20 +145,22 @@ public class PlayerStat : MonoBehaviour, CharacterStat
         get { return level; }
         set { level = value; }
     }
+    #endregion Stat
 
-    private void Start()
+    private Action changedStatusCallback;
+    public void Initialize()
     {
         UserInfoProvider userData = UserInfoProvider.Instance;
         Origin_MoveSpeed = userData.MoveSpeed;
         Origin_JumpSpeed = userData.JumpSpeed;
-        Origin_HealthPoint = userData.HealthPoint;
+        Max_HealthPoint = userData.HealthPoint;
         Origin_ShieldPoint = userData.ShieldPoint;
         Origin_AttackPoint = userData.AttackPoint;
         Origin_AttackSpeed = userData.AttackSpeed;
 
         MoveSpeed = Origin_MoveSpeed;
         JumpSpeed = Origin_JumpSpeed;
-        HealthPoint = Origin_HealthPoint;
+        HealthPoint = Max_HealthPoint;
         ShieldPoint = Origin_ShieldPoint;
         AttackPoint = Origin_AttackPoint;
         AttackSpeed = Origin_AttackSpeed;
@@ -164,8 +168,8 @@ public class PlayerStat : MonoBehaviour, CharacterStat
         CurrentExperience = userData.CurrentExperience;
         Level = userData.Level;
     }
-    public void AttachUICallback()
+    public void AttachUICallback(Action callback)
     {
-
+        changedStatusCallback = callback;
     }
 }

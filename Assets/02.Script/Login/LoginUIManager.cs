@@ -28,7 +28,7 @@ public class LoginUIManager : MonoBehaviour
             string userResult = DBConnector.Instance.LoadUserInfo(id);
             if (userResult.Equals("Success"))
             {
-                SceneManager.LoadScene(UserInfoProvider.Instance.LastMap);
+                SceneManager.LoadScene("GameScene");
             }
             else
                 ShowPopup($"접속할 수 없습니다.\n\n{userResult}");

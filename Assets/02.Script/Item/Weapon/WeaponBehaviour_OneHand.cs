@@ -5,8 +5,8 @@ using UnityEngine;
 public class WeaponBehaviour_OneHand : IWeaponBehaviour
 {
     private Transform playerTransform;
-    private BoxCollider coliderBox;
     private Animator playerAnimator;
+    private BoxCollider coliderBox;
     private WeaponData weaponData;
 
     public void CreateBehaviour(WeaponData weaponData)

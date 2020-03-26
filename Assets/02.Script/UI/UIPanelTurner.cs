@@ -5,7 +5,7 @@ using UnityEngine;
 public class UIPanelTurner : MonoBehaviour
 {
     public InventoryPanel InventoryPanel;
-    public GameObject PlayerStatusPanel;
+    public GameObject PlayerInfoPanel;
     public GameObject SettingPanel;
 
     public void Open_Setting()
@@ -14,10 +14,10 @@ public class UIPanelTurner : MonoBehaviour
     }
     public void Open_PlayerStatus()
     {
-        PlayerStatusPanel.SetActive(true);
+        PlayerInfoPanel.SetActive(true);
     }
     public void Open_Invetory()
     {
-        InventoryPanel.OpenInventoryPanel();
+        InventoryPanel.OpenPanel();
     }
 }

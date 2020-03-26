@@ -11,7 +11,7 @@ public enum InventoryCategory
     Expendable,
     Etc
 };
-public class InventoryPanel : MonoBehaviour
+public class InventoryPanel : MonoBehaviour, UIPanel
 {
     // Inventory UI 기능 단위
     public InventoryPanel_ItemTable itemTable;
@@ -32,7 +32,7 @@ public class InventoryPanel : MonoBehaviour
         playerInfo.Initialize();
     }
     // Open/Close Panel
-    public void OpenInventoryPanel()
+    public void OpenPanel()
     {
         // UI 초기화
         gameObject.SetActive(true);
@@ -41,7 +41,7 @@ public class InventoryPanel : MonoBehaviour
         ChangeCategoryToWeapon(true);
         RefreshPlayerInfoPanel();
     }
-    public void CloseInventoryPanel()
+    public void ClosePanel()
     {
         gameObject.SetActive(false);
     }
