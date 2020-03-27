@@ -45,42 +45,36 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     public float Origin_MoveSpeed
     {
         get { return origin_MoveSpeed; }
-        set { origin_MoveSpeed = value; }
     }
 
     private float origin_JumpSpeed;
     public float Origin_JumpSpeed
     {
         get { return origin_JumpSpeed; }
-        set { origin_JumpSpeed = value; }
     }
 
     private float max_HealthPoint;
     public float Max_HealthPoint
     {
         get { return max_HealthPoint; }
-        set { max_HealthPoint = value; }
     }
 
     private float origin_ShieldPoint;
     public float Origin_ShieldPoint
     {
         get { return origin_ShieldPoint; }
-        set { origin_ShieldPoint = value; }
     }
 
     private float origin_AttackPoint;
     public float Origin_AttackPoint
     {
         get { return origin_AttackPoint; }
-        set { origin_AttackPoint = value; }
     }
 
     private float origin_AttackSpeed;
     public float Origin_AttackSpeed
     {
         get { return origin_AttackSpeed; }
-        set { origin_AttackSpeed = value; }
     }
 
     // Character Current Stat
@@ -88,42 +82,36 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     public float MoveSpeed
     {
         get { return moveSpeed; }
-        set { moveSpeed = value; }
     }
 
     private float jumpSpeed;
     public float JumpSpeed
     {
         get { return jumpSpeed; }
-        set { jumpSpeed = value; }
     }
 
     private float healthPoint;
     public float HealthPoint
     {
         get { return healthPoint; }
-        set { healthPoint = value; }
     }
 
     private float shieldPoint;
     public float ShieldPoint
     {
         get { return shieldPoint; }
-        set { shieldPoint = value; }
     }
 
     private float attackPoint;
     public float AttackPoint
     {
         get { return attackPoint; }
-        set { attackPoint = value; }
     }
 
     private float attackSpeed;
     public float AttackSpeed
     {
         get { return attackSpeed; }
-        set { attackSpeed = value; }
     }
 
     // Player Only Stat
@@ -131,19 +119,16 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     public int LevelupExperience
     {
         get { return levelupExperience; }
-        set { levelupExperience = value; }
     }
     private int currentExperience;
     public int CurrentExperience
     {
         get { return currentExperience; }
-        set { currentExperience = value; }
     }
     private int level;
     public int Level
     {
         get { return level; }
-        set { level = value; }
     }
     #endregion Stat
 
@@ -151,25 +136,35 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     public void Initialize()
     {
         UserInfoProvider userData = UserInfoProvider.Instance;
-        Origin_MoveSpeed = userData.MoveSpeed;
-        Origin_JumpSpeed = userData.JumpSpeed;
-        Max_HealthPoint = userData.HealthPoint;
-        Origin_ShieldPoint = userData.ShieldPoint;
-        Origin_AttackPoint = userData.AttackPoint;
-        Origin_AttackSpeed = userData.AttackSpeed;
+        origin_MoveSpeed = userData.MoveSpeed;
+        origin_JumpSpeed = userData.JumpSpeed;
+        max_HealthPoint = userData.HealthPoint;
+        origin_ShieldPoint = userData.ShieldPoint;
+        origin_AttackPoint = userData.AttackPoint;
+        origin_AttackSpeed = userData.AttackSpeed;
 
-        MoveSpeed = Origin_MoveSpeed;
-        JumpSpeed = Origin_JumpSpeed;
-        HealthPoint = Max_HealthPoint;
-        ShieldPoint = Origin_ShieldPoint;
-        AttackPoint = Origin_AttackPoint;
-        AttackSpeed = Origin_AttackSpeed;
-        LevelupExperience = userData.LevelupExperience;
-        CurrentExperience = userData.CurrentExperience;
-        Level = userData.Level;
+        moveSpeed = Origin_MoveSpeed;
+        jumpSpeed = Origin_JumpSpeed;
+        healthPoint = Max_HealthPoint;
+        shieldPoint = Origin_ShieldPoint;
+        attackPoint = Origin_AttackPoint;
+        attackSpeed = Origin_AttackSpeed;
+        levelupExperience = userData.LevelupExperience;
+        currentExperience = userData.CurrentExperience;
+        level = userData.Level;
     }
     public void AttachUICallback(Action callback)
     {
         changedStatusCallback = callback;
+    }
+    public void EquipWeapon(float plusAP)
+    {
+        attackPoint += plusAP;
+        changedStatusCallback();
+    }
+    public void UnEquipWeapon(float minusAP)
+    {
+        attackPoint -= minusAP;
+        changedStatusCallback();
     }
 }

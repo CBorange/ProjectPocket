@@ -5,18 +5,18 @@ using UnityEngine;
 public interface CharacterStat
 {
     // Max(Original) Stat
-    float Origin_MoveSpeed { get; set; }
-    float Origin_JumpSpeed { get; set; }
-    float Max_HealthPoint { get; set; }
-    float Origin_ShieldPoint { get; set; }
-    float Origin_AttackPoint { get; set; }
-    float Origin_AttackSpeed { get; set; }
+    float Origin_MoveSpeed { get; }
+    float Origin_JumpSpeed { get; }
+    float Max_HealthPoint { get; }
+    float Origin_ShieldPoint { get; }
+    float Origin_AttackPoint { get; }
+    float Origin_AttackSpeed { get; }
 
     // Current Stat
-    float MoveSpeed { get; set;}
-    float JumpSpeed { get; set; }
-    float HealthPoint { get; set; }
-    float ShieldPoint { get; set; }
-    float AttackPoint { get; set; }
-    float AttackSpeed { get; set; }
+    float MoveSpeed { get;}
+    float JumpSpeed { get; }
+    float HealthPoint { get; }
+    float ShieldPoint { get;}
+    float AttackPoint { get;}
+    float AttackSpeed { get;}
 }

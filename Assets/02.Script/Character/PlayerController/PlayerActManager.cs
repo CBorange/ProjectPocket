@@ -50,6 +50,10 @@ public class PlayerActManager : MonoBehaviour
     public Animator animator;
     private GameObject weaponModel;
 
+    // state
+    private bool currentlyAttacking = false;
+    public bool CurrentlyAttacking { get; }
+
     public void EquipWeapon(WeaponData weaponData)
     {
         UnEquipWeapon();
@@ -59,28 +63,35 @@ public class PlayerActManager : MonoBehaviour
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
 
         // WeaponType에 따른 Behaviour 클래스 생성
-        Assembly creator = Assembly.GetExecutingAssembly();
-        object obj = creator.CreateInstance($"WeaponBehaviour_{weaponData.WeaponType}");
-        if (obj is IWeaponBehaviour)
-            equipedWeaponBehaviour = (IWeaponBehaviour)obj;
-
-        equipedWeaponBehaviour.CreateBehaviour(weaponData);
+        Type behaviourType = Type.GetType($"WeaponBehaviour_{weaponData.WeaponType}");
+        if (behaviourType != null)
+        {
+            weaponModel.AddComponent(behaviourType);
+            equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
+        }
+        equipedWeaponBehaviour.CreateBehaviour(weaponData, EndAttack);
     }
     public void UnEquipWeapon()
     {
         if (weaponModel != null)
-            Destroy(weaponModel);
-
-        if (equipedWeaponBehaviour != null)
         {
             equipedWeaponBehaviour.ReleaseBehaviour();
             equipedWeaponBehaviour = null;
+            Destroy(weaponModel);
+            weaponModel = null;
         }
     }
     public void AttackOnEquipmentWeapon()
     {
+        if (currentlyAttacking || PlayerMovementController.Instance.CurrentlyMoving || PlayerMovementController.Instance.NowJumped)
+            return;
         if (equipedWeaponBehaviour == null)
             return;
         equipedWeaponBehaviour.PlayAttack();
+        currentlyAttacking = true;
+    }
+    private void EndAttack()
+    {
+        currentlyAttacking = false;
     }
 }

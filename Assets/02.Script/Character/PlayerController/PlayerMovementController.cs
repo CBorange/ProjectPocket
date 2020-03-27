@@ -4,11 +4,50 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
+    #region Singleton
+    private static PlayerMovementController instance;
+    public static PlayerMovementController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                var obj = FindObjectOfType<PlayerMovementController>();
+                if (obj != null)
+                    instance = obj;
+                else
+                {
+                    var newSingleton = new GameObject("PlayerMovementController").AddComponent<PlayerMovementController>();
+                    instance = newSingleton;
+                }
+            }
+            return instance;
+        }
+        private set
+        {
+            instance = value;
+        }
+    }
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<PlayerMovementController>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    #endregion
     public FollowCamera followCamera;
     public Animator animator;
     public Rigidbody myRigidbody;
 
+    // State
     private bool nowJumped = false;
+    public bool NowJumped { get { return nowJumped; } }
+    private bool currentlyMoving = false;
+    public bool CurrentlyMoving { get { return currentlyMoving; } }
+
     private void Start()
     {
     }
@@ -25,6 +64,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (moveVecX == 0 && moveVecZ == 0)
         {
+            currentlyMoving = false;
             animator.SetBool("Walk", false);
             return;
         }
@@ -46,6 +86,7 @@ public class PlayerMovementController : MonoBehaviour
         // 계산된 각도만큼 회전, 플레이어 이동
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
         transform.Translate(transform.forward * PlayerStat.Instance.MoveSpeed * Time.deltaTime, Space.World);
+        currentlyMoving = true;
         animator.SetBool("Walk", true);
     }
     public void Jump()

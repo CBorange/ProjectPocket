@@ -7,6 +7,7 @@ public class UIPanelTurner : MonoBehaviour
     public InventoryPanel InventoryPanel;
     public GameObject PlayerInfoPanel;
     public GameObject SettingPanel;
+    public LoadingPanel LoadingPanel;
 
     public void Open_Setting()
     {
@@ -19,5 +20,9 @@ public class UIPanelTurner : MonoBehaviour
     public void Open_Invetory()
     {
         InventoryPanel.OpenPanel();
+    }
+    public void Open_LoadingPanel()
+    {
+        LoadingPanel.OpenPanel();
     }
 }

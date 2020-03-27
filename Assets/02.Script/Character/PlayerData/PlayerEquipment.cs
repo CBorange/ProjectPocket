@@ -88,6 +88,8 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     // UnEquip
     public void UnequipWeapon()
     {
+        PlayerActManager.Instance.UnEquipWeapon();
+        PlayerStat.Instance.UnEquipWeapon(equipedWeapon.AttackPoint);
         equipedWeapon = null;
     }
     public void UnequipAccesorie_Ring()
@@ -102,11 +104,15 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     // Equip
     public void EquipWeapon(int itemCode)
     {
+        if (equipedWeapon != null)
+            UnequipWeapon();
+
         WeaponData weaponData = ItemDB.Instance.GetWeaponData(itemCode);
         equipedWeapon = weaponData;
         equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode);
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
+        PlayerStat.Instance.EquipWeapon(weaponData.AttackPoint);
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {

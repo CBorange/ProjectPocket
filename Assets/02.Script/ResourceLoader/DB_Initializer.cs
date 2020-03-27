@@ -20,8 +20,8 @@ public class DB_Initializer : MonoBehaviour
     }
     private void LoadRuntimeData()
     {
-        PlayerStat.Instance.Initialize();
         PlayerInventory.Instance.Initialize();
+        PlayerStat.Instance.Initialize();
         PlayerEquipment.Instance.Initialize();
     }
 }

@@ -7,6 +7,7 @@ public class UIInitializer : MonoBehaviour
     public InventoryPanel inventoryPanel;
     public PlayerStatusPanel statusPanel;
 
+
     private void Start()
     {
         inventoryPanel.Initialize();
