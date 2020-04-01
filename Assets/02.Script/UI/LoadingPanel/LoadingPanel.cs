@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadingPanel : MonoBehaviour, UIPanel
+public class LoadingPanel : MonoBehaviour
 {
     public Text LoadingText;
     public void Initialize()

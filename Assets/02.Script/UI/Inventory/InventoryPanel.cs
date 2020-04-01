@@ -11,7 +11,7 @@ public enum InventoryCategory
     Expendable,
     Etc
 };
-public class InventoryPanel : MonoBehaviour, UIPanel
+public class InventoryPanel : MonoBehaviour
 {
     // Inventory UI 기능 단위
     public InventoryPanel_ItemTable itemTable;

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2337033762398268438}
   - component: {fileID: 2308383543810100832}
   - component: {fileID: 2319118554170750528}
-  m_Layer: 0
-  m_Name: Maul
+  m_Layer: 8
+  m_Name: "\uC7A5\uB3C4\uB9AC"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -20,8 +20,20 @@ public class ItemSelectToggle : MonoBehaviour
     }
     private Action<ItemSelectToggle, string> noticeSelectedToPanel_CALLBACK;
 
+    private void SetInteractable(bool state)
+    {
+        ItemImage.gameObject.SetActive(state);
+        ItemName.gameObject.SetActive(state);
+        GetComponent<Toggle>().interactable = state;
+    }
     public void Refresh(ImpliedItemData impliedData)
     {
+        if (impliedData == null)
+        {
+            SetInteractable(false);
+            return;
+        }
+        SetInteractable(true);
         impliedItemData = impliedData;
 
         currentItem = null;
