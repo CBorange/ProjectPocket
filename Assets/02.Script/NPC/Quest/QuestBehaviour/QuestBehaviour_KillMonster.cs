@@ -12,6 +12,7 @@ public class QuestBehaviour_KillMonster
 [System.Serializable]
 public class TargetMonsterData
 {
-    public int Monstercode;
+    public int MonsterCode;
+    public string MonsterName;
     public int KillCount;
 }

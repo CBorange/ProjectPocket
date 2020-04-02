@@ -64,7 +64,6 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     // 내부 Method
     private void CreateSelectTogglePool(int createCount)
     {
-        int beforeCapacity = selectTogglePool.Capacity;
         selectTogglePool.Capacity += createCount;
         for (int i = 0; i < createCount; ++i)
         {

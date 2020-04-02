@@ -6,11 +6,11 @@ using UnityEngine;
 public class QuestData
 {
     public string QuestName;
-    public int PrecedentQuest;
+    public int[] PrecedentQuests;
     public int StartNPC;
     public int EndNPC;
     public int QuestCode;
-    public string QuestCategorys;
+    public string[] QuestCategorys;
     public string QuestIntroduce_Implied;
     public string[] QuestIntroduce;
     public string[] QuestCompleteContents;

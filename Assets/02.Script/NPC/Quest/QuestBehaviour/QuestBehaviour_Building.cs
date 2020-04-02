@@ -13,5 +13,6 @@ public class QuestBehaviour_Building
 public class TargetBuildingData
 {
     public int BuildingCode;
+    public string BuildingName;
     public int BuildingGrade;
 }

@@ -13,16 +13,28 @@ public class QuestPanel : MonoBehaviour
 
     public void Initialize()
     {
-
+        objectivePanel.Initialize();
+        listPanel.Initialize();
     }
     public void OpenPanel(QuestData[] questDatas)
     {
         currentQuestDatas = questDatas;
         gameObject.SetActive(true);
+
+        listPanel.OpenPanel(currentQuestDatas);
     }
     public void ClosePanel()
     {
         gameObject.SetActive(false);
     }
 
+    // Comunicate To QuestPanel_Objective
+    public void OpenObjectivePanel_Acceptable(QuestData data)
+    {
+        objectivePanel.RefreshToAcceptable(data);
+    }
+    public void OpenObjectivePanel_Complete(QuestData data)
+    {
+        objectivePanel.RefreshToComplete(data);
+    }
 }

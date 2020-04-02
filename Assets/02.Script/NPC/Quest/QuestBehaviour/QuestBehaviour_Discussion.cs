@@ -6,6 +6,7 @@ using UnityEngine;
 public class TargetNPCData
 {
     public int NPCCode;
+    public string NPCName;
     public string[] ChangedDiscussion;
 }
 [System.Serializable]

@@ -267,10 +267,9 @@ public class DBConnector : MonoBehaviour
                 Debug.Log($"LoadQuestData JSON Exception : {e.Message}");
             }
 
-            string[] questCategorys = questData.QuestCategorys.Split(',');
-            for (int i = 0; i < questCategorys.Length; ++i)
+            for (int i = 0; i < questData.QuestCategorys.Length; ++i)
             {
-                switch(questCategorys[i])
+                switch(questData.QuestCategorys[i])
                 {
                     case "Discussion":
                         questData.Behaviour_Discussion = LoadQuestBehaviour_Discussion(questData.QuestCode);

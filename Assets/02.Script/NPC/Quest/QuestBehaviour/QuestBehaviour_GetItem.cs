@@ -14,6 +14,7 @@ public class QuestBehaviour_GetItem
 public class TargetItemData
 {
     public int ItemCode;
+    public string ItemName;
     public int ItemCount;
 }
 

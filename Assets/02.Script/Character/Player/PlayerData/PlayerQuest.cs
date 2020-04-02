@@ -96,12 +96,11 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         for (int questIdx = 0; questIdx < questsInProgress.Count; ++questIdx)
         {
             QuestData currentQuest = questsInProgress[questIdx].OriginalQuestData;
-            string[] questCategorys = currentQuest.QuestCategorys.Split(',');
             int completedCategoryCount = 0;
 
-            for (int questCategoryIdx = 0; questCategoryIdx < questCategorys.Length; ++questCategoryIdx)
+            for (int questCategoryIdx = 0; questCategoryIdx < currentQuest.QuestCategorys.Length; ++questCategoryIdx)
             {
-                switch (questCategorys[questCategoryIdx])
+                switch (currentQuest.QuestCategorys[questCategoryIdx])
                 {
                     case "Discussion":
                         bool completedDiscussion = questProgress_Discussion.GetCompletedAllDiscussion(currentQuest.QuestCode);
@@ -115,7 +114,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                         break;
                 }
             }
-            if (completedCategoryCount == questCategorys.Length)
+            if (completedCategoryCount == currentQuest.QuestCategorys.Length)
             {
                 questsInProgress[questIdx].Completed = true;
             }
@@ -131,5 +130,37 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     public void TalkToNPC(NPCData data)
     {
 
+    }
+
+    // 퀘스트 데이터 Getter
+    public bool GetQuestIsInProgress(int questCode)
+    {
+        for (int i = 0; i < questsInProgress.Count; ++i)
+        {
+            if (questsInProgress[i].OriginalQuestData.QuestCode == questCode)
+                return true;
+        }
+        return false;
+    }
+    public bool GetQuestIsInComplete(int questCode)
+    {
+        for (int i = 0; i < completedQuests.Count; ++i)
+        {
+            if (completedQuests[i].QuestCode == questCode)
+                return true;
+        }
+        return false;
+    }
+    public bool GetQuestIsCompletedInProgress(int questCode)
+    {
+        for (int i = 0; i < questsInProgress.Count; ++i)
+        {
+            if (questsInProgress[i].OriginalQuestData.QuestCode == questCode)
+            {
+                if(questsInProgress[i].Completed)
+                    return true;
+            }
+        }
+        return false;
     }
 }
