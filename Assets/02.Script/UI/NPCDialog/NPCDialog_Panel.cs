@@ -86,6 +86,12 @@ public class NPCDialog_Panel : MonoBehaviour
     public void StartDiscussion()
     {
         DeactiveAllButton();
-        DiscussionController.StartDiscussion(currentNPC.Disccusion);
+        string[] questDiscussion = PlayerQuest.Instance.GetDiscussionWhenTalkToNPC(currentNPC.NPCCode);
+        if (questDiscussion == null)
+            DiscussionController.StartDiscussion(currentNPC.Disccusion);
+        else
+        {
+            DiscussionController.StartDiscussion(questDiscussion);
+        }
     }
 }

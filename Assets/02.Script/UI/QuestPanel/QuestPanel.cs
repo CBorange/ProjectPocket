@@ -21,6 +21,7 @@ public class QuestPanel : MonoBehaviour
         currentQuestDatas = questDatas;
         gameObject.SetActive(true);
 
+        objectivePanel.OpenPanel();
         listPanel.OpenPanel(currentQuestDatas);
     }
     public void ClosePanel()

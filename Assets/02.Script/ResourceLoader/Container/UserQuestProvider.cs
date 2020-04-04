@@ -9,8 +9,13 @@ public class UserQuestProvider
     private UserQuestProvider() 
     {
         questDatasInProgress = new List<QuestData>();
+
         questProgress_Discussion = new QuestProgress_Discussion();
+        questProgress_Discussion.Initiailize();
+
         questProgress_KillMonster = new QuestProgress_KillMonster();
+        questProgress_KillMonster.Initialize();
+
         completedQuests = new List<QuestData>();
     }
     private static UserQuestProvider instance;
@@ -47,15 +52,22 @@ public class UserQuestProvider
         get { return completedQuests; }
     }
 
+    public void Initialize()
+    {
+        instance = new UserQuestProvider();
+    }
     public void Initialize_ProgressQuest(int[] questCodesInProgress, QuestProgress_Discussion progress_Discussion, QuestProgress_KillMonster progress_KillMonster)
     {
         for (int i = 0; i < questCodesInProgress.Length; ++i)
         {
-            QuestData data = DBConnector.Instance.LoadQuestData(questCodesInProgress[i]);
+            QuestData data = QuestDB.Instance.GetQuestData(questCodesInProgress[i]);
             questDatasInProgress.Add(data);
         }
         questProgress_Discussion = progress_Discussion;
+        questProgress_Discussion.Initiailize();
+
         questProgress_KillMonster = progress_KillMonster;
+        questProgress_KillMonster.Initialize();
     }
     public void Initialize_CompletedQuest(int[] completedQuestCodes)
     {
@@ -63,7 +75,7 @@ public class UserQuestProvider
         {
             try
             {
-                QuestData data = DBConnector.Instance.LoadQuestData(completedQuestCodes[i]);
+                QuestData data = QuestDB.Instance.GetQuestData(completedQuestCodes[i]);
                 completedQuests.Add(data);
             }
             catch(Exception)

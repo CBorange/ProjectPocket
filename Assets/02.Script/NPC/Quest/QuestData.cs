@@ -14,11 +14,16 @@ public class QuestData
     public string QuestIntroduce_Implied;
     public string[] QuestIntroduce;
     public string[] QuestCompleteContents;
+    public string[] QuestRewards;
 
+    // Behaviour
     public QuestBehaviour_Discussion Behaviour_Discussion;
     public QuestBehaviour_Building Behaviour_Building;
     public QuestBehaviour_KillMonster Behaviour_KillMonster;
     public QuestBehaviour_GetItem Behaviour_GetItem;
+
+    // Reward
+    public QuestReward_GetItem Reward_GetItem;
 
     public QuestData() { }
     public QuestData(QuestBehaviour_Discussion discussion, QuestBehaviour_Building building, QuestBehaviour_KillMonster killMonster, QuestBehaviour_GetItem getItem)

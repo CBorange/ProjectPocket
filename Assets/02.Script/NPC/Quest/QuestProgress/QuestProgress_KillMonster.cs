@@ -5,26 +5,36 @@ using UnityEngine;
 [System.Serializable]
 public class QuestProgress_KillMonster
 {
+    // Data
     public TotalKillMonsterProgress[] TotalProgress;
-    public bool GetCompletedAllKillMonster(int questCode)
-    {
-        TotalKillMonsterProgress currentProgress = null;
-        if (TotalProgress.Length == 0)
-        {
-            Debug.Log($"Discussion 진행상황이 존재하지 않습니다 : {questCode}");
-            return false;
-        }
-        // Search
-        for (int i = 0; i < TotalProgress.Length; ++i)
-        {
-            if (TotalProgress[i].QuestCode == questCode)
-                currentProgress = TotalProgress[i];
-        }
+    private Dictionary<int, TotalKillMonsterProgress> totalProgressDic;
 
-        if (currentProgress.Completed)
-            return true;
+    // Method
+    public bool GetHasCompletedOnTotalKillMonster(int questCode)
+    {
+        TotalKillMonsterProgress progress = null;
+        bool success = totalProgressDic.TryGetValue(questCode, out progress);
+        if (success)
+        {
+            if (progress.Completed)
+                return true;
+            else
+                return false;
+        }
         else
+        {
+            Debug.Log($"QuestProgress_KillMonster -> TotalKillMonsterProgress 탐색용 Dictionary에 {questCode} : 퀘스트가 존재하지 않음");
             return false;
+        }
+    }
+
+    public void Initialize()
+    {
+        totalProgressDic = new Dictionary<int, TotalKillMonsterProgress>();
+        if (TotalProgress == null)
+            return;
+        for (int i = 0; i < TotalProgress.Length; ++i)
+            totalProgressDic.Add(TotalProgress[i].QuestCode, TotalProgress[i]);
     }
 }
 [System.Serializable]

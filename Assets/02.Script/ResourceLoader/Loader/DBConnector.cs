@@ -176,17 +176,25 @@ public class DBConnector : MonoBehaviour
 
             // Discussion
             if (questInProgress_Discussion_JSON.Equals("None"))
+            {
                 progress_Discussion = new QuestProgress_Discussion();
+                progress_Discussion.Initiailize();
+            }
             else
                 progress_Discussion = JsonUtility.FromJson<QuestProgress_Discussion>(questInProgress_Discussion_JSON);
             // KillMonster
             if (questInProgress_KillMonster_JSON.Equals("None"))
+            {
                 progress_KillMonster = new QuestProgress_KillMonster();
+                progress_KillMonster.Initialize();
+            }
             else
                 progress_KillMonster = JsonUtility.FromJson<QuestProgress_KillMonster>(questInProgress_KillMonster_JSON);
 
             UserQuestProvider.Instance.Initialize_ProgressQuest(progressQuestCodes, progress_Discussion, progress_KillMonster);
         }
+        else
+            UserQuestProvider.Instance.Initialize();
         if (!completedQuests.Equals("None"))
         {
             int[] completedQuestCodes = CodesSTR_To_IntegerArray(completedQuests);
@@ -244,10 +252,15 @@ public class DBConnector : MonoBehaviour
         npcData.QuestDatas = new QuestData[npcData.Quest.Length];
         for (int i = 0; i < npcData.Quest.Length; ++i)
         {
-            npcData.QuestDatas[i] = LoadQuestData(npcData.Quest[i]);
+            npcData.QuestDatas[i] = QuestDB.Instance.GetQuestData(npcData.Quest[i]);
         }
         return npcData;
     }
+    /// <summary>
+    /// 이 함수는 오로지 QuestDB -> GetQuestData Method에 의해서만 호출되어야 합니다.
+    /// </summary>
+    /// <param name="questCode"></param>
+    /// <returns></returns>
     public QuestData LoadQuestData(int questCode)
     {
         string query = $"SELECT * FROM dbo.Quest WHERE QuestCode = '{questCode}'";
@@ -257,6 +270,7 @@ public class DBConnector : MonoBehaviour
         QuestData questData = null;
         if (dataSet != null)
         {
+            // Loading Original Quest Data
             try
             {
                 jsonSTR = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
@@ -267,6 +281,7 @@ public class DBConnector : MonoBehaviour
                 Debug.Log($"LoadQuestData JSON Exception : {e.Message}");
             }
 
+            // Loading Behaviour
             for (int i = 0; i < questData.QuestCategorys.Length; ++i)
             {
                 switch(questData.QuestCategorys[i])
@@ -282,6 +297,17 @@ public class DBConnector : MonoBehaviour
                         break;
                     case "KillMonster":
                         questData.Behaviour_KillMonster = LoadQuestBehaviour_KillMonster(questCode);
+                        break;
+                }
+            }
+
+            // Loading Reward
+            for (int i = 0; i < questData.QuestRewards.Length; ++i)
+            {
+                switch(questData.QuestRewards[i])
+                {
+                    case "GetItem":
+                        questData.Reward_GetItem = LoadQuestReward_GetItem(questData.QuestCode);
                         break;
                 }
             }
@@ -394,6 +420,33 @@ public class DBConnector : MonoBehaviour
         else
         {
             Debug.Log($"QuestBehaviour_KillMonster DB 에서 {questCode} 퀘스트 Behaviour 를 찾을 수 없습니다");
+            return null;
+        }
+    }
+
+    private QuestReward_GetItem LoadQuestReward_GetItem(int questCode)
+    {
+        string query = $"SELECT * FROM dbo.QuestReward_GetItem WHERE QuestCode = '{questCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonSTR = string.Empty;
+        QuestReward_GetItem reward_GetItem = null;
+        if (dataSet != null)
+        {
+            try
+            {
+                jsonSTR = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                reward_GetItem = JsonUtility.FromJson<QuestReward_GetItem>(jsonSTR);
+            }
+            catch(Exception e)
+            {
+                Debug.Log($"QuestReward_GetItem : {questCode} 오류 / {e.Message}");
+            }
+            return reward_GetItem;
+        }
+        else
+        {
+            Debug.Log($"QuestReward_GetItem DB 에서 {questCode} 퀘스트 Reward 를 찾을 수 없습니다");
             return null;
         }
     }

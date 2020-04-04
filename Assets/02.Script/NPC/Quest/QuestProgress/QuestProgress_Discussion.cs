@@ -5,28 +5,73 @@ using UnityEngine;
 [System.Serializable]
 public class QuestProgress_Discussion
 {
+    // Data
     public TotalDiscussionProgress[] TotalProgress;
-    public bool GetCompletedAllDiscussion(int questCode)
-    {
-        TotalDiscussionProgress currentProgress = null;
-        if (TotalProgress.Length == 0)
-        {
-            Debug.Log($"Discussion 진행상황이 존재하지 않습니다 : {questCode}");
-            return false;
-        }
-        // Search
-        for (int i = 0; i < TotalProgress.Length; ++i)
-        {
-            if (TotalProgress[i].QuestCode == questCode)
-                currentProgress = TotalProgress[i];
-        }
+    private Dictionary<int, TotalDiscussionProgress> totalProgressDic;
 
-        if (currentProgress.Completed)
-            return true;
+    // Getter
+    public bool GetHasCompletedOnTotalDiscussion(int questCode)
+    {
+        TotalDiscussionProgress totalProgress = null;
+        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
+        if (success)
+        {
+            if (totalProgress.Completed)
+                return true;
+            else
+                return false;
+        }
         else
+        {
+            Debug.Log($"QuestProgress_Discussion -> TotalDiscussionProgress 탐색용 Dictionary에 {questCode} : 퀘스트가 존재하지 않음");
             return false;
+        }
+    }
+
+    // Method
+    public void Initiailize()
+    {
+        totalProgressDic = new Dictionary<int, TotalDiscussionProgress>();
+        if (TotalProgress == null)
+            return;
+        for (int i = 0; i < TotalProgress.Length; ++i)
+            totalProgressDic.Add(TotalProgress[i].QuestCode, TotalProgress[i]);
+    }
+    private void UpdateProgress()
+    {
+        foreach (var kvp in totalProgressDic)
+        {
+            DiscussionProgressInfo[] info = kvp.Value.Progress;
+            int talkCompleteCount = 0;
+            for (int i = 0; i < info.Length; ++i)
+            {
+                if (info[i].TalkCompleted)
+                    talkCompleteCount += 1;
+            }
+            if (talkCompleteCount == info.Length)
+                kvp.Value.Completed = true;
+        }
+    }
+
+    public string[] GetDiscussionSTR(int npcCode)
+    {
+        foreach(var kvp in totalProgressDic)
+        {
+            DiscussionProgressInfo[] progressInfo = kvp.Value.Progress;
+            for (int i = 0; i < progressInfo.Length; ++i)
+            {
+                if (progressInfo[i].TargetNPC == npcCode && !progressInfo[i].TalkCompleted)
+                {
+                    progressInfo[i].TalkCompleted = true;
+                    UpdateProgress();
+                    return QuestDB.Instance.GetQuestData(kvp.Value.QuestCode).Behaviour_Discussion.GetChangedDiscussion(npcCode);
+                }
+            }
+        }
+        return null;
     }
 }
+// 퀘스트에 해당
 [System.Serializable]
 public class TotalDiscussionProgress
 {
@@ -34,6 +79,8 @@ public class TotalDiscussionProgress
     public bool Completed;
     public DiscussionProgressInfo[] Progress;
 }
+
+// 퀘스트 -> 대화내용(Array)에 해당
 [System.Serializable]
 public class DiscussionProgressInfo
 {

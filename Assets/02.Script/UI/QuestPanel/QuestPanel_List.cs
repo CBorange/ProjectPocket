@@ -108,8 +108,16 @@ public class QuestPanel_List : MonoBehaviour
     private void QuestSelected(QuestSelectToggle selectToggle)
     {
         if (selectToggle.ToggleCategory == QuestSelectToggleCategory.Acceptable)
+        {
+            for (int i = 0; i < completeSelectTogglePool.Count; ++i)
+                completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questPanel.OpenObjectivePanel_Acceptable(selectToggle.CurrentQuest);
+        }
         else
+        {
+            for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
+                acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questPanel.OpenObjectivePanel_Complete(selectToggle.CurrentQuest);
+        }
     }
 }

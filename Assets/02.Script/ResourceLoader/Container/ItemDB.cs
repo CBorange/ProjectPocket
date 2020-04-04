@@ -141,4 +141,21 @@ public class ItemDB
             return null;
         }
     }
+    public ItemData GetItemData(int itemCode)
+    {
+        ItemData foundData = null;
+
+        if (itemCode > 10000 && itemCode < 20000)
+            foundData = GetWeaponData(itemCode);
+        else if (itemCode > 20000 && itemCode < 30000)
+            foundData = GetAccesorieData(itemCode);
+        else if (itemCode > 30000 && itemCode < 40000)
+            foundData = GetExpendableData(itemCode);
+        else if (itemCode > 40000 && itemCode < 50000)
+            foundData = GetEtcData(itemCode);
+
+        if (foundData == null)
+            Debug.Log($"ItemData 불러오기 에러 : {itemCode}는 아이템 코드가 아니거나 존재하지 않습니다.");
+        return foundData;
+    }
 }
