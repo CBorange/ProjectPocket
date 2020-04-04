@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestPanel_Objective : MonoBehaviour
+public class NPC_QuestPanel_Objective : MonoBehaviour
 {
     // Quest Objective UI
     public Text ContentsText;

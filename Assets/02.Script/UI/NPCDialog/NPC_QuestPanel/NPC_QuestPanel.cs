@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestPanel : MonoBehaviour
+public class NPC_QuestPanel : MonoBehaviour
 {
     // Child Panels
-    public QuestPanel_Objective objectivePanel;
-    public QuestPanel_List listPanel;
+    public NPC_QuestPanel_Objective objectivePanel;
+    public NPC_QuestPanel_List listPanel;
 
     // Data
     private QuestData[] currentQuestDatas;

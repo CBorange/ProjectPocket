@@ -44,7 +44,7 @@ public class UIPanelTurner : MonoBehaviour
     public GameObject SettingPanel;
     public LoadingPanel LoadingPanel;
     public NPCDialog_Panel dialog_Panel;
-    public QuestPanel questPanel;
+    public NPC_QuestPanel npc_QuestPanel;
 
     public void Open_UIPanelTurnerBtns()
     {
@@ -73,8 +73,8 @@ public class UIPanelTurner : MonoBehaviour
     {
         dialog_Panel.OpenPanel(talkingNPC);
     }
-    public void Open_QuestPanel(QuestData[] questDatas)
+    public void Open_NPC_QuestPanel(QuestData[] questDatas)
     {
-        questPanel.OpenPanel(questDatas);
+        npc_QuestPanel.OpenPanel(questDatas);
     }
 }

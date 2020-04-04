@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class QuestPanel_List : MonoBehaviour
+public class NPC_QuestPanel_List : MonoBehaviour
 {
     // Object
     public GameObject QuestSelectTogglePrefab;
@@ -14,7 +14,7 @@ public class QuestPanel_List : MonoBehaviour
     // UI
     public ToggleGroup AcceptableQuestToggleGroup;
     public ToggleGroup ComepleteQuestToggleGroup;
-    public QuestPanel questPanel;
+    public NPC_QuestPanel questPanel;
 
     // Data
     private List<QuestData> acceptableQuests;
