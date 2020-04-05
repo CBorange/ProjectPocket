@@ -81,6 +81,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
             {
                 case "Discussion":
                     builder.Append("대화 : ");
+                    builder.AppendLine();
                     TargetNPCData[] targetNPC = currnetData.Behaviour_Discussion.TargetNPC;
                     for (int i = 0; i < targetNPC.Length; ++i)
                     {
@@ -93,6 +94,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     break;
                 case "KillMonster":
                     builder.Append("몬스터 사냥 : ");
+                    builder.AppendLine();
                     TargetMonsterData[] targetMonster = currnetData.Behaviour_KillMonster.TargetMonster;
                     for (int i = 0; i < targetMonster.Length; ++i)
                     {
@@ -105,6 +107,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     break;
                 case "Building":
                     builder.Append("건물 증축 : ");
+                    builder.AppendLine();
                     TargetBuildingData[] targetBulding = currnetData.Behaviour_Building.TargetBuilding;
                     for (int i = 0; i < targetBulding.Length; ++i)
                     {
@@ -117,6 +120,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     break;
                 case "ItemGet":
                     builder.Append("아이템 획득 : ");
+                    builder.AppendLine();
                     TargetItemData[] targetItem = currnetData.Behaviour_GetItem.TargetItem;
                     for (int i = 0; i < targetItem.Length; ++i)
                     {

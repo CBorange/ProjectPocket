@@ -8,6 +8,7 @@ public class Player_QuestPanel_List : MonoBehaviour
     // Object
     public GameObject QuestSelectTogglePrefab;
     public ToggleGroup QuestToggleGroup;
+    public Player_QuestPanel QuestPanel;
     private List<QuestSelectToggle> questSelectTogglePool;
 
     // UI
@@ -58,6 +59,9 @@ public class Player_QuestPanel_List : MonoBehaviour
 
         for (int i = 0; i < questsInProgress.Count; ++i)
             questSelectTogglePool[i].Refresh(questsInProgress[i], QuestSelectToggleCategory.InProgress);
+
+        if (questsInProgress.Count > 0)
+            questSelectTogglePool[0].QuestSelected(true);
     }
     private void RefreshListToCompleted()
     {
@@ -70,7 +74,10 @@ public class Player_QuestPanel_List : MonoBehaviour
             questsCompleted.Add(kvp.Value);
 
         for (int i = 0; i < questsCompleted.Count; ++i)
-            questSelectTogglePool[i].Refresh(questsCompleted[i], QuestSelectToggleCategory.InProgress);
+            questSelectTogglePool[i].Refresh(questsCompleted[i], QuestSelectToggleCategory.Complete);
+
+        if (questsCompleted.Count > 0)
+            questSelectTogglePool[0].QuestSelected(true);
     }
 
     // ChangeListCategory Callback Method
@@ -90,6 +97,9 @@ public class Player_QuestPanel_List : MonoBehaviour
     // QuestSelected Callback
     private void QuestSelected(QuestSelectToggle selectToggle)
     {
-        
+        if (selectToggle.ToggleCategory == QuestSelectToggleCategory.InProgress)
+            QuestPanel.Refresh_ObjectiveToInProgress(selectToggle.CurrentQuest.QuestCode);
+        else if (selectToggle.ToggleCategory == QuestSelectToggleCategory.Complete)
+            QuestPanel.Refresh_ObjectiveToCompleted(selectToggle.CurrentQuest.QuestCode);
     }
 }

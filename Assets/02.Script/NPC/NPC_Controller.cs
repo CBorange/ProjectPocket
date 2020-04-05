@@ -20,6 +20,6 @@ public class NPC_Controller : MonoBehaviour
     }
     private void LoadNPCData()
     {
-        npcData = DBConnector.Instance.LoadNPCData(NPCCode);
+        npcData = NpcDB.Instance.GetNPCData(NPCCode);
     }
 }

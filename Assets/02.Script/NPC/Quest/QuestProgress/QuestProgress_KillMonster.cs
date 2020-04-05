@@ -9,7 +9,7 @@ public class QuestProgress_KillMonster
     public TotalKillMonsterProgress[] TotalProgress;
     private Dictionary<int, TotalKillMonsterProgress> totalProgressDic;
 
-    // Method
+    // Getter
     public bool GetHasCompletedOnTotalKillMonster(int questCode)
     {
         TotalKillMonsterProgress progress = null;
@@ -28,6 +28,22 @@ public class QuestProgress_KillMonster
         }
     }
 
+    public KillMonsterProgressInfo[] GetDetailedKillMonsterProgresses(int questCode)
+    {
+        TotalKillMonsterProgress totalProgress = null;
+        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
+        if (success)
+        {
+            return totalProgress.Progress;
+        }
+        else
+        {
+            Debug.Log($"QuestProgress_KillMonster -> TotalKillMonsterProgress 탐색용 Dictionary에 {questCode} : 퀘스트가 존재하지 않음");
+            return null;
+        }
+    }
+
+    // Method
     public void Initialize()
     {
         totalProgressDic = new Dictionary<int, TotalKillMonsterProgress>();

@@ -23,4 +23,14 @@ public class Player_QuestPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    // List <-> Objective 패널 상호작용 Method
+    public void Refresh_ObjectiveToInProgress(int questCode)
+    {
+        objectivePanel.RefreshToInProgress(questCode);
+    }
+    public void Refresh_ObjectiveToCompleted(int questCode)
+    {
+        objectivePanel.RefreshToCompleted(questCode);
+    }
 }

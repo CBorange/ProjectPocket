@@ -68,6 +68,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         questsInProgress = new Dictionary<int, QuestTotalProgress>();
         questProgress_Discussion = UserQuestProvider.Instance.QuestProgress_Discussion;
         questProgress_KillMonster = UserQuestProvider.Instance.QuestProgress_KillMonster;
+        completedQuests = new Dictionary<int, QuestData>();
 
         if (UserQuestProvider.Instance.QuestDatasInProgress.Count > 0)
         {
@@ -184,5 +185,12 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         }
         return false;
     }
-
+    public DiscussionProgressInfo[] GetDetailedDiscussionProgresses(int questCode)
+    {
+        return questProgress_Discussion.GetDetailedDiscussionProgresses(questCode);
+    }
+    public KillMonsterProgressInfo[] GetDetailedKillMonsterProgresses(int questCode)
+    {
+        return questProgress_KillMonster.GetDetailedKillMonsterProgresses(questCode);
+    }
 }

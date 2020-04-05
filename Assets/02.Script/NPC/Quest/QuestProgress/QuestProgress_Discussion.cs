@@ -27,6 +27,20 @@ public class QuestProgress_Discussion
             return false;
         }
     }
+    public DiscussionProgressInfo[] GetDetailedDiscussionProgresses(int questCode)
+    {
+        TotalDiscussionProgress totalProgress = null;
+        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
+        if (success)
+        {
+            return totalProgress.Progress;
+        }
+        else
+        {
+            Debug.Log($"QuestProgress_Discussion -> TotalDiscussionProgress 탐색용 Dictionary에 {questCode} : 퀘스트가 존재하지 않음");
+            return null;
+        }
+    }
 
     // Method
     public void Initiailize()
