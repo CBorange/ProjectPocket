@@ -58,7 +58,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     }
 
     private Dictionary<int,QuestData> completedQuests;
-    private Dictionary<int, QuestData> CompletedQuests
+    public Dictionary<int, QuestData> CompletedQuests
     {
         get { return completedQuests; }
     }

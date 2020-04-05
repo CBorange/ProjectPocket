@@ -7,7 +7,9 @@ using System;
 public enum QuestSelectToggleCategory
 {
     Acceptable,
-    Complete
+    InProgress,
+    Complete,
+    None
 }
 public class QuestSelectToggle : MonoBehaviour
 {
@@ -33,11 +35,24 @@ public class QuestSelectToggle : MonoBehaviour
         this.selectedCallback = selectedCallback;
         toggleCategory = category;
     }
+    public void Initialize(Action<QuestSelectToggle> selectedCallback)
+    {
+        this.selectedCallback = selectedCallback;
+        toggleCategory = QuestSelectToggleCategory.None;
+    }
     public void Refresh(QuestData data)
     {
         gameObject.SetActive(true);
 
         currentQuest = data;
+        QuestNameText.text = currentQuest.QuestName;
+    }
+    public void Refresh(QuestData data, QuestSelectToggleCategory category)
+    {
+        gameObject.SetActive(true);
+
+        currentQuest = data;
+        toggleCategory = category;
         QuestNameText.text = currentQuest.QuestName;
     }
 

@@ -113,7 +113,7 @@ public class NPC_QuestPanel_List : MonoBehaviour
                 completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questPanel.OpenObjectivePanel_Acceptable(selectToggle.CurrentQuest);
         }
-        else
+        else if(selectToggle.ToggleCategory == QuestSelectToggleCategory.Complete)
         {
             for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
                 acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;

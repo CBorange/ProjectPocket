@@ -45,6 +45,7 @@ public class UIPanelTurner : MonoBehaviour
     public LoadingPanel LoadingPanel;
     public NPCDialog_Panel dialog_Panel;
     public NPC_QuestPanel npc_QuestPanel;
+    public Player_QuestPanel player_QuestPanel;
 
     public void Open_UIPanelTurnerBtns()
     {
@@ -76,5 +77,9 @@ public class UIPanelTurner : MonoBehaviour
     public void Open_NPC_QuestPanel(QuestData[] questDatas)
     {
         npc_QuestPanel.OpenPanel(questDatas);
+    }
+    public void Open_Player_QuestPanel()
+    {
+        player_QuestPanel.OpenPanel();
     }
 }
