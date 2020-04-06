@@ -4,11 +4,10 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemSelectToggle : MonoBehaviour
+public class EquipmentSelectToggle : MonoBehaviour
 {
     public Image ItemImage;
     public Text ItemName;
-    public Text NoticeEquipThisText;
     private ImpliedItemData impliedItemData;
     public ImpliedItemData CurrentItemImpliedData
     {
@@ -19,15 +18,19 @@ public class ItemSelectToggle : MonoBehaviour
     {
         get { return currentItem; }
     }
-    private Action<ItemSelectToggle, string> noticeSelected_CALLBACK;
+    private Action<EquipmentSelectToggle> noticeSelected_CALLBACK;
 
-    public void Initialize(Action<ItemSelectToggle, string> selectedNoticeCallback)
+    public void Initialize(Action<EquipmentSelectToggle> selectedNoticeCallback)
     {
         noticeSelected_CALLBACK = selectedNoticeCallback;
     }
-
-    public void Refresh(ImpliedItemData impliedData, bool equiped)
+    public void Refresh(ImpliedItemData impliedData)
     {
+        if (impliedData == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         gameObject.SetActive(true);
         impliedItemData = impliedData;
         currentItem = ItemDB.Instance.GetItemData(impliedData.ItemCode);
@@ -37,19 +40,19 @@ public class ItemSelectToggle : MonoBehaviour
             string itemImagePath = $"Image/ItemPreview/{impliedData.ItemType}/{currentItem.Name}";
             ItemImage.sprite = Resources.Load<Sprite>(itemImagePath);
         }
-        catch(Exception)
+        catch (Exception)
         {
             ItemImage.sprite = null;
         }
         ItemName.text = currentItem.Name;
-        NoticeEquipThisText.gameObject.SetActive(equiped);
+
         gameObject.SetActive(true);
     }
-    
-    public void ItemSelected(bool selected)
+
+    public void EquipmentSelected(bool selected)
     {
         if (!selected)
             return;
-        noticeSelected_CALLBACK(this, impliedItemData.ItemType);
+        noticeSelected_CALLBACK(this);
     }
 }

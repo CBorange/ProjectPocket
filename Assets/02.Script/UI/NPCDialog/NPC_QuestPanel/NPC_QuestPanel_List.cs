@@ -19,6 +19,7 @@ public class NPC_QuestPanel_List : MonoBehaviour
     // Data
     private List<QuestData> acceptableQuests;
     private List<QuestData> completeQuests;
+    private QuestData[] originalDatas;
 
     public void Initialize()
     {
@@ -34,25 +35,19 @@ public class NPC_QuestPanel_List : MonoBehaviour
 
     public void OpenPanel(QuestData[] originalQuestDatas)
     {
-        // Deactive All Toggles
-        for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
-        {
-            acceptableSelectTogglePool[i].gameObject.SetActive(false);
-            acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
-        }
-        for (int i = 0; i < completeSelectTogglePool.Count; ++i)
-        {
-            completeSelectTogglePool[i].gameObject.SetActive(false);
-            completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
-        }
-
+        originalDatas = originalQuestDatas;
+        RefrehPanel();
+    }
+    public void RefrehPanel()
+    {
+        DeactiveAllToggles();
         // Divide Quests To Acceptable & Complete
         acceptableQuests.Clear();
         completeQuests.Clear();
 
-        for (int questIdx = 0; questIdx < originalQuestDatas.Length; ++questIdx)
+        for (int questIdx = 0; questIdx < originalDatas.Length; ++questIdx)
         {
-            QuestData currentData = originalQuestDatas[questIdx];
+            QuestData currentData = originalDatas[questIdx];
             if (!PlayerQuest.Instance.GetQuestIsInComplete(currentData.QuestCode))
             {
                 // Divide Complete Quest
@@ -89,6 +84,20 @@ public class NPC_QuestPanel_List : MonoBehaviour
             completeSelectTogglePool[i].Refresh(completeQuests[i]);
     }
 
+    private void DeactiveAllToggles()
+    {
+        // Deactive All Toggles
+        for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
+        {
+            acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
+            acceptableSelectTogglePool[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < completeSelectTogglePool.Count; ++i)
+        {
+            completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
+            completeSelectTogglePool[i].gameObject.SetActive(false);
+        }
+    }
     private void CreateQuestSelectToggles(int createCount, ToggleGroup parentGroup, List<QuestSelectToggle> togglePool, QuestSelectToggleCategory category)
     {
         togglePool.Capacity += createCount;
@@ -107,16 +116,23 @@ public class NPC_QuestPanel_List : MonoBehaviour
 
     private void QuestSelected(QuestSelectToggle selectToggle)
     {
+        Debug.Log("퀘스트 선택됨");
         if (selectToggle.ToggleCategory == QuestSelectToggleCategory.Acceptable)
         {
             for (int i = 0; i < completeSelectTogglePool.Count; ++i)
+            {
                 completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
+                completeSelectTogglePool[i].gameObject.SetActive(false);
+            }
             questPanel.OpenObjectivePanel_Acceptable(selectToggle.CurrentQuest);
         }
         else if(selectToggle.ToggleCategory == QuestSelectToggleCategory.Complete)
         {
             for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
+            {
                 acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
+                acceptableSelectTogglePool[i].gameObject.SetActive(false);
+            }
             questPanel.OpenObjectivePanel_Complete(selectToggle.CurrentQuest);
         }
     }

@@ -24,6 +24,11 @@ public class NPC_QuestPanel : MonoBehaviour
         objectivePanel.OpenPanel();
         listPanel.OpenPanel(currentQuestDatas);
     }
+    public void RefreshPanel()
+    {
+        listPanel.RefrehPanel();
+        objectivePanel.RefreshPanel();
+    }
     public void ClosePanel()
     {
         gameObject.SetActive(false);

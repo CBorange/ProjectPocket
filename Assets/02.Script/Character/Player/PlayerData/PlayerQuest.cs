@@ -159,9 +159,21 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     {
 
     }
-    public void CompleteQuest(int questCode)
+    public void CompleteQuest(QuestData data)
     {
+        // 보상 수령
 
+
+        // 퀘스트 리스트 변경
+        questProgress_Discussion.CompleteQuest(data.QuestCode);
+        if (questsInProgress.Remove(data.QuestCode))
+        {
+            completedQuests.Add(data.QuestCode, data);
+        }
+        else
+        {
+            Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
+        }
     }
 
     // 퀘스트 데이터 Getter

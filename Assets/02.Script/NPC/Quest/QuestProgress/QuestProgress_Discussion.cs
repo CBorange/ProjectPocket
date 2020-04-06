@@ -84,6 +84,13 @@ public class QuestProgress_Discussion
         }
         return null;
     }
+    public void CompleteQuest(int questCode)
+    {
+        if (!totalProgressDic.Remove(questCode))
+        {
+            Debug.Log($"QuestProgress_Discussion 퀘스트 성공 실패, {questCode}");
+        }
+    }
 }
 // 퀘스트에 해당
 [System.Serializable]

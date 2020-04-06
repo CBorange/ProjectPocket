@@ -16,6 +16,9 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     public Button Accept_Btn;
     public Button Complete_Btn;
 
+    // Panel
+    public NPC_QuestPanel QuestPanel;
+
     // Data
     private QuestData currnetData;
 
@@ -26,7 +29,12 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
 
     public void OpenPanel()
     {
+        RefreshPanel();
+    }
+    public void RefreshPanel()
+    {
         DeactiveAllButton();
+        ContentsText.text = "내용";
         ImpliedObjectiveText.text = "퀘스트 목표";
         DetailedObjectiveText.text = "내용";
         RewardText.text = "내용";
@@ -170,6 +178,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     }
     public void CompleteQuest()
     {
-        PlayerQuest.Instance.CompleteQuest(currnetData.QuestCode);
+        PlayerQuest.Instance.CompleteQuest(currnetData);
+        QuestPanel.RefreshPanel();
     }
 }

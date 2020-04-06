@@ -146,14 +146,25 @@ public class DBConnector : MonoBehaviour
             UserEquipmentProvider.Instance.Initialize(null, null, null);
             return "Success";
         }
-        object[] itemArray = dataSet.Tables[0].Rows[0].ItemArray;
-        ImpliedItemData[] impliedItemDatas = new ImpliedItemData[itemArray.Length];
+        object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
+        int[] itemArray = new int[dataArray.Length];
 
-        impliedItemDatas[0] = new ImpliedItemData("Weapon", (int)itemArray[1]);
-        impliedItemDatas[1] = new ImpliedItemData("Accesorie", (int)itemArray[2]);
-        impliedItemDatas[2] = new ImpliedItemData("Accesorie", (int)itemArray[3]);
+        for (int i = 1; i < dataArray.Length; ++i)
+            itemArray[i] = (int)dataArray[i];
 
-        UserEquipmentProvider.Instance.Initialize(impliedItemDatas[0], impliedItemDatas[1], impliedItemDatas[2]);
+        ImpliedItemData weaponData = null;
+        ImpliedItemData ringData = null;
+        ImpliedItemData necklaceData = null;
+        if (itemArray[0] != 0)
+            weaponData = new ImpliedItemData("Weapon", itemArray[0]);
+        if (itemArray[1] != 0)
+            weaponData = new ImpliedItemData("Accesorie", itemArray[1]);
+        if (itemArray[2] != 0)
+            weaponData = new ImpliedItemData("Accesorie", itemArray[2]);
+
+        UserEquipmentProvider.Instance.Initialize(weaponData,
+                                                  ringData,
+                                                  necklaceData);
         return "Success";
     }
     public string LoadUserQuests()

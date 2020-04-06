@@ -43,39 +43,33 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public WeaponData EquipedWeapon
     {
         get { return equipedWeapon; }
-        set { equipedWeapon = value; }
     }
     private ImpliedItemData equipedWeaponImpliedData;
     public ImpliedItemData EquipedWeaponImpliedData
     {
         get { return equipedWeaponImpliedData; }
-        set { equipedWeaponImpliedData = value; }
     }
 
     private AccesorieData equipedRing;
     public AccesorieData EquipedRing
     {
         get { return equipedRing; }
-        set { equipedRing = value; }
     }
     private ImpliedItemData equipedRingImpliedData;
     public ImpliedItemData EquipedRingImpliedData
     {
         get { return equipedRingImpliedData; }
-        set { equipedRingImpliedData = value; }
     }
 
     private AccesorieData equipedNecklace;
     public AccesorieData EquipedNecklace
     {
         get { return equipedNecklace; }
-        set { equipedNecklace = value; }
     }
     private ImpliedItemData equipedNecklaceImpliedData;
     public ImpliedItemData EquipedNecklaceImpliedData
     {
         get { return equipedNecklaceImpliedData; }
-        set { equipedNecklaceImpliedData = value; }
     }
 
     public void Initialize()
@@ -92,16 +86,19 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public void UnequipWeapon()
     {
         PlayerActManager.Instance.UnEquipWeapon();
-        PlayerStat.Instance.UnEquipWeapon(equipedWeapon.AttackPoint);
+        PlayerStat.Instance.RemoveChangeAP(equipedWeapon.ItemCode);
         equipedWeapon = null;
+        equipedWeaponImpliedData = null;
     }
     public void UnequipAccesorie_Ring()
     {
         equipedRing = null;
+        equipedRingImpliedData = null;
     }
     public void UnequipAccesorie_Necklace()
     {
         equipedNecklace = null;
+        equipedNecklaceImpliedData = null;
     }
 
     // Equip
@@ -115,7 +112,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode);
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
-        PlayerStat.Instance.EquipWeapon(weaponData.AttackPoint);
+        PlayerStat.Instance.AddChangeAP(equipedWeapon.ItemCode, equipedWeapon.AttackPoint);
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {

@@ -12,55 +12,78 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
     public InventoryPanel inventoryPanel;
 
     // Toggle
-    public ItemSelectToggle WeaponEquipmentToggle;
-    public ItemSelectToggle RingEquipmentToggle;
-    public ItemSelectToggle NecklaceEquipmentToggle;
+    public EquipmentSelectToggle WeaponToggle;
+    public EquipmentSelectToggle RingToggle;
+    public EquipmentSelectToggle NecklaceToggle;
+
+    // Data
+    private EquipmentSelectToggle currentToggle;
 
     public void Initialize()
     {
-        WeaponEquipmentToggle.Initialize(EquipmentSelected);
-        RingEquipmentToggle.Initialize(EquipmentSelected);
-        NecklaceEquipmentToggle.Initialize(EquipmentSelected);
+        WeaponToggle.Initialize(EquipmentSelected);
+        RingToggle.Initialize(EquipmentSelected);
+        NecklaceToggle.Initialize(EquipmentSelected);
     }
 
     public void RefreshPlayerInfoPanel()
     {
         // PlayerInfo Refresh
         AccountName.text = UserInfoProvider.Instance.UserAccount;
-        PlayerLevel.text = PlayerStat.Instance.Level.ToString();
+        PlayerLevel.text = $"LV. <color=cyan>{PlayerStat.Instance.Level.ToString()}</color>";
 
         //Apply Data To UI
-        WeaponEquipmentToggle.Refresh(PlayerEquipment.Instance.EquipedWeaponImpliedData);
-        RingEquipmentToggle.Refresh(PlayerEquipment.Instance.EquipedRingImpliedData);
-        NecklaceEquipmentToggle.Refresh(PlayerEquipment.Instance.EquipedNecklaceImpliedData);
+        WeaponToggle.Refresh(PlayerEquipment.Instance.EquipedWeaponImpliedData);
+        RingToggle.Refresh(PlayerEquipment.Instance.EquipedRingImpliedData);
+        NecklaceToggle.Refresh(PlayerEquipment.Instance.EquipedNecklaceImpliedData);
     }
     public void DeselectAllToggle()
     {
-        WeaponEquipmentToggle.GetComponent<Toggle>().isOn = false;
-        RingEquipmentToggle.GetComponent<Toggle>().isOn = false;
-        NecklaceEquipmentToggle.GetComponent<Toggle>().isOn = false;
+        EquipmentPanel.allowSwitchOff = true;
+        currentToggle = null;
+        WeaponToggle.GetComponent<Toggle>().isOn = false;
+        RingToggle.GetComponent<Toggle>().isOn = false;
+        NecklaceToggle.GetComponent<Toggle>().isOn = false;
+    }
+    public void UnequipItem()
+    {
+        string itmeType = currentToggle.CurrentItemImpliedData.ItemType;
+        switch(itmeType)
+        {
+            case "Weapon":
+                PlayerEquipment.Instance.UnequipWeapon();
+                break;
+            case "Accesorie":
+                AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(currentToggle.CurrentItem.ItemCode);
+                switch(accesorie.AccesorieType)
+                {
+                    case "Ring":
+                        PlayerEquipment.Instance.UnequipAccesorie_Ring();
+                        break;
+                    case "Necklace":
+                        PlayerEquipment.Instance.UnequipAccesorie_Necklace();
+                        break;
+                }
+                break;
+        }
+        RefreshPlayerInfoPanel();
+        inventoryPanel.RefreshItemTable();
+    }
+    public bool HasSelectedEquipment()
+    {
+        if (currentToggle == null)
+            return false;
+        return true;
     }
 
-    private void EquipmentSelected(ItemSelectToggle selectToggle, string itemType)
+    private void EquipmentSelected(EquipmentSelectToggle selectToggle)
     {
+        EquipmentPanel.allowSwitchOff = false;
+        currentToggle = selectToggle;
         inventoryPanel.DeselectAllItemTableToggles();
         inventoryPanel.ResetItemInteractPanel();
         inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
-        inventoryPanel.ActiveUseItemBtn(() =>
-        {
-            switch(itemType)
-            {
-                case "Weapon":
-                    PlayerEquipment.Instance.UnequipWeapon();
-                    break;
-                case "Accesorie":
-                    AccesorieData data = ItemDB.Instance.GetAccesorieData(selectToggle.CurrentItemImpliedData.ItemCode);
-                    if (data.AccesorieType.Equals("Ring"))
-                        PlayerEquipment.Instance.UnequipAccesorie_Ring();
-                    else if (data.AccesorieType.Equals("Necklace"))
-                        PlayerEquipment.Instance.UnequipAccesorie_Necklace();
-                    break;
-            }
-        });
+
+        inventoryPanel.ActiveUnEquipBtn();
     }
 }

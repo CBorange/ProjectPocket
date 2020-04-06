@@ -36,9 +36,9 @@ public class PlayerStatusPanel : MonoBehaviour
         PlayerStat stat = PlayerStat.Instance;
 
         // HP
-        HP_Slider.maxValue = stat.Max_HealthPoint;
+        HP_Slider.maxValue = stat.MaxHealthPoint;
         HP_Slider.value = stat.HealthPoint;
-        HP_Text.text = $"{stat.HealthPoint} / {stat.Max_HealthPoint}";
+        HP_Text.text = $"{stat.HealthPoint} / {stat.MaxHealthPoint}";
         // EXP
         EXP_Slider.maxValue = stat.LevelupExperience;
         EXP_Slider.value = stat.CurrentExperience;

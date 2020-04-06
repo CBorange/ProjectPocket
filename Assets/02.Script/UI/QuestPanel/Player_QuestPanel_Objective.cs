@@ -68,6 +68,9 @@ public class Player_QuestPanel_Objective : MonoBehaviour
             }
         }
         ObjectiveContentsText.text = builder.ToString();
+
+        // Reward
+        RewardContentsText.text = GetQuestRewardSTR(data);
     }
     public void RefreshToCompleted(int questCode)
     {
@@ -129,5 +132,29 @@ public class Player_QuestPanel_Objective : MonoBehaviour
             }
         }
         ObjectiveContentsText.text = builder.ToString();
+
+        // Reward
+        RewardContentsText.text = GetQuestRewardSTR(data);
+    }
+    private string GetQuestRewardSTR(QuestData data)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int rewardIdx = 0; rewardIdx < data.QuestRewards.Length; ++rewardIdx)
+        {
+            switch (data.QuestRewards[rewardIdx])
+            {
+                case "GetItem":
+                    RewardItem[] items = data.Reward_GetItem.RewardItems;
+                    for (int i = 0; i < items.Length; ++i)
+                    {
+                        ItemData item = ItemDB.Instance.GetItemData(items[i].ItemCode);
+                        builder.Append($"[{item.Name} / {items[i].ItemCount}개]");
+                        if (i < items.Length - 1)
+                            builder.Append(", ");
+                    }
+                    break;
+            }
+        }
+        return builder.ToString();
     }
 }

@@ -53,16 +53,16 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         get { return origin_JumpSpeed; }
     }
 
-    private float max_HealthPoint;
-    public float Max_HealthPoint
+    private float origin_MaxHealthPoint;
+    public float Origin_MaxHealthPoint
     {
-        get { return max_HealthPoint; }
+        get { return origin_MaxHealthPoint; }
     }
 
-    private float origin_ShieldPoint;
-    public float Origin_ShieldPoint
+    private float origin_MaxShieldPoint;
+    public float Origin_MaxShieldPoint
     {
-        get { return origin_ShieldPoint; }
+        get { return origin_MaxShieldPoint; }
     }
 
     private float origin_AttackPoint;
@@ -90,6 +90,12 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         get { return jumpSpeed; }
     }
 
+    private float maxHealthPoint;
+    public float MaxHealthPoint
+    {
+        get { return maxHealthPoint; }
+    }
+
     private float healthPoint;
     public float HealthPoint
     {
@@ -113,6 +119,14 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     {
         get { return attackSpeed; }
     }
+
+    // Character Change Status 
+    private Dictionary<int, float> apChanged;
+    private Dictionary<int, float> spChanged;
+    private Dictionary<int, float> hpChanged;
+    private Dictionary<int, float> moveSpeedChanged;
+    private Dictionary<int, float> jumpSpeedChanged;
+    private Dictionary<int, float> attackSpeedChanged;
 
     // Player Only Stat
     private int levelupExperience;
@@ -153,15 +167,16 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         UserInfoProvider userData = UserInfoProvider.Instance;
         origin_MoveSpeed = userData.MoveSpeed;
         origin_JumpSpeed = userData.JumpSpeed;
-        max_HealthPoint = userData.HealthPoint;
-        origin_ShieldPoint = userData.ShieldPoint;
+        origin_MaxHealthPoint = userData.HealthPoint;
+        origin_MaxShieldPoint = userData.ShieldPoint;
         origin_AttackPoint = userData.AttackPoint;
         origin_AttackSpeed = userData.AttackSpeed;
 
         moveSpeed = Origin_MoveSpeed;
         jumpSpeed = Origin_JumpSpeed;
-        healthPoint = Max_HealthPoint;
-        shieldPoint = Origin_ShieldPoint;
+        maxHealthPoint = origin_MaxHealthPoint;
+        healthPoint = maxHealthPoint;
+        shieldPoint = origin_MaxShieldPoint;
         attackPoint = Origin_AttackPoint;
         attackSpeed = Origin_AttackSpeed;
         levelupExperience = userData.LevelupExperience;
@@ -171,20 +186,39 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         workPoint = max_workPoint;
         gold = userData.Gold;
 
+        apChanged = new Dictionary<int, float>();
+        spChanged = new Dictionary<int, float>();
+        hpChanged = new Dictionary<int, float>();
+        moveSpeedChanged = new Dictionary<int, float>();
+        jumpSpeedChanged = new Dictionary<int, float>();
+        attackSpeedChanged = new Dictionary<int, float>();
+
         changedStatusCallback();
     }
     public void AttachUICallback(Action callback)
     {
         changedStatusCallback = callback;
     }
-    public void EquipWeapon(float plusAP)
+
+    // Status Change Method
+    public void AddChangeAP(int id, float ap)
     {
-        attackPoint += plusAP;
-        changedStatusCallback();
+        apChanged.Add(id, ap);
+        ApplyAPChangeValue();
     }
-    public void UnEquipWeapon(float minusAP)
+    public void RemoveChangeAP(int id)
     {
-        attackPoint -= minusAP;
+        apChanged.Remove(id);
+        ApplyAPChangeValue();
+    }
+    private void ApplyAPChangeValue()
+    {
+        float changedValue = 0;
+        foreach (var kvp in apChanged)
+        {
+            changedValue += kvp.Value;
+        }
+        attackPoint = origin_AttackPoint + changedValue;
         changedStatusCallback();
     }
 }

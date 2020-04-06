@@ -25,6 +25,7 @@ public class InventoryPanel : MonoBehaviour
     public Text selectedItemIntroduce;
     public Button attachToQuickSlot_Btn;
     public Button useItem_Btn;
+    public Button unequip_Btn;
 
     public void Initialize()
     {
@@ -51,6 +52,14 @@ public class InventoryPanel : MonoBehaviour
     {
         playerInfo.RefreshPlayerInfoPanel();
     }
+    public void RefreshItemTable()
+    {
+        itemTable.RefreshInventoryPanel();
+    }
+    public bool HasSelectedEquipment()
+    {
+        return playerInfo.HasSelectedEquipment();
+    }
     public void DeselectAllItemTableToggles()
     {
         itemTable.DeselectAllToggle();
@@ -63,8 +72,10 @@ public class InventoryPanel : MonoBehaviour
     {
         selectedItemName.text = "아이템 이름";
         selectedItemIntroduce.text = "아이템 설명";
+
         attachToQuickSlot_Btn.gameObject.SetActive(false);
         useItem_Btn.gameObject.SetActive(false);
+        unequip_Btn.gameObject.SetActive(false);
     }
     public void RefreshItemIntroduce(string itemName, string itemIntroduce)
     {
@@ -72,19 +83,17 @@ public class InventoryPanel : MonoBehaviour
         string linebreakText = itemIntroduce.Replace(';', '\n');
         selectedItemIntroduce.text = linebreakText;
     }
-    public void ActiveQuickSlotBtn(Action attachQuickslotFunction)
+    public void ActiveQuickSlotBtn()
     {
         attachToQuickSlot_Btn.gameObject.SetActive(true);
-
-        attachToQuickSlot_Btn.onClick.RemoveAllListeners();
-        attachToQuickSlot_Btn.onClick.AddListener(new UnityEngine.Events.UnityAction(attachQuickslotFunction));
     }
-    public void ActiveUseItemBtn(Action useItemFunction)
+    public void ActiveUseItemBtn()
     {
         useItem_Btn.gameObject.gameObject.SetActive(true);
-
-        useItem_Btn.onClick.RemoveAllListeners();
-        useItem_Btn.onClick.AddListener(new UnityEngine.Events.UnityAction(useItemFunction));
+    }
+    public void ActiveUnEquipBtn()
+    {
+        unequip_Btn.gameObject.SetActive(true);
     }
 
     // 인벤토리 카테고리 변경 토글 Property Changed Callback

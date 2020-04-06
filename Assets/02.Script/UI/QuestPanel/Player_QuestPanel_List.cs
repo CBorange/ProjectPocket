@@ -50,7 +50,10 @@ public class Player_QuestPanel_List : MonoBehaviour
     private void RefreshListToProgress()
     {
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
+        {
+            questSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questSelectTogglePool[i].gameObject.SetActive(false);
+        }
 
         listTitleText.text = "진행 중 퀘스트 목록";
         questsInProgress.Clear();
@@ -59,14 +62,14 @@ public class Player_QuestPanel_List : MonoBehaviour
 
         for (int i = 0; i < questsInProgress.Count; ++i)
             questSelectTogglePool[i].Refresh(questsInProgress[i], QuestSelectToggleCategory.InProgress);
-
-        if (questsInProgress.Count > 0)
-            questSelectTogglePool[0].QuestSelected(true);
     }
     private void RefreshListToCompleted()
     {
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
+        {
+            questSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questSelectTogglePool[i].gameObject.SetActive(false);
+        }
 
         listTitleText.text = "완료 퀘스트 목록";
         questsCompleted.Clear();
@@ -75,9 +78,6 @@ public class Player_QuestPanel_List : MonoBehaviour
 
         for (int i = 0; i < questsCompleted.Count; ++i)
             questSelectTogglePool[i].Refresh(questsCompleted[i], QuestSelectToggleCategory.Complete);
-
-        if (questsCompleted.Count > 0)
-            questSelectTogglePool[0].QuestSelected(true);
     }
 
     // ChangeListCategory Callback Method
