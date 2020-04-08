@@ -16,9 +16,4 @@ public class QuestTotalProgress
         get { return originalQuestData; }
         set { originalQuestData = value; }
     }
-    public void Initialize(QuestData questData, bool completed)
-    {
-        this.originalQuestData = questData;
-        this.completed = completed;
-    }
 }

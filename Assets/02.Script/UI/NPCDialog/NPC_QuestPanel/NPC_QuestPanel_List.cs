@@ -17,9 +17,7 @@ public class NPC_QuestPanel_List : MonoBehaviour
     public NPC_QuestPanel questPanel;
 
     // Data
-    private List<QuestData> acceptableQuests;
-    private List<QuestData> completeQuests;
-    private QuestData[] originalDatas;
+    private NPCData currnetNPC;
 
     public void Initialize()
     {
@@ -28,60 +26,23 @@ public class NPC_QuestPanel_List : MonoBehaviour
 
         CreateQuestSelectToggles(30, AcceptableQuestToggleGroup, acceptableSelectTogglePool, QuestSelectToggleCategory.Acceptable);
         CreateQuestSelectToggles(30, ComepleteQuestToggleGroup, completeSelectTogglePool, QuestSelectToggleCategory.Complete);
-
-        acceptableQuests = new List<QuestData>();
-        completeQuests = new List<QuestData>();
     }
 
-    public void OpenPanel(QuestData[] originalQuestDatas)
+    public void OpenPanel(NPCData npc)
     {
-        originalDatas = originalQuestDatas;
+        currnetNPC = npc;
         RefrehPanel();
     }
     public void RefrehPanel()
     {
+        currnetNPC.SeperateQuestsAccordingToState();
         DeactiveAllToggles();
-        // Divide Quests To Acceptable & Complete
-        acceptableQuests.Clear();
-        completeQuests.Clear();
-
-        for (int questIdx = 0; questIdx < originalDatas.Length; ++questIdx)
-        {
-            QuestData currentData = originalDatas[questIdx];
-            if (!PlayerQuest.Instance.GetQuestIsInComplete(currentData.QuestCode))
-            {
-                // Divide Complete Quest
-                if (PlayerQuest.Instance.GetQuestIsInProgress(currentData.QuestCode))
-                {
-                    if (PlayerQuest.Instance.GetQuestIsCompletedInProgress(currentData.QuestCode))
-                        completeQuests.Add(currentData);
-                }
-                // Divide Acceptable Quest
-                else
-                {
-                    // 클리어 해야할 퀘스트가 존재한다면
-                    if (currentData.PrecedentQuests.Length != 0)
-                    {
-                        int precedentCount = 0;
-                        for (int precedentIdx = 0; precedentIdx < currentData.PrecedentQuests.Length; ++precedentIdx)
-                        {
-                            if (PlayerQuest.Instance.GetQuestIsInComplete(currentData.PrecedentQuests[precedentIdx]))
-                                precedentCount += 1;
-                        }
-                        if (precedentCount == currentData.PrecedentQuests.Length)
-                            acceptableQuests.Add(currentData);
-                    }
-                    else
-                        acceptableQuests.Add(currentData);
-                }
-            }
-        }
 
         // Refresh QuestToggles
-        for (int i = 0; i < acceptableQuests.Count; ++i)
-            acceptableSelectTogglePool[i].Refresh(acceptableQuests[i]);
-        for (int i = 0; i < completeQuests.Count; ++i)
-            completeSelectTogglePool[i].Refresh(completeQuests[i]);
+        for (int i = 0; i < currnetNPC.AcceptableQuests.Count; ++i)
+            acceptableSelectTogglePool[i].Refresh(currnetNPC.AcceptableQuests[i]);
+        for (int i = 0; i < currnetNPC.CompleteQuests.Count; ++i)
+            completeSelectTogglePool[i].Refresh(currnetNPC.CompleteQuests[i]);
     }
 
     private void DeactiveAllToggles()
@@ -116,7 +77,6 @@ public class NPC_QuestPanel_List : MonoBehaviour
 
     private void QuestSelected(QuestSelectToggle selectToggle)
     {
-        Debug.Log("퀘스트 선택됨");
         if (selectToggle.ToggleCategory == QuestSelectToggleCategory.Acceptable)
         {
             for (int i = 0; i < completeSelectTogglePool.Count; ++i)

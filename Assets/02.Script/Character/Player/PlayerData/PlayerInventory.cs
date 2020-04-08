@@ -39,23 +39,23 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
     }
     #endregion
     // Data
-    private List<ImpliedItemData> impliedWeaponDataInfos;
-    public List<ImpliedItemData> ImpliedWeaponDataInfos
+    private Dictionary<int, ImpliedItemData> impliedWeaponDataInfos;
+    public Dictionary<int, ImpliedItemData> ImpliedWeaponDataInfos
     {
         get { return impliedWeaponDataInfos; }
     }
-    private List<ImpliedItemData> impliedAccesorieDataInfos;
-    public List<ImpliedItemData> ImpliedAccesorieDataInfos
+    private Dictionary<int, ImpliedItemData> impliedAccesorieDataInfos;
+    public Dictionary<int, ImpliedItemData> ImpliedAccesorieDataInfos
     {
         get { return impliedAccesorieDataInfos; }
     }
-    private List<ImpliedItemData> impliedExpendableDataInfos;
-    public List<ImpliedItemData> ImpliedExpendableDataInfos
+    private Dictionary<int, ImpliedItemData> impliedExpendableDataInfos;
+    public Dictionary<int, ImpliedItemData> ImpliedExpendableDataInfos
     {
         get { return impliedExpendableDataInfos; }
     }
-    private List<ImpliedItemData> impliedEtcDataInfos;
-    public List<ImpliedItemData> ImpliedEtcDataInfos
+    private Dictionary<int, ImpliedItemData> impliedEtcDataInfos;
+    public Dictionary<int, ImpliedItemData> ImpliedEtcDataInfos
     {
         get { return impliedEtcDataInfos; }
     }
@@ -67,10 +67,10 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
 
     public void Initialize()
     {
-        impliedWeaponDataInfos = new List<ImpliedItemData>();
-        impliedAccesorieDataInfos = new List<ImpliedItemData>();
-        impliedExpendableDataInfos = new List<ImpliedItemData>();
-        impliedEtcDataInfos = new List<ImpliedItemData>();
+        impliedWeaponDataInfos = new Dictionary<int, ImpliedItemData>();
+        impliedAccesorieDataInfos = new Dictionary<int, ImpliedItemData>();
+        impliedExpendableDataInfos = new Dictionary<int, ImpliedItemData>();
+        impliedEtcDataInfos = new Dictionary<int, ImpliedItemData>();
         allItems = new Dictionary<int, ImpliedItemData>();
 
         ImpliedItemData[] inventoryItems = UserInventoryProvider.Instance.ImplitedItemDatas;
@@ -78,22 +78,30 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
             return;                                                                                                       
         for (int i = 0; i < inventoryItems.Length; ++i)
         {
-            allItems.Add(inventoryItems[i].ItemCode, inventoryItems[i]);
-            switch (inventoryItems[i].ItemType)
-            {
-                case "Weapon":
-                    impliedWeaponDataInfos.Add(inventoryItems[i]);
-                    break;
-                case "Expendable":
-                    impliedExpendableDataInfos.Add(inventoryItems[i]);
-                    break;
-                case "Accesorie":
-                    impliedAccesorieDataInfos.Add(inventoryItems[i]);
-                    break;
-                case "Etc":
-                    impliedEtcDataInfos.Add(inventoryItems[i]);
-                    break;
-            }
+            AddItemToInventory(inventoryItems[i]);
         }
+    }
+    public void AddItemToInventory(ImpliedItemData data)
+    {
+        switch (data.ItemType)
+        {
+            case "Weapon":
+                if (allItems.ContainsKey(data.ItemCode))
+                    return;
+                impliedWeaponDataInfos.Add(data.ItemCode, data);
+                break;
+            case "Expendable":
+                impliedExpendableDataInfos.Add(data.ItemCode, data);
+                break;
+            case "Accesorie":
+                if (allItems.ContainsKey(data.ItemCode))
+                    return;
+                impliedAccesorieDataInfos.Add(data.ItemCode, data);
+                break;
+            case "Etc":
+                impliedEtcDataInfos.Add(data.ItemCode, data);
+                break;
+        }
+        allItems.Add(data.ItemCode, data);
     }
 }

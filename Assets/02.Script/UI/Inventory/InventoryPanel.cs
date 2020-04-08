@@ -18,6 +18,7 @@ public class InventoryPanel : MonoBehaviour
     public InventoryPanel_PlayerInfo playerInfo;
 
     // UI
+    public ToggleGroup itemCategoryToggleGroup;
     public Toggle[] itemCategoryToggles;
 
     // UI : ItemIntroduce
@@ -38,12 +39,16 @@ public class InventoryPanel : MonoBehaviour
         // UI 초기화
         gameObject.SetActive(true);
 
+        itemCategoryToggleGroup.allowSwitchOff = false;
         itemCategoryToggles[0].isOn = true;
-        ChangeCategoryToWeapon(true);
         RefreshPlayerInfoPanel();
     }
     public void ClosePanel()
     {
+        itemCategoryToggleGroup.allowSwitchOff = true;
+        for (int i = 0; i < itemCategoryToggles.Length; ++i)
+            itemCategoryToggles[i].isOn = false;
+
         gameObject.SetActive(false);
     }
 

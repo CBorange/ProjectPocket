@@ -22,6 +22,8 @@ public class Player_QuestPanel : MonoBehaviour
     public void ClosePanel()
     {
         gameObject.SetActive(false);
+        listPanel.ClosePanel();
+        objectivePanel.ClosePanel();
     }
 
     // List <-> Objective 패널 상호작용 Method

@@ -6,9 +6,13 @@ using UnityEngine.UI;
 
 public class ItemSelectToggle : MonoBehaviour
 {
+    // UI
     public Image ItemImage;
     public Text ItemName;
     public Text NoticeEquipThisText;
+    public Text ItemCountText;
+
+    // Data
     private ImpliedItemData impliedItemData;
     public ImpliedItemData CurrentItemImpliedData
     {
@@ -28,7 +32,6 @@ public class ItemSelectToggle : MonoBehaviour
 
     public void Refresh(ImpliedItemData impliedData, bool equiped)
     {
-        gameObject.SetActive(true);
         impliedItemData = impliedData;
         currentItem = ItemDB.Instance.GetItemData(impliedData.ItemCode);
 
@@ -41,8 +44,17 @@ public class ItemSelectToggle : MonoBehaviour
         {
             ItemImage.sprite = null;
         }
+
         ItemName.text = currentItem.Name;
         NoticeEquipThisText.gameObject.SetActive(equiped);
+        if (impliedData.ItemType != "Weapon" && impliedData.ItemType != "Accesorie")
+        {
+            ItemCountText.gameObject.SetActive(true);
+            ItemCountText.text = impliedData.ItemCount.ToString();
+        }
+        else
+            ItemCountText.gameObject.SetActive(false);
+
         gameObject.SetActive(true);
     }
     

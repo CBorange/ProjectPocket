@@ -155,14 +155,51 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
 
     }
 
-    public void StartQuest(int questCode)
+    public void StartQuest(int npcCode, int questCode)
     {
+        QuestTotalProgress newProgress = new QuestTotalProgress();
+        newProgress.Completed = false;
+        newProgress.OriginalQuestData = QuestDB.Instance.GetQuestData(questCode);
+        questsInProgress.Add(questCode, newProgress);
 
+        string[] categorys = newProgress.OriginalQuestData.QuestCategorys;
+        for (int categoryIdx = 0; categoryIdx < categorys.Length; ++categoryIdx) 
+        {
+            switch(categorys[categoryIdx])
+            {
+                case "Discussion":
+                    TargetNPCData[] npcDatas = newProgress.OriginalQuestData.Behaviour_Discussion.TargetNPC;
+
+                    int[] npcCodes = new int[npcDatas.Length];
+                    for (int i = 0; i < npcCodes.Length; ++i)
+                        npcCodes[i] = npcDatas[i].NPCCode;
+
+                    questProgress_Discussion.StartQuest(questCode, npcCodes);
+                    break;
+                case "KillMonster":
+                    break;
+            }
+        }
+
+        NPC_ControllerGroup.Instance.QuestStateWasChanged(npcCode);
     }
-    public void CompleteQuest(QuestData data)
+    public void CompleteQuest(int npcCode, QuestData data)
     {
         // 보상 수령
-
+        string[] rewardSTR = data.QuestRewards;
+        for (int rewardIdx = 0; rewardIdx < rewardSTR.Length; ++rewardIdx)
+        {
+            switch(rewardSTR[rewardIdx])
+            {
+                case "GetItem":
+                    RewardItem[] items = data.Reward_GetItem.RewardItems;
+                    for (int itemIdx = 0; itemIdx < items.Length; ++itemIdx)
+                    {
+                        PlayerInventory.Instance.AddItemToInventory(new ImpliedItemData(items[itemIdx].ItemType, items[itemIdx].ItemCode, items[itemIdx].ItemCount));
+                    }
+                    break;
+            }
+        }
 
         // 퀘스트 리스트 변경
         questProgress_Discussion.CompleteQuest(data.QuestCode);
@@ -174,6 +211,8 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         {
             Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
         }
+
+        NPC_ControllerGroup.Instance.QuestStateWasChanged(npcCode);
     }
 
     // 퀘스트 데이터 Getter

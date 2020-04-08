@@ -91,6 +91,20 @@ public class QuestProgress_Discussion
             Debug.Log($"QuestProgress_Discussion 퀘스트 성공 실패, {questCode}");
         }
     }
+    public void StartQuest(int questCode, int[] targetNPCs)
+    {
+        TotalDiscussionProgress newProgress = new TotalDiscussionProgress();
+        newProgress.QuestCode = questCode;
+        newProgress.Completed = false;
+        newProgress.Progress = new DiscussionProgressInfo[targetNPCs.Length];
+        for (int i = 0; i < targetNPCs.Length; ++i)
+        {
+            newProgress.Progress[i] = new DiscussionProgressInfo();
+            newProgress.Progress[i].TargetNPC = targetNPCs[i];
+            newProgress.Progress[i].TalkCompleted = false;
+        }
+        totalProgressDic.Add(questCode, newProgress);
+    }
 }
 // 퀘스트에 해당
 [System.Serializable]

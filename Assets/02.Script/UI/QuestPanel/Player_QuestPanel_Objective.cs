@@ -19,6 +19,10 @@ public class Player_QuestPanel_Objective : MonoBehaviour
     {
 
     }
+    public void ClosePanel()
+    {
+
+    }
     public void RefreshToInProgress(int questCode)
     {
         StringBuilder builder = new StringBuilder();

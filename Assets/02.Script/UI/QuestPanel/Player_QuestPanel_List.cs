@@ -13,6 +13,7 @@ public class Player_QuestPanel_List : MonoBehaviour
 
     // UI
     public Text listTitleText;
+    public ToggleGroup categoryToggleGroup;
     public Toggle[] categoryToggles;
 
     // Data
@@ -28,8 +29,14 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     public void OpenPanel()
     {
+        categoryToggleGroup.allowSwitchOff = true;
         categoryToggles[0].isOn = true;
-        ChangedCategory_To_InProgress(true);
+    }
+    public void ClosePanel()
+    {
+        categoryToggleGroup.allowSwitchOff = true;
+        for (int i = 0; i < categoryToggles.Length; ++i)
+            categoryToggles[i].isOn = false;
     }
 
     private void CreateQuestSelectToggles(int createCount)
@@ -49,11 +56,13 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     private void RefreshListToProgress()
     {
+        QuestToggleGroup.allowSwitchOff = true;
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
         {
             questSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questSelectTogglePool[i].gameObject.SetActive(false);
         }
+        QuestToggleGroup.allowSwitchOff = false;
 
         listTitleText.text = "진행 중 퀘스트 목록";
         questsInProgress.Clear();
@@ -85,12 +94,14 @@ public class Player_QuestPanel_List : MonoBehaviour
     {
         if (!selected)
             return;
+        categoryToggleGroup.allowSwitchOff = false;
         RefreshListToProgress();
     }
     public void ChangedCategory_To_Complete(bool selected)
     {
         if (!selected)
             return;
+        categoryToggleGroup.allowSwitchOff = false;
         RefreshListToCompleted();
     }
 

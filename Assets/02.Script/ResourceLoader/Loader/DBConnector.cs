@@ -127,7 +127,7 @@ public class DBConnector : MonoBehaviour
 
         InventoryJSON jsonObject = JsonUtility.FromJson<InventoryJSON>(inventoryJSON);
         ImpliedItemData[] impliedItemDatas = jsonObject.impliedItemDatas;
-        if (impliedItemDatas.Length == 0)
+        if (impliedItemDatas.Length == 0) 
             UserInventoryProvider.Instance.Initialize(null);
         else
             UserInventoryProvider.Instance.Initialize(impliedItemDatas);
@@ -156,11 +156,11 @@ public class DBConnector : MonoBehaviour
         ImpliedItemData ringData = null;
         ImpliedItemData necklaceData = null;
         if (itemArray[0] != 0)
-            weaponData = new ImpliedItemData("Weapon", itemArray[0]);
+            weaponData = new ImpliedItemData("Weapon", itemArray[0], 1);
         if (itemArray[1] != 0)
-            weaponData = new ImpliedItemData("Accesorie", itemArray[1]);
+            weaponData = new ImpliedItemData("Accesorie", itemArray[1], 1);
         if (itemArray[2] != 0)
-            weaponData = new ImpliedItemData("Accesorie", itemArray[2]);
+            weaponData = new ImpliedItemData("Accesorie", itemArray[2], 1);
 
         UserEquipmentProvider.Instance.Initialize(weaponData,
                                                   ringData,
@@ -260,11 +260,10 @@ public class DBConnector : MonoBehaviour
         string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
         NPCData npcData = JsonUtility.FromJson<NPCData>(jsonStr);
 
-        npcData.QuestDatas = new QuestData[npcData.Quest.Length];
+        npcData.Initialize();
         for (int i = 0; i < npcData.Quest.Length; ++i)
-        {
             npcData.QuestDatas[i] = QuestDB.Instance.GetQuestData(npcData.Quest[i]);
-        }
+
         return npcData;
     }
     /// <summary>

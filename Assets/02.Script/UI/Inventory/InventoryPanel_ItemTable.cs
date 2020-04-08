@@ -21,6 +21,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     // 외부호출 Method
     public void Initialize()
     {
+        currentItemDatas = new List<ImpliedItemData>();
         selectTogglePool = new List<ItemSelectToggle>();
         selectTogglePool.Capacity = 0;
         CreateSelectTogglePool(30);
@@ -34,32 +35,38 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     {
         contentsView.allowSwitchOff = true;
         for (int i = 0; i < selectTogglePool.Count; ++i)
-        {
             selectTogglePool[i].GetComponent<Toggle>().isOn = false;
-        }
     }
     public void RefreshInventoryPanel()
     {
         if (!inventoryPanel.HasSelectedEquipment())
+        {
             inventoryPanel.ResetItemInteractPanel();
+            DeselectAllToggle();
+        }
         for (int i = 0; i < selectTogglePool.Count; ++i)
         {
             selectTogglePool[i].gameObject.SetActive(false);
         }
 
+        currentItemDatas.Clear();
         switch (inventoryCategory)
         {
             case InventoryCategory.Weapon:
-                currentItemDatas = PlayerInventory.Instance.ImpliedWeaponDataInfos;
+                foreach (var kvp in PlayerInventory.Instance.ImpliedWeaponDataInfos)
+                    currentItemDatas.Add(kvp.Value);
                 break;
             case InventoryCategory.Accesorie:
-                currentItemDatas = PlayerInventory.Instance.ImpliedAccesorieDataInfos;
+                foreach (var kvp in PlayerInventory.Instance.ImpliedAccesorieDataInfos)
+                    currentItemDatas.Add(kvp.Value);
                 break;
             case InventoryCategory.Expendable:
-                currentItemDatas = PlayerInventory.Instance.ImpliedExpendableDataInfos;
+                foreach (var kvp in PlayerInventory.Instance.ImpliedExpendableDataInfos)
+                    currentItemDatas.Add(kvp.Value);
                 break;
             case InventoryCategory.Etc:
-                currentItemDatas = PlayerInventory.Instance.ImpliedEtcDataInfos;
+                foreach (var kvp in PlayerInventory.Instance.ImpliedEtcDataInfos)
+                    currentItemDatas.Add(kvp.Value);
                 break;
         }
         LoadItemToggle();

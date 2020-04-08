@@ -9,20 +9,20 @@ public class NPC_QuestPanel : MonoBehaviour
     public NPC_QuestPanel_List listPanel;
 
     // Data
-    private QuestData[] currentQuestDatas;
+    private NPCData currentNPCData;
 
     public void Initialize()
     {
         objectivePanel.Initialize();
         listPanel.Initialize();
     }
-    public void OpenPanel(QuestData[] questDatas)
+    public void OpenPanel(NPCData npc)
     {
-        currentQuestDatas = questDatas;
+        currentNPCData = npc;
         gameObject.SetActive(true);
 
-        objectivePanel.OpenPanel();
-        listPanel.OpenPanel(currentQuestDatas);
+        objectivePanel.OpenPanel(currentNPCData.NPCCode);
+        listPanel.OpenPanel(currentNPCData);
     }
     public void RefreshPanel()
     {
@@ -34,7 +34,7 @@ public class NPC_QuestPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // Comunicate To QuestPanel_Objective
+    // Method For Comunicate Between Quest List<->Objective Panel
     public void OpenObjectivePanel_Acceptable(QuestData data)
     {
         objectivePanel.RefreshToAcceptable(data);

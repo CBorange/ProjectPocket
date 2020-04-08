@@ -109,7 +109,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
 
         WeaponData weaponData = ItemDB.Instance.GetWeaponData(itemCode);
         equipedWeapon = weaponData;
-        equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode);
+        equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode, 1);
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
         PlayerStat.Instance.AddChangeAP(equipedWeapon.ItemCode, equipedWeapon.AttackPoint);
@@ -117,11 +117,11 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public void EquipAccesorie_Ring(AccesorieData data)
     {
         equipedRing = data;
-        equipedRingImpliedData = new ImpliedItemData("Accesorie", data.ItemCode);
+        equipedRingImpliedData = new ImpliedItemData("Accesorie", data.ItemCode, 1);
     }
     public void EquipAccesorie_Necklace(AccesorieData data)
     {
         equipedNecklace = data;
-        equipedNecklaceImpliedData = new ImpliedItemData("Accesorie", data.ItemCode);
+        equipedNecklaceImpliedData = new ImpliedItemData("Accesorie", data.ItemCode, 1);
     }
 }

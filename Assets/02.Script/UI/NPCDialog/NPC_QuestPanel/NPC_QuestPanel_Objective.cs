@@ -21,14 +21,16 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
 
     // Data
     private QuestData currnetData;
+    private int npcCode;
 
     public void Initialize()
     {
 
     }
 
-    public void OpenPanel()
+    public void OpenPanel(int npcCode)
     {
+        this.npcCode = npcCode;
         RefreshPanel();
     }
     public void RefreshPanel()
@@ -57,6 +59,9 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
         // 퀘스트 목표
         ImpliedObjectiveText.text = currnetData.QuestIntroduce_Implied;
         DetailedObjectiveText.text = GetQuestObjectSTR(currnetData);
+
+        // 퀘스트 보상
+        RewardText.text = GetQuestRewardSTR(currnetData);
     }
     public void RefreshToComplete(QuestData data)
     {
@@ -174,11 +179,12 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     // Button Method
     public void AcceptQuest()
     {
-        PlayerQuest.Instance.StartQuest(currnetData.QuestCode);
+        PlayerQuest.Instance.StartQuest(npcCode, currnetData.QuestCode);
+        QuestPanel.RefreshPanel();
     }
     public void CompleteQuest()
     {
-        PlayerQuest.Instance.CompleteQuest(currnetData);
+        PlayerQuest.Instance.CompleteQuest(npcCode, currnetData);
         QuestPanel.RefreshPanel();
     }
 }

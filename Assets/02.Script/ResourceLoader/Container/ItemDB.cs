@@ -9,11 +9,13 @@ public class ImpliedItemData
 {
     public string ItemType;
     public int ItemCode;
+    public int ItemCount;
     public ImpliedItemData() { }
-    public ImpliedItemData(string itemType, int itemCode)
+    public ImpliedItemData(string itemType, int itemCode, int itemCount)
     {
         ItemType = itemType;
         ItemCode = itemCode;
+        ItemCount = itemCount;
     }
 }
 public class ItemDB

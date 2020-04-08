@@ -74,9 +74,9 @@ public class UIPanelTurner : MonoBehaviour
     {
         dialog_Panel.OpenPanel(talkingNPC);
     }
-    public void Open_NPC_QuestPanel(QuestData[] questDatas)
+    public void Open_NPC_QuestPanel(NPCData currentNPC)
     {
-        npc_QuestPanel.OpenPanel(questDatas);
+        npc_QuestPanel.OpenPanel(currentNPC);
     }
     public void Open_Player_QuestPanel()
     {

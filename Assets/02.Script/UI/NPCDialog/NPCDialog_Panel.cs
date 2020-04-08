@@ -80,7 +80,7 @@ public class NPCDialog_Panel : MonoBehaviour
     // Button method
     public void OpenQuestPanel()
     {
-        UIPanelTurner.Instance.Open_NPC_QuestPanel(currentNPC.QuestDatas);
+        UIPanelTurner.Instance.Open_NPC_QuestPanel(currentNPC);
     }
 
     public void StartDiscussion()
@@ -91,6 +91,7 @@ public class NPCDialog_Panel : MonoBehaviour
             DiscussionController.StartDiscussion(currentNPC.Disccusion);
         else
         {
+            NPC_ControllerGroup.Instance.QuestStateWasChanged(currentNPC.NPCCode);
             DiscussionController.StartDiscussion(questDiscussion);
         }
     }
