@@ -1,0 +1,269 @@
+fileFormatVersion: 2
+guid: ee99d05c77f29844486a51fe333c21dc
+timeCreated: 1519309478
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cube.000
+    100002: Cube.001
+    100004: Cube.002
+    100006: Cube.003
+    100008: Cube.004
+    100010: Cube.005
+    100012: Cube.007
+    100014: Cube.041
+    100016: Cylinder.000
+    100018: Cylinder.001
+    100020: Cylinder.002
+    100022: Cylinder.004
+    100024: Cylinder.005
+    100026: Cylinder.010
+    100028: Cylinder.016
+    100030: //RootNode
+    400000: Cube.000
+    400002: Cube.001
+    400004: Cube.002
+    400006: Cube.003
+    400008: Cube.004
+    400010: Cube.005
+    400012: Cube.007
+    400014: Cube.041
+    400016: Cylinder.000
+    400018: Cylinder.001
+    400020: Cylinder.002
+    400022: Cylinder.004
+    400024: Cylinder.005
+    400026: Cylinder.010
+    400028: Cylinder.016
+    400030: //RootNode
+    2100000: Emissiv
+    2100002: Candlestick 2
+    2100004: Hanging Candlestick
+    2100006: Glass
+    2100008: Pilars
+    2100010: Edging
+    2100012: Floor
+    2100014: Wall 4 Piece
+    2100016: Wall 4
+    2100018: Wall 2
+    2100020: Wall 1
+    2100022: Big Woods
+    2100024: Small Woods
+    2100026: Brick
+    2100028: Wall 3
+    2300000: Cube.000
+    2300002: Cube.001
+    2300004: Cube.002
+    2300006: Cube.003
+    2300008: Cube.004
+    2300010: Cube.005
+    2300012: Cube.007
+    2300014: Cube.041
+    2300016: Cylinder.000
+    2300018: Cylinder.001
+    2300020: Cylinder.002
+    2300022: Cylinder.004
+    2300024: Cylinder.005
+    2300026: Cylinder.010
+    2300028: Cylinder.016
+    3300000: Cube.000
+    3300002: Cube.001
+    3300004: Cube.002
+    3300006: Cube.003
+    3300008: Cube.004
+    3300010: Cube.005
+    3300012: Cube.007
+    3300014: Cube.041
+    3300016: Cylinder.000
+    3300018: Cylinder.001
+    3300020: Cylinder.002
+    3300022: Cylinder.004
+    3300024: Cylinder.005
+    3300026: Cylinder.010
+    3300028: Cylinder.016
+    4300000: Cylinder.000
+    4300002: Cylinder.016
+    4300004: Cube.003
+    4300006: Cylinder.002
+    4300008: Cylinder.001
+    4300010: Cube.004
+    4300012: Cube.005
+    4300014: Cube.002
+    4300016: Cube.007
+    4300018: Cylinder.005
+    4300020: Cylinder.004
+    4300022: Cube.001
+    4300024: Cube.000
+    4300026: Cube.041
+    4300028: Cylinder.010
+    6400000: Cube.000
+    6400002: Cube.001
+    6400004: Cube.002
+    6400006: Cube.003
+    6400008: Cube.004
+    6400010: Cube.005
+    6400012: Cube.007
+    6400014: Cube.041
+    6400016: Cylinder.000
+    6400018: Cylinder.001
+    6400020: Cylinder.002
+    6400022: Cylinder.004
+    6400024: Cylinder.005
+    6400026: Cylinder.010
+    6400028: Cylinder.016
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Big Woods
+    second: {fileID: 2100000, guid: b6f9d5272ca04a441a14ec6e64946d01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brick
+    second: {fileID: 2100000, guid: 170ee6abdc014304bbcc0fb7e3b395f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Candlestick 2
+    second: {fileID: 2100000, guid: ea04196876095f24c8ac5bf76d99d3d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Edging
+    second: {fileID: 2100000, guid: 9b54917dd0a55ff4ebf0247ffee4aee2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Emissiv
+    second: {fileID: 2100000, guid: 8cd305e9606d4f3468410850470eeb0f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor
+    second: {fileID: 2100000, guid: a6d8de718359ec14692acfa4ce875d63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: 58f2fa3bc0b9ded41b2f51561ca30f50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hanging Candlestick
+    second: {fileID: 2100000, guid: 8a44c9ec3efa65a48bc7d33590b9d10d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pilars
+    second: {fileID: 2100000, guid: dfe3abee75add8d45a5f1c01cb0ad202, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Small Woods
+    second: {fileID: 2100000, guid: 576ca0bce4e37504dbd2e5a31791a20e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall 1
+    second: {fileID: 2100000, guid: 7df86f97bed982e449f9c6d5cd366638, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall 2
+    second: {fileID: 2100000, guid: d92910d8e58f66a4cae0828b76413454, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall 3
+    second: {fileID: 2100000, guid: f51090cf7c1258143afb81f3f649c5ea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall 4
+    second: {fileID: 2100000, guid: cad9a26addddaeb4bafe0fc4a9ca5ca1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall 4 Piece
+    second: {fileID: 2100000, guid: 45108ead5336abd43b74b537e7cc5787, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

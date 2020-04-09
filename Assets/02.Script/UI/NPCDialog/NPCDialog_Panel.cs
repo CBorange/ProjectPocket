@@ -91,7 +91,7 @@ public class NPCDialog_Panel : MonoBehaviour
             DiscussionController.StartDiscussion(currentNPC.Disccusion);
         else
         {
-            NPC_ControllerGroup.Instance.QuestStateWasChanged(currentNPC.NPCCode);
+            NPC_ControllerGroup.Instance.QuestStateWasChanged();
             DiscussionController.StartDiscussion(questDiscussion);
         }
     }

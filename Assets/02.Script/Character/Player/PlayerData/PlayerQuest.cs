@@ -177,11 +177,18 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                     questProgress_Discussion.StartQuest(questCode, npcCodes);
                     break;
                 case "KillMonster":
+                    TargetMonsterData[] monsterDatas = newProgress.OriginalQuestData.Behaviour_KillMonster.TargetMonster;
+
+                    int[] monsterCode = new int[monsterDatas.Length];
+                    for (int i = 0; i < monsterCode.Length; ++i)
+                        monsterCode[i] = monsterDatas[i].MonsterCode;
+
+                    questProgress_KillMonster.StartQuest(questCode, monsterCode);
                     break;
             }
         }
 
-        NPC_ControllerGroup.Instance.QuestStateWasChanged(npcCode);
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
     public void CompleteQuest(int npcCode, QuestData data)
     {
@@ -202,17 +209,31 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         }
 
         // 퀘스트 리스트 변경
-        questProgress_Discussion.CompleteQuest(data.QuestCode);
-        if (questsInProgress.Remove(data.QuestCode))
+        int categoryCompleteCount = 0;
+        for (int i = 0; i < data.QuestCategorys.Length; ++i)
         {
-            completedQuests.Add(data.QuestCode, data);
+            switch (data.QuestCategorys[i])
+            {
+                case "Discussion":
+                    questProgress_Discussion.CompleteQuest(data.QuestCode);
+                    categoryCompleteCount += 1;
+                    break;
+                case "KillMonster":
+                    questProgress_KillMonster.CompleteQuest(data.QuestCode);
+                    categoryCompleteCount += 1;
+                    break;
+            }
         }
-        else
+        if (categoryCompleteCount == data.QuestCategorys.Length)
         {
-            Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
+            if (questsInProgress.Remove(data.QuestCode))
+                completedQuests.Add(data.QuestCode, data);
+            else
+            {
+                Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
+            }
         }
-
-        NPC_ControllerGroup.Instance.QuestStateWasChanged(npcCode);
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
 
     // 퀘스트 데이터 Getter

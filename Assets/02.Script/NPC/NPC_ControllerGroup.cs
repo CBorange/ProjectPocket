@@ -59,14 +59,11 @@ public class NPC_ControllerGroup : MonoBehaviour
     }
 
     // Method When PlayerQuest State was Changed
-    public void QuestStateWasChanged(int npcCode)
+    public void QuestStateWasChanged()
     {
-        NPC_Controller controller = null;
-        if (npcControllers.TryGetValue(npcCode, out controller))
+        foreach (var kvp in npcControllers)
         {
-            controller.QuestMarkerChangeAccordingToState();
+            kvp.Value.QuestMarkerChangeAccordingToState();
         }
-        else
-            Debug.Log("QuestStateMark Change Fail");
     }
 }

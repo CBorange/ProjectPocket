@@ -14,6 +14,7 @@ public class PlayerStatusPanel : MonoBehaviour
     public Text WP_Text;
     public Text AP_Text;
     public Text SP_Text;
+    public Text Gold_Text;
 
     public void Initialize()
     {
@@ -50,6 +51,7 @@ public class PlayerStatusPanel : MonoBehaviour
         // Stat
         AP_Text.text = stat.AttackPoint.ToString();
         SP_Text.text = stat.ShieldPoint.ToString();
-
+        // Money
+        Gold_Text.text = stat.Gold.ToString();
     }
 }

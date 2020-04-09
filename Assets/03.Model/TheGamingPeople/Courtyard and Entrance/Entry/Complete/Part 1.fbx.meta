@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: 9453ddb23915fcd4b94d6d9f40a06aca
+timeCreated: 1518886893
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cube
+    100002: Cube.001
+    100004: Cube.004
+    100006: Cube.028
+    100008: Cube.059
+    100010: Cylinder.000
+    100012: Cylinder.001
+    100014: Cylinder.002
+    100016: Cylinder.003
+    100018: Cylinder.004
+    100020: Cylinder.005
+    100022: Cylinder.006
+    100024: Cylinder.007
+    100026: //RootNode
+    100028: Plane.001
+    100030: Plane.002
+    100032: Plane.003
+    100034: Sphere
+    400000: Cube
+    400002: Cube.001
+    400004: Cube.004
+    400006: Cube.028
+    400008: Cube.059
+    400010: Cylinder.000
+    400012: Cylinder.001
+    400014: Cylinder.002
+    400016: Cylinder.003
+    400018: Cylinder.004
+    400020: Cylinder.005
+    400022: Cylinder.006
+    400024: Cylinder.007
+    400026: //RootNode
+    400028: Plane.001
+    400030: Plane.002
+    400032: Plane.003
+    400034: Sphere
+    2100000: Floor
+    2100002: Candle
+    2100004: Door
+    2100006: Door Frame
+    2100008: Floor Bricke
+    2100010: Door Wall UP
+    2100012: Sphere
+    2100014: Ovale 2
+    2100016: Ovale 1
+    2100018: Door Wall
+    2100020: Big Pillar
+    2100022: Sideways Walls
+    2300000: Cube
+    2300002: Cube.001
+    2300004: Cube.004
+    2300006: Cube.028
+    2300008: Cube.059
+    2300010: Cylinder.000
+    2300012: Cylinder.001
+    2300014: Cylinder.002
+    2300016: Cylinder.003
+    2300018: Cylinder.004
+    2300020: Cylinder.005
+    2300022: Cylinder.006
+    2300024: Cylinder.007
+    2300026: Plane.001
+    2300028: Plane.002
+    2300030: Plane.003
+    2300032: Sphere
+    3300000: Cube
+    3300002: Cube.001
+    3300004: Cube.004
+    3300006: Cube.028
+    3300008: Cube.059
+    3300010: Cylinder.000
+    3300012: Cylinder.001
+    3300014: Cylinder.002
+    3300016: Cylinder.003
+    3300018: Cylinder.004
+    3300020: Cylinder.005
+    3300022: Cylinder.006
+    3300024: Cylinder.007
+    3300026: Plane.001
+    3300028: Plane.002
+    3300030: Plane.003
+    3300032: Sphere
+    4300000: Cube.001
+    4300002: Cylinder.003
+    4300004: Cube.028
+    4300006: Cube.059
+    4300008: Cube.004
+    4300010: Plane.003
+    4300012: Sphere
+    4300014: Plane.002
+    4300016: Plane.001
+    4300018: Cube
+    4300020: Cylinder.001
+    4300022: Cylinder.000
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Big Pillar
+    second: {fileID: 2100000, guid: 4a4525694cdc2ba4db747278cd9c2dc7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Candle
+    second: {fileID: 2100000, guid: 2e633ecaf3d8e584da0b466086521365, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door
+    second: {fileID: 2100000, guid: d471673e67038c343b6cc6bbca203091, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door Frame
+    second: {fileID: 2100000, guid: cfb7659e07d68b241b7e0669c279bd2e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door Wall
+    second: {fileID: 2100000, guid: f0ec59e98b641ec4897dc4307d6e5fb4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door Wall UP
+    second: {fileID: 2100000, guid: 861cfed49053e184697b1238328563c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor
+    second: {fileID: 2100000, guid: 20644b3ef5de6854fba00e820ba42322, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor Bricke
+    second: {fileID: 2100000, guid: 70bc2f7a61f35e240b3b25a25cee9085, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ovale 1
+    second: {fileID: 2100000, guid: e4c262c9ff7414343a14a6ea5d356cff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ovale 2
+    second: {fileID: 2100000, guid: 1a74aecaebc54634db1b5497feabaaf2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sideways Walls
+    second: {fileID: 2100000, guid: b54165f0e62697540b8c96a95735f74b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sphere
+    second: {fileID: 2100000, guid: 568f23fd2cdce6a4494b188f3d66902c, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

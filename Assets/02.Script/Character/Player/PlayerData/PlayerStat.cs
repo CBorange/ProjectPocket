@@ -201,6 +201,10 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     }
 
     // Status Change Method
+    public void AddPermanenceAP(float ap)
+    {
+        origin_AttackPoint += ap;
+    }
     public void AddChangeAP(int id, float ap)
     {
         apChanged.Add(id, ap);
