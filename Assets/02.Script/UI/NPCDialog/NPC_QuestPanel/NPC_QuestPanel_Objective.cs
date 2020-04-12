@@ -160,10 +160,18 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     for (int i = 0; i < items.Length; ++i)
                     {
                         ItemData item = ItemDB.Instance.GetItemData(items[i].ItemCode);
-                        if (i == items.Length)
-                            builder.Append($"[{item.Name} / {items[i].ItemCount}개]");
-                        else
-                            builder.Append($"[{item.Name} / {items[i].ItemCount}개], ");
+                        builder.Append($"[{item.Name} / {items[i].ItemCount}개]");
+                        if (i != items.Length - 1)
+                            builder.Append(", ");
+                    }
+                    break;
+                case "GetStatus":
+                    RewardStatus[] statuses = data.Reward_GetStatus.RewardStatuss;
+                    for (int i = 0; i < statuses.Length; ++i)
+                    {
+                        builder.Append($"[{statuses[i].StatusName} / {statuses[i].Amount}]");
+                        if (i != statuses.Length - 1)
+                            builder.Append(", ");
                     }
                     break;
             }

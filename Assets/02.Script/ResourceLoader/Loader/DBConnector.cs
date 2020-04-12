@@ -319,6 +319,9 @@ public class DBConnector : MonoBehaviour
                     case "GetItem":
                         questData.Reward_GetItem = LoadQuestReward_GetItem(questData.QuestCode);
                         break;
+                    case "GetStatus":
+                        questData.Reward_GetStatus = LoadQuestReward_GetStatus(questData.QuestCode);
+                        break;
                 }
             }
             return questData;
@@ -457,6 +460,59 @@ public class DBConnector : MonoBehaviour
         else
         {
             Debug.Log($"QuestReward_GetItem DB 에서 {questCode} 퀘스트 Reward 를 찾을 수 없습니다");
+            return null;
+        }
+    }
+    private QuestReward_GetStatus LoadQuestReward_GetStatus(int questCode)
+    {
+        string query = $"SELECT * FROM dbo.QuestReward_GetStatus WHERE QuestCode = '{questCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonSTR = string.Empty;
+        QuestReward_GetStatus reward = null;
+        if (dataSet != null)
+        {
+            try
+            {
+                jsonSTR = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                reward = JsonUtility.FromJson<QuestReward_GetStatus>(jsonSTR);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"QuestReward_GetStatus : {questCode} 오류 / {e.Message}");
+            }
+            return reward;
+        }
+        else
+        {
+            Debug.Log($"QuestReward_GetStatus DB 에서 {questCode} 퀘스트 Reward 를 찾을 수 없습니다");
+            return null;
+        }
+    }
+
+    public MonsterData LoadMonsterData(int monsterCode)
+    {
+        string query = $"SELECT * FROM dbo.Monster WHERE MonsterCode = '{monsterCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonSTR = string.Empty;
+        MonsterData monster = null;
+        if (dataSet != null)
+        {
+            try
+            {
+                jsonSTR = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
+                monster = JsonUtility.FromJson<MonsterData>(jsonSTR);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Monter DB(DBMS) : {monsterCode} 오류 / {e.Message}");
+            }
+            return monster;
+        }
+        else
+        {
+            Debug.Log($"Monter DB(DBMS) 에서 {monsterCode} 몬스터 를 찾을 수 없습니다");
             return null;
         }
     }

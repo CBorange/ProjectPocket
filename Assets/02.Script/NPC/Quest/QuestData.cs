@@ -24,6 +24,7 @@ public class QuestData
 
     // Reward
     public QuestReward_GetItem Reward_GetItem;
+    public QuestReward_GetStatus Reward_GetStatus;
 
     public QuestData() { }
     public QuestData(QuestBehaviour_Discussion discussion, QuestBehaviour_Building building, QuestBehaviour_KillMonster killMonster, QuestBehaviour_GetItem getItem)

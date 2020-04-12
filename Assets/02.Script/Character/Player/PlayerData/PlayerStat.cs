@@ -200,10 +200,13 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         changedStatusCallback = callback;
     }
 
-    // Status Change Method
+    #region Status Change Method
+
+    // AP Change
     public void AddPermanenceAP(float ap)
     {
         origin_AttackPoint += ap;
+        ApplyAPChangeValue();
     }
     public void AddChangeAP(int id, float ap)
     {
@@ -225,4 +228,12 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         attackPoint = origin_AttackPoint + changedValue;
         changedStatusCallback();
     }
+
+    // Gold Change
+    public void AddGold(int amount)
+    {
+        gold += amount;
+        changedStatusCallback();
+    }
+    #endregion
 }

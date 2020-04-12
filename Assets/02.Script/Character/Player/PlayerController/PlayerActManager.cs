@@ -58,7 +58,7 @@ public class PlayerActManager : MonoBehaviour
     {
         UnEquipWeapon();
 
-        weaponModel = Instantiate(Resources.Load<GameObject>($"Prefab/Weapon/{weaponData.Name}"), WeaponGrapPosition);
+        weaponModel = Instantiate(Resources.Load<GameObject>($"Weapon/{weaponData.Name}"), WeaponGrapPosition);
         weaponModel.transform.localPosition = weaponData.GrapPoint;
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
 

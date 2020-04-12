@@ -205,6 +205,18 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                         PlayerInventory.Instance.AddItemToInventory(new ImpliedItemData(items[itemIdx].ItemType, items[itemIdx].ItemCode, items[itemIdx].ItemCount));
                     }
                     break;
+                case "GetStatus":
+                    RewardStatus[] statuss = data.Reward_GetStatus.RewardStatuss;
+                    for (int statusIdx = 0; statusIdx < statuss.Length; ++statusIdx)
+                    {
+                        switch(statuss[statusIdx].StatusType)
+                        {
+                            case "Gold":
+                                PlayerStat.Instance.AddGold(statuss[statusIdx].Amount);
+                                break;
+                        }
+                    }
+                    break;
             }
         }
 
