@@ -20,4 +20,7 @@ public interface CharacterStat
     float ShieldPoint { get;}
     float AttackPoint { get;}
     float AttackSpeed { get;}
+
+    // Callback Method
+    void GetDamage(float ap);
 }

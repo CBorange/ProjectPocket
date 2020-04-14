@@ -11,7 +11,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void Awake()
     {
-        interactAction = PlayerActManager.Instance.AttackOnEquipmentWeapon;
+        interactAction = PlayerActManager.Instance.ExecuteAttack;
     }
     private void FixedUpdate()
     {
@@ -66,6 +66,6 @@ public class PlayerInputController : MonoBehaviour
     }
     public void InteractCommand_ChangedToAttack()
     {
-        interactAction = PlayerActManager.Instance.AttackOnEquipmentWeapon;
+        interactAction = PlayerActManager.Instance.ExecuteAttack;
     }
 }

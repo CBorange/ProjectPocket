@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using System;
 
-public class PlayerActManager : MonoBehaviour
+public class PlayerActManager : MonoBehaviour, ActController
 {
     #region Singleton
     private static PlayerActManager instance;
@@ -54,6 +54,7 @@ public class PlayerActManager : MonoBehaviour
     private bool currentlyAttacking = false;
     public bool CurrentlyAttacking { get; }
 
+    // Weapon, Attack Method
     public void EquipWeapon(WeaponData weaponData)
     {
         UnEquipWeapon();
@@ -81,7 +82,7 @@ public class PlayerActManager : MonoBehaviour
             weaponModel = null;
         }
     }
-    public void AttackOnEquipmentWeapon()
+    public void ExecuteAttack()
     {
         if (currentlyAttacking || PlayerMovementController.Instance.CurrentlyMoving || PlayerMovementController.Instance.NowJumped)
             return;
@@ -90,8 +91,18 @@ public class PlayerActManager : MonoBehaviour
         equipedWeaponBehaviour.PlayAttack();
         currentlyAttacking = true;
     }
-    private void EndAttack()
+    public void EndAttack()
     {
         currentlyAttacking = false;
+    }
+
+    // GetDamage Method
+    public void GetDamage()
+    {
+        // 공격받은 action 취함
+    }
+    public void CharacterDeath()
+    {
+        // 사망 모션, 처리
     }
 }

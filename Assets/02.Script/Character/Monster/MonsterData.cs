@@ -6,7 +6,8 @@ using UnityEngine;
 public class MonsterData
 {
     public int MonsterCode;
-    public string MonsterName;
+    public string MonsterKorName;
+    public string MonsterEngName;
     public float MoveSpeed;
     public float JumpSpeed;
     public float HealthPoint;

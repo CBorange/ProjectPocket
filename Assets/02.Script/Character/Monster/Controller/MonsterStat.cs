@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MonsterStat : MonoBehaviour, CharacterStat
 {
@@ -86,6 +87,9 @@ public class MonsterStat : MonoBehaviour, CharacterStat
     }
     #endregion
 
+    // Controller
+    public MonsterController Controller;
+
     // Data
     public int MonsterCode;
     private MonsterData data;
@@ -93,7 +97,8 @@ public class MonsterStat : MonoBehaviour, CharacterStat
     {
         get { return data; }
     }
-    private void Awake()
+    public Action changedStatusCallback;
+    public void Initialize()
     {
         data = MonsterDB.Instance.GetMonsterData(MonsterCode);
 
@@ -111,5 +116,22 @@ public class MonsterStat : MonoBehaviour, CharacterStat
         shieldPoint = origin_MaxShieldPoint;
         attackPoint = origin_AttackPoint;
         attackSpeed = origin_AttackSpeed;
+    }
+
+    // Method
+    public void GetDamage(float ap)
+    {
+        float damage = ap - shieldPoint;
+        if (damage < 0)
+            damage = 1;
+        healthPoint -= damage;
+        if (healthPoint <= 0)
+        {
+            healthPoint = 0;
+            Controller.CharacterDeath();
+        }
+        else
+            Controller.GetDamage();
+        changedStatusCallback();
     }
 }

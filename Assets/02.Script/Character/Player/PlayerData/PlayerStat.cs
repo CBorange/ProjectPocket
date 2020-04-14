@@ -39,6 +39,8 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
         }
     }
     #endregion
+    // Controller
+    public PlayerActManager ActManager;
     #region Stat
     // Character Origin Stat
     private float origin_MoveSpeed;
@@ -201,6 +203,22 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
     }
 
     #region Status Change Method
+    public void GetDamage(float ap)
+    {
+        float damage = ap - shieldPoint;
+        if (damage < 0)
+            damage = 1;
+        healthPoint -= damage;
+
+        if (healthPoint <= 0)
+        {
+            healthPoint = 0;
+            ActManager.CharacterDeath();
+        }
+        else
+            ActManager.GetDamage();
+        changedStatusCallback();
+    }
 
     // AP Change
     public void AddPermanenceAP(float ap)

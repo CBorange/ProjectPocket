@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace AIMachineLibrary
 {
@@ -8,7 +9,15 @@ namespace AIMachineLibrary
     {
         // Parameters For Trigger
         private Dictionary<string, bool> booleanParameters;
+        public Dictionary<string, bool> BooleanParameters
+        {
+            get { return booleanParameters; }
+        }
         private Dictionary<string, int> integerParameters;
+        public Dictionary<string, int> IntegerParameters
+        {
+            get { return integerParameters; }
+        }
 
         // Variable For Action
         private Dictionary<string, AIAction> aiActions;
@@ -27,27 +36,45 @@ namespace AIMachineLibrary
         public void StartAI()
         {
             ai_InOperation = true;
-            currentAction.Execute(this);
+            currentAction.ExecuteAction();
         }
 
         // Parameter Method
-        public void AddBool(string name)
+        public void AddBool(string name, bool initValue)
         {
-            booleanParameters.Add(name, false);
+            booleanParameters.Add(name, initValue);
         }
-        public void AddInteger(string name)
+        public void AddInteger(string name, int initValue)
         {
-            integerParameters.Add(name, 0);
+            integerParameters.Add(name, initValue);
         }
-        public void SetBool(string name, bool value)
+        public void SetBool(string parameterName, bool newValue)
         {
-
+            bool foundParameter = false;
+            if (booleanParameters.TryGetValue(parameterName, out foundParameter))
+            {
+                booleanParameters[parameterName] = newValue;
+                currentAction.ExecuteTransit();
+            }
+            else
+                PrintDebug_InvaildParameter(parameterName);
+        }
+        public void SetInteger(string parameterName, int newValue)
+        {
+            int foundParameter = 0;
+            if (integerParameters.TryGetValue(parameterName, out foundParameter))
+            {
+                integerParameters[parameterName] = newValue;
+                currentAction.ExecuteTransit();
+            }
+            else
+                PrintDebug_InvaildParameter(parameterName);
         }
 
         // AIAction Method
-        public void AddAction(string name, AIAction action)
+        public void AddAction(string actionName, IEnumerator action, bool isRepeat)
         {
-            aiActions.Add(name, action);
+            aiActions.Add(actionName, new AIAction(action, actionName, isRepeat, this));
         }
         public void SetEntryAction(string actionName)
         {
@@ -80,10 +107,9 @@ namespace AIMachineLibrary
             }
             foundStartAction.AddTransition(transtionKey, new ActionTransition(foundTargetAction));
         }
-        public void ConnectBoolOnTransition(string actionName, string parameterName, bool state, string transitionKey)
+        public void ConnectBoolOnTransition(string actionName, string parameterName, bool valueForTransit, string transitionName)
         {
             AIAction foundAction = null;
-            ActionTransition transition = null;
             bool foundParameter = false;
             if (!aiActions.TryGetValue(actionName, out foundAction))
             {
@@ -95,17 +121,12 @@ namespace AIMachineLibrary
                 PrintDebug_InvaildParameter(parameterName);
                 return;
             }
-            if (!foundAction.Transitions.TryGetValue(transitionKey, out transition))
-            {
-                PrintDebug_InvaildTransition(actionName, transitionKey);
-                return;
-            }
-            transition.AddBool(parameterName, state);
+            if (!foundAction.ConnectBooleanOnTransition(transitionName, parameterName, valueForTransit))
+                PrintDebug_InvaildTransition(actionName, transitionName);
         }
-        public void ConnectIntegerOnTranstion(string actionName, string parameterName, int state, string transitionKey)
+        public void ConnectIntegerOnTranstion(string actionName, string parameterName, int valueForTransit, string transitionName)
         {
             AIAction foundAction = null;
-            ActionTransition transition = null;
             bool foundParameter = false;
             if (!aiActions.TryGetValue(actionName, out foundAction))
             {
@@ -117,12 +138,19 @@ namespace AIMachineLibrary
                 PrintDebug_InvaildParameter(parameterName);
                 return;
             }
-            if (!foundAction.Transitions.TryGetValue(transitionKey, out transition))
+            if (!foundAction.ConnectIntergerOnTransition(transitionName, parameterName, valueForTransit))
+                PrintDebug_InvaildTransition(actionName, transitionName);
+        }
+
+        // Callback
+        public void EndAction(IEnumerator resetedRoutine)
+        {
+            currentAction.ResetAction(resetedRoutine);
+            if (!currentAction.ExecuteTransit())
             {
-                PrintDebug_InvaildTransition(actionName, transitionKey);
-                return;
+                if (currentAction.IsRepeat)
+                    currentAction.ExecuteAction();
             }
-            transition.AddInteger(parameterName, state);
         }
 
         // AIAction Util Method
