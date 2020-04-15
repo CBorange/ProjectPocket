@@ -359,13 +359,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6dd95bb13a99cb488d76172d1cded90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Machine: {fileID: 7561607730725153614}
   Controller: {fileID: 4051170894447719573}
   Stat: {fileID: 3857998600224539579}
   CognitionArea: {fileID: 7574254456584419951}
   AttackArea: {fileID: 5087682842612906324}
   NavAgent: {fileID: 3698646366384294191}
-  TargetIdentifyRange: 5
+  TargetIdentifyRange: 10
   RandomMoveRange: 3
 --- !u!114 &1518240192738254624
 MonoBehaviour:

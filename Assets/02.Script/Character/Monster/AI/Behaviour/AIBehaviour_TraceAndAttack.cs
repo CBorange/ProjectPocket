@@ -4,23 +4,31 @@ using UnityEngine;
 using AIMachineLibrary;
 using UnityEngine.AI;
 
+public enum AI_TraceAndAttack_State
+{
+    SearchPlayer,
+    TracePlayer,
+    ReturnSpawnCoord
+};
 public class AIBehaviour_TraceAndAttack : MonoBehaviour
 {
     // Controller
-    public AIMachine Machine;
     public MonsterController Controller;
     public MonsterStat Stat;
     public MonsterSearchColider CognitionArea;
     public MonsterSearchColider AttackArea;
-
     public NavMeshAgent NavAgent;
 
     // Parameter For Behaviour
+    private AI_TraceAndAttack_State aiState;
+
+    // Data
     public float TargetIdentifyRange;
     public float RandomMoveRange;
-    // Data
     private Transform player;
-    
+
+    // Parameter For AI State
+    private bool trackingPlayer;
 
     private void Awake()
     {
@@ -29,107 +37,81 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         CognitionArea.Initiailize(PlayerEnterInCognitionArea, PlayerExitInCognitionArea, TargetIdentifyRange);
         AttackArea.Initiailize(PlayerEnterInAttackArea, PlayerExitInAttackArea, Stat.CurrentData.AttackRange);
 
-        Machine.Initialize();
         SettingAgent();
-        SettingMachine();
+        StartAI();
+    }
+    private void StartAI()
+    {
+        aiState = AI_TraceAndAttack_State.SearchPlayer;
+        StartCoroutine("AI_FSM");
     }
     private void SettingAgent()
     {
         NavAgent.speed = Stat.MoveSpeed;
     }
-    private void SettingMachine()
+    private IEnumerator AI_FSM()
     {
-        // Add Action/Transition
-        Machine.AddAction("SearchPlayer", IE_SearchPlayer(), true);
-        Machine.AddAction("TracePlayer", IE_TracePlayer(), false);
-        Machine.AddAction("ReturnSpawnCoord", IE_ReturnSpawnCoord(), false);
-
-        Machine.AddTransition("SearchPlayer", "A1", "TracePlayer");
-        Machine.AddTransition("TracePlayer", "B1", "ReturnSpawnCoord");
-        Machine.AddTransition("ReturnSpawnCoord", "B2", "SearchPlayer");
-
-        Machine.AddBool("EnemyIdentified", false);
-        Machine.AddBool("EnemyInRange", false);
-
-        // Connect Transition
-        Machine.ConnectBoolOnTransition("SearchPlayer", "EnemyIdentified", true, "A1");
-        Machine.ConnectBoolOnTransition("TracePlayer", "EnemyIdentified", false, "B1");
-
-        // Start
-        Machine.SetEntryAction("SearchPlayer");
-        Machine.StartAI();
+        while (true)
+        {
+            yield return StartCoroutine(aiState.ToString());
+        }
     }
-
-    // Callback Call by Monster Cognition Colider
-    private void PlayerEnterInCognitionArea(Transform player)
-    {
-        this.player = player;
-        Machine.SetBool("EnemyIdentified", true);
-    }
-    private void PlayerExitInCognitionArea()
-    {
-        Machine.SetBool("EnemyIdentified", false);
-    }
-    private void PlayerEnterInAttackArea(Transform player)
-    {
-        this.player = player;
-        
-    }
-    private void PlayerExitInAttackArea()
-    {
-    }
-
     // Behaviours
-    private IEnumerator IE_SearchPlayer()
+    private IEnumerator SearchPlayer()
     {
-        Debug.Log("Start SearchPlayer");
+        Debug.Log("SearchPlayer");
+        bool nowMoving = true;
         CognitionArea.gameObject.SetActive(true);
         Vector3 randMoveVec = new Vector3(Random.Range(-RandomMoveRange, RandomMoveRange), 0, Random.Range(-RandomMoveRange, RandomMoveRange));
         Vector3 newDest = transform.position + randMoveVec;
         NavAgent.isStopped = false;
         NavAgent.SetDestination(newDest);
-        while (true)
+
+        while (nowMoving && aiState == AI_TraceAndAttack_State.SearchPlayer) 
         {
+            yield return new WaitForEndOfFrame();
             if (AgentIsArrivedOnTarget()) 
             {
+                nowMoving = false;
                 NavAgent.isStopped = true;
                 yield return new WaitForSeconds(3f);
-                Machine.EndAction(IE_SearchPlayer());
             }
-            yield return new WaitForEndOfFrame();
         }
     }
-    private IEnumerator IE_TracePlayer()
+    private IEnumerator TracePlayer()
     {
         Debug.Log("Start TracePlayer");
         AttackArea.gameObject.SetActive(true);
         NavAgent.isStopped = false;
-        while (true)
+        trackingPlayer = true;
+        while (trackingPlayer)
         {
+            yield return new WaitForEndOfFrame();
             if (AgentIsArrivedOnTarget())
             {
                 NavAgent.isStopped = true;
-                Machine.EndAction(IE_TracePlayer());
             }
             NavAgent.SetDestination(player.position);
-            yield return new WaitForEndOfFrame();
         }
     }
-    private IEnumerator IE_ReturnSpawnCoord()
+    private IEnumerator ReturnSpawnCoord()
     {
         Debug.Log($"Start ReturnSpawnCoord : {Controller.SpawnCoord}");
+
+        bool nowReturing = true;
         CognitionArea.gameObject.SetActive(false);
         AttackArea.gameObject.SetActive(false);
         NavAgent.isStopped = false;
         NavAgent.SetDestination(Controller.SpawnCoord);
-        while (true)
+        while (nowReturing)
         {
+            yield return new WaitForEndOfFrame();
             if (AgentIsArrivedOnTarget())
             {
                 NavAgent.isStopped = true;
-                Machine.EndAction(IE_ReturnSpawnCoord());
+                nowReturing = false;
+                aiState = AI_TraceAndAttack_State.SearchPlayer;
             }
-            yield return new WaitForEndOfFrame();
         }
     }
     private bool AgentIsArrivedOnTarget()
@@ -140,5 +122,25 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    // Callback Call by Monster Cognition Colider
+    private void PlayerEnterInCognitionArea(Transform player)
+    {
+        this.player = player;
+        aiState = AI_TraceAndAttack_State.TracePlayer;
+    }
+    private void PlayerExitInCognitionArea()
+    {
+        trackingPlayer = false;
+        aiState = AI_TraceAndAttack_State.ReturnSpawnCoord;
+    }
+    private void PlayerEnterInAttackArea(Transform player)
+    {
+        this.player = player;
+
+    }
+    private void PlayerExitInAttackArea()
+    {
     }
 }
