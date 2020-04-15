@@ -152,6 +152,10 @@ namespace AIMachineLibrary
                     currentAction.ExecuteAction();
             }
         }
+        public void SetCurrentAction(AIAction action)
+        {
+            currentAction = action;
+        }
 
         // AIAction Util Method
         private void PrintDebug_InvaildAction(string actionName)

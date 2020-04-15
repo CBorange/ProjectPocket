@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 4051170894447719573}
   - component: {fileID: 3857998600224539579}
   - component: {fileID: 583112224255859815}
+  - component: {fileID: 1518240192738254624}
   - component: {fileID: 2505426973540037920}
   - component: {fileID: 7968963757917875350}
   - component: {fileID: 3698646366384294191}
@@ -330,6 +331,7 @@ MonoBehaviour:
   MonsterCode: 80001
   SpawnCoord: {x: 0, y: 0, z: 0}
   Stat: {fileID: 3857998600224539579}
+  PanelController: {fileID: 1518240192738254624}
   AttackSystem: {fileID: 1446463223636257890}
 --- !u!114 &3857998600224539579
 MonoBehaviour:
@@ -365,6 +367,21 @@ MonoBehaviour:
   NavAgent: {fileID: 3698646366384294191}
   TargetIdentifyRange: 5
   RandomMoveRange: 3
+--- !u!114 &1518240192738254624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5056255903561208865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47400cf9f58d9064e965c077c4d9f7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stat: {fileID: 3857998600224539579}
+  StatusPanelPrefab: {fileID: 4496771186380701448, guid: de6ed7980d9a9b441824cb3b8798fec1,
+    type: 3}
 --- !u!54 &2505426973540037920
 Rigidbody:
   m_ObjectHideFlags: 0

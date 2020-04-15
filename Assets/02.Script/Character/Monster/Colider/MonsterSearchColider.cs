@@ -21,7 +21,6 @@ public class MonsterSearchColider : MonoBehaviour
     {
         if (other.tag.Equals(targetTag))
         {
-            Debug.Log("Player In Colider");
             targetEnterCallback(other.transform);
         }
     }
@@ -29,7 +28,6 @@ public class MonsterSearchColider : MonoBehaviour
     {
         if (other.tag.Equals(targetTag))
         {
-            Debug.Log("Player Out Colider");
             targetExitCallback();
         }
     }

@@ -117,7 +117,11 @@ public class MonsterStat : MonoBehaviour, CharacterStat
         attackPoint = origin_AttackPoint;
         attackSpeed = origin_AttackSpeed;
     }
-
+    public void Attach_ChangedCallback(Action callback)
+    {
+        changedStatusCallback = callback;
+        changedStatusCallback();
+    }
     // Method
     public void GetDamage(float ap)
     {

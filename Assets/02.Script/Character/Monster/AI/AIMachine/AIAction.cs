@@ -105,10 +105,12 @@ namespace AIMachineLibrary
         // Action Method
         public void ExecuteAction()
         {
+            machine.SetCurrentAction(this);
             machine.StartCoroutine(myAction);
         }
         public void ResetAction(IEnumerator resetedAction)
         {
+            machine.StopCoroutine(myAction);
             myAction = resetedAction;
         }
     }

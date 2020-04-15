@@ -11,11 +11,13 @@ public class MonsterController : MonoBehaviour, ActController
 
     // Controller
     public MonsterStat Stat;
+    public MonsterPanelController PanelController;
     public MonsterAttackSystem AttackSystem;
 
     public void Initialize()
     {
         Stat.Initialize();
+        PanelController.Initialize();
         AttackSystem.Initialize();
     }
 

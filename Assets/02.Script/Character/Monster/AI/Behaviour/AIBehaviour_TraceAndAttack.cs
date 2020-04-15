@@ -45,21 +45,17 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         Machine.AddAction("ReturnSpawnCoord", IE_ReturnSpawnCoord(), false);
 
         Machine.AddTransition("SearchPlayer", "A1", "TracePlayer");
-        Machine.AddTransition("TracePlayer", "A2", "SearchPlayer");
         Machine.AddTransition("TracePlayer", "B1", "ReturnSpawnCoord");
         Machine.AddTransition("ReturnSpawnCoord", "B2", "SearchPlayer");
 
         Machine.AddBool("EnemyIdentified", false);
         Machine.AddBool("EnemyInRange", false);
-        Machine.AddBool("EnemyDisappear", false);
 
         // Connect Transition
         Machine.ConnectBoolOnTransition("SearchPlayer", "EnemyIdentified", true, "A1");
-        Machine.ConnectBoolOnTransition("TracePlayer", "EnemyIdentified", false, "A2");
-        Machine.ConnectBoolOnTransition("TracePlayer", "EnemyDisappear", true, "B1");
+        Machine.ConnectBoolOnTransition("TracePlayer", "EnemyIdentified", false, "B1");
 
         // Start
-        CognitionArea.gameObject.SetActive(true);
         Machine.SetEntryAction("SearchPlayer");
         Machine.StartAI();
     }
@@ -86,6 +82,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     // Behaviours
     private IEnumerator IE_SearchPlayer()
     {
+        Debug.Log("Start SearchPlayer");
+        CognitionArea.gameObject.SetActive(true);
         Vector3 randMoveVec = new Vector3(Random.Range(-RandomMoveRange, RandomMoveRange), 0, Random.Range(-RandomMoveRange, RandomMoveRange));
         Vector3 newDest = transform.position + randMoveVec;
         NavAgent.isStopped = false;
@@ -103,23 +101,23 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     }
     private IEnumerator IE_TracePlayer()
     {
+        Debug.Log("Start TracePlayer");
         AttackArea.gameObject.SetActive(true);
         NavAgent.isStopped = false;
-        NavAgent.SetDestination(player.position);
         while (true)
         {
             if (AgentIsArrivedOnTarget())
             {
                 NavAgent.isStopped = true;
-                yield return new WaitForSeconds(3f);
                 Machine.EndAction(IE_TracePlayer());
-                yield return null;
             }
+            NavAgent.SetDestination(player.position);
             yield return new WaitForEndOfFrame();
         }
     }
     private IEnumerator IE_ReturnSpawnCoord()
     {
+        Debug.Log($"Start ReturnSpawnCoord : {Controller.SpawnCoord}");
         CognitionArea.gameObject.SetActive(false);
         AttackArea.gameObject.SetActive(false);
         NavAgent.isStopped = false;
@@ -130,7 +128,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
             {
                 NavAgent.isStopped = true;
                 Machine.EndAction(IE_ReturnSpawnCoord());
-                yield return null;
             }
             yield return new WaitForEndOfFrame();
         }
