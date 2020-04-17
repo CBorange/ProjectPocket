@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Data;
 using System;
 using System.Data.SqlClient;
+using MonsterAttackBehaviour;
 
 public class DBConnector : MonoBehaviour
 {
@@ -492,7 +493,7 @@ public class DBConnector : MonoBehaviour
 
     public MonsterData LoadMonsterData(int monsterCode)
     {
-        string query = $"SELECT * FROM dbo.Monster WHERE MonsterCode = '{monsterCode}'";
+        string query = $"SELECT * FROM dbo.MonsterInfo WHERE MonsterCode = '{monsterCode}'";
         DataSet dataSet = ConnectToDB("Game_DB", query);
 
         string jsonSTR = string.Empty;
@@ -513,6 +514,32 @@ public class DBConnector : MonoBehaviour
         else
         {
             Debug.Log($"Monter DB(DBMS) 에서 {monsterCode} 몬스터 를 찾을 수 없습니다");
+            return null;
+        }
+    }
+    public MonsterPatternJSON LoadMonsterAttackPattern(int monsterCode)
+    {
+        string query = $"SELECT * FROM dbo.MonsterPattern WHERE MonsterCode = '{monsterCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonSTR = string.Empty;
+        MonsterPatternJSON pattern = null;
+        if (dataSet != null)
+        {
+            try
+            {
+                jsonSTR = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                pattern = JsonUtility.FromJson<MonsterPatternJSON>(jsonSTR);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Monter DB(DBMS) : {monsterCode} 오류 / {e.Message}");
+            }
+            return pattern;
+        }
+        else
+        {
+            Debug.Log($"Monter DB(DBMS) 에서 {monsterCode} 몬스터 패턴 을 찾을 수 없습니다");
             return null;
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
+public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
 {
     #region Singleton
     private static PlayerStat instance;
@@ -215,8 +215,6 @@ public class PlayerStat : MonoBehaviour, CharacterStat, PlayerRuntimeData
             healthPoint = 0;
             ActManager.CharacterDeath();
         }
-        else
-            ActManager.GetDamage();
         changedStatusCallback();
     }
 

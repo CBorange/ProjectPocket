@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MonsterAttackBehaviour;
 
 public class MonsterDB
 {
@@ -8,6 +9,7 @@ public class MonsterDB
     private MonsterDB()
     {
         monsterDatas = new Dictionary<int, MonsterData>();
+        monsterPatterns = new Dictionary<int, MonsterPatternJSON>();
     }
     private static MonsterDB instance;
     public static MonsterDB Instance
@@ -25,6 +27,11 @@ public class MonsterDB
     public Dictionary<int, MonsterData> MonsterDatas
     {
         get { return monsterDatas; }
+    }
+    private Dictionary<int, MonsterPatternJSON> monsterPatterns;
+    public Dictionary<int, MonsterPatternJSON> MonsterPatterns
+    {
+        get { return monsterPatterns; }
     }
 
     // Method
@@ -50,5 +57,26 @@ public class MonsterDB
             }
         }
     }
-
+    public MonsterPatternJSON GetMonsterPattern(int monsterCode)
+    {
+        MonsterPatternJSON foundJSON = null;
+        if (monsterPatterns.TryGetValue(monsterCode, out foundJSON))
+        {
+            return foundJSON;
+        }
+        else
+        {
+            foundJSON = DBConnector.Instance.LoadMonsterAttackPattern(monsterCode);
+            if (foundJSON == null)
+            {
+                Debug.Log($"Monster DB : {monsterCode} 로드 실패");
+                return null;
+            }
+            else
+            {
+                monsterPatterns.Add(monsterCode, foundJSON);
+                return foundJSON;
+            }
+        }
+    }
 }

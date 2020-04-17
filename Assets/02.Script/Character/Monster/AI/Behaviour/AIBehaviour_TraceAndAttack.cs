@@ -8,11 +8,13 @@ public enum AI_TraceAndAttack_State
 {
     SearchPlayer,
     TracePlayer,
-    ReturnSpawnCoord
+    ReturnSpawnCoord,
+    AttackPlayer
 };
 public class AIBehaviour_TraceAndAttack : MonoBehaviour
 {
     // Controller
+    public Animator MobAnimator;
     public MonsterController Controller;
     public MonsterStat Stat;
     public MonsterSearchColider CognitionArea;
@@ -25,10 +27,12 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     // Data
     public float TargetIdentifyRange;
     public float RandomMoveRange;
+    public float AttackActionLength;
     private Transform player;
 
     // Parameter For AI State
     private bool trackingPlayer;
+    private bool attackingPlayer;
 
     private void Awake()
     {
@@ -43,18 +47,11 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     private void StartAI()
     {
         aiState = AI_TraceAndAttack_State.SearchPlayer;
-        StartCoroutine("AI_FSM");
+        StartCoroutine("SearchPlayer");
     }
     private void SettingAgent()
     {
         NavAgent.speed = Stat.MoveSpeed;
-    }
-    private IEnumerator AI_FSM()
-    {
-        while (true)
-        {
-            yield return StartCoroutine(aiState.ToString());
-        }
     }
     // Behaviours
     private IEnumerator SearchPlayer()
@@ -66,6 +63,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         Vector3 newDest = transform.position + randMoveVec;
         NavAgent.isStopped = false;
         NavAgent.SetDestination(newDest);
+        MobAnimator.SetBool("Move", true);
 
         while (nowMoving && aiState == AI_TraceAndAttack_State.SearchPlayer) 
         {
@@ -74,7 +72,10 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
             {
                 nowMoving = false;
                 NavAgent.isStopped = true;
+                MobAnimator.SetBool("Move", false);
                 yield return new WaitForSeconds(3f);
+                if (aiState == AI_TraceAndAttack_State.SearchPlayer)
+                    StartCoroutine("SearchPlayer");
             }
         }
     }
@@ -84,6 +85,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         AttackArea.gameObject.SetActive(true);
         NavAgent.isStopped = false;
         trackingPlayer = true;
+        MobAnimator.SetBool("Move", true);
+
         while (trackingPlayer)
         {
             yield return new WaitForEndOfFrame();
@@ -103,6 +106,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         AttackArea.gameObject.SetActive(false);
         NavAgent.isStopped = false;
         NavAgent.SetDestination(Controller.SpawnCoord);
+        MobAnimator.SetBool("Move", true);
+
         while (nowReturing)
         {
             yield return new WaitForEndOfFrame();
@@ -110,8 +115,20 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
             {
                 NavAgent.isStopped = true;
                 nowReturing = false;
-                aiState = AI_TraceAndAttack_State.SearchPlayer;
+                StartCoroutine("SearchPlayer");
             }
+        }
+    }
+    private IEnumerator AttackPlayer()
+    {
+        Debug.Log("Start AttackPlayer");
+        NavAgent.isStopped = true;
+        attackingPlayer = true;
+        MobAnimator.SetBool("Attack", true);
+        while (attackingPlayer)
+        {
+            Controller.ExecuteAttack();
+            yield return new WaitForSeconds(AttackActionLength);
         }
     }
     private bool AgentIsArrivedOnTarget()
@@ -128,19 +145,25 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     private void PlayerEnterInCognitionArea(Transform player)
     {
         this.player = player;
+        StartCoroutine("TracePlayer");
         aiState = AI_TraceAndAttack_State.TracePlayer;
     }
     private void PlayerExitInCognitionArea()
     {
         trackingPlayer = false;
+        StartCoroutine("ReturnSpawnCoord");
         aiState = AI_TraceAndAttack_State.ReturnSpawnCoord;
     }
     private void PlayerEnterInAttackArea(Transform player)
     {
         this.player = player;
-
+        StartCoroutine("AttackPlayer");
+        aiState = AI_TraceAndAttack_State.AttackPlayer;
     }
     private void PlayerExitInAttackArea()
     {
+        MobAnimator.SetBool("Attack", false);
+        StartCoroutine("TracePlayer");
+        attackingPlayer = false;
     }
 }

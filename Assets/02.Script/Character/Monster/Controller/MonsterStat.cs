@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MonsterStat : MonoBehaviour, CharacterStat
+public class MonsterStat : MonoBehaviour, ICharacterStat
 {
     #region Stat
     // Character Origin Stat
@@ -134,8 +134,6 @@ public class MonsterStat : MonoBehaviour, CharacterStat
             healthPoint = 0;
             Controller.CharacterDeath();
         }
-        else
-            Controller.GetDamage();
         changedStatusCallback();
     }
 }

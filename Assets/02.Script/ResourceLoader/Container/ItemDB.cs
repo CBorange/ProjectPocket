@@ -59,7 +59,7 @@ public class ItemDB
 
             WeaponData newData = new WeaponData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2],
                 dataItems[3].ToString(), Convert.ToSingle(dataItems[4]), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]),
-                grapPoint, grapRotation);
+                grapPoint, grapRotation, Convert.ToSingle(dataItems[9]), Convert.ToSingle(dataItems[10]));
             weaponDatas.Add((int)dataItems[2], newData);
         }
     }

@@ -73,7 +73,15 @@ public class MapLoader : MonoBehaviour
     }
     private void InstantiateMap()
     {
-        loadedMap = Instantiate(loadedMapPrefab).GetComponent<MapController>();
+        try
+        {
+            loadedMap = Instantiate(loadedMapPrefab).GetComponent<MapController>();
+        }
+        catch(Exception)
+        {
+            GameObject firstVillage = Resources.Load<GameObject>($"Map/Map_FirstVillage");
+            loadedMap = Instantiate(firstVillage).GetComponent<MapController>();
+        }
         loadingPanel.ClosePanel();
 
         if (UserInfoProvider.Instance.LastMap.Equals(loadedMapName))

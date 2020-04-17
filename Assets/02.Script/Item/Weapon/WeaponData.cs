@@ -58,9 +58,21 @@ public class WeaponData : ItemData
         get { return grapRotation; }
         set { grapRotation = value; }
     }
+    private float triggerDelay;
+    public float TriggerDelay
+    {
+        get { return triggerDelay; }
+        set { triggerDelay = value; }
+    }
+    private float triggerHold;
+    public float TriggerHold
+    {
+        get { return triggerHold; }
+        set { triggerHold = value; }
+    }
 
     public WeaponData(string name, string introduce, int itemCode, string weaponType, float attackPoint, float attackSpeed, float range,
-        Vector3 grapPoint, Vector3 grapRotation)
+        Vector3 grapPoint, Vector3 grapRotation, float triggerDelay, float triggerHold)
     {
         this.name = name;
         this.introduce = introduce;
@@ -71,5 +83,7 @@ public class WeaponData : ItemData
         this.range = range;
         this.grapPoint = grapPoint;
         this.grapRotation = grapRotation;
+        this.triggerDelay = triggerDelay;
+        this.triggerHold = triggerHold;
     }
 }

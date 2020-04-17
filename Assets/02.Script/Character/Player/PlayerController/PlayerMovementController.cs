@@ -42,12 +42,6 @@ public class PlayerMovementController : MonoBehaviour
     public Animator animator;
     public Rigidbody myRigidbody;
 
-    // State
-    private bool nowJumped = false;
-    public bool NowJumped { get { return nowJumped; } }
-    private bool currentlyMoving = false;
-    public bool CurrentlyMoving { get { return currentlyMoving; } }
-
     private void Start()
     {
     }
@@ -56,7 +50,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (collision.collider.transform.position.y < transform.position.y)
         {
-            nowJumped = false;
+            PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.SetBool("FlyAir", false);
         }
     }
@@ -64,7 +58,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (moveVecX == 0 && moveVecZ == 0)
         {
-            currentlyMoving = false;
+            PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.SetBool("Walk", false);
             return;
         }
@@ -86,15 +80,15 @@ public class PlayerMovementController : MonoBehaviour
         // 계산된 각도만큼 회전, 플레이어 이동
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
         transform.Translate(transform.forward * PlayerStat.Instance.MoveSpeed * Time.deltaTime, Space.World);
-        currentlyMoving = true;
+        PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Move;
         animator.SetBool("Walk", true);
     }
     public void Jump()
     {
-        if (nowJumped)
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Jump)
             return;
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.JumpSpeed, ForceMode.Impulse);
-        nowJumped = true;
+        PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
         animator.SetTrigger("Jumped");
         animator.SetBool("FlyAir", true);
     }
