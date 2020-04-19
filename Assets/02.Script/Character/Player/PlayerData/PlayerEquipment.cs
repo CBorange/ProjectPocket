@@ -87,6 +87,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     {
         PlayerActManager.Instance.UnEquipWeapon();
         PlayerStat.Instance.RemoveChangeAP(equipedWeapon.ItemCode);
+        PlayerStat.Instance.RemoveChangeAttackSpeed(equipedWeapon.ItemCode);
         equipedWeapon = null;
         equipedWeaponImpliedData = null;
     }
