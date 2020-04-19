@@ -40,7 +40,6 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     }
     #endregion
     // Controller
-    public PlayerActManager ActManager;
     #region Stat
     // Character Origin Stat
     private float origin_MoveSpeed;
@@ -213,7 +212,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         if (healthPoint <= 0)
         {
             healthPoint = 0;
-            ActManager.CharacterDeath();
+            PlayerActManager.Instance.CharacterDeath();
         }
         changedStatusCallback();
     }
@@ -242,6 +241,33 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
             changedValue += kvp.Value;
         }
         attackPoint = origin_AttackPoint + changedValue;
+        changedStatusCallback();
+    }
+
+    // AttackSpeed Change
+    public void AddPermanenceAttackSpeed(float attackSpeed)
+    {
+        origin_AttackSpeed += attackSpeed;
+        ApplyAttackSpeedChangeValue();
+    }
+    public void AddChangeAttackSpeed(int id, float attackSpeed)
+    {
+        attackSpeedChanged.Add(id, attackSpeed);
+        ApplyAttackSpeedChangeValue();
+    }
+    public void RemoveChangeAttackSpeed(int id)
+    {
+        attackSpeedChanged.Remove(id);
+        ApplyAttackSpeedChangeValue();
+    }
+    private void ApplyAttackSpeedChangeValue()
+    {
+        float changedValue = 0;
+        foreach (var kvp in attackSpeedChanged)
+        {
+            changedValue += kvp.Value;
+        }
+        attackSpeed = origin_AttackSpeed + changedValue;
         changedStatusCallback();
     }
 

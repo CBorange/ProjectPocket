@@ -5,11 +5,18 @@ using System;
 
 public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
 {
-    private Transform playerTransform;
+    // Constant
+    private const float ONEHANDATTACK_LENGTH = 1.167f;
+
+    // Controller
     private Animator playerAnimator;
+    private PlayerAttack_Instant playerAttack;
+
+    // Data
+    private Transform playerTransform;
     private WeaponData weaponData;
     private Action attackEndCallback;
-    private PlayerAttack_Instant playerAttack;
+    private float animEndTime;
 
     public void CreateBehaviour(WeaponData weaponData, Action attackEndCallback)
     {
@@ -23,12 +30,24 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
         newColiderBox.transform.parent = PlayerActManager.Instance.transform;
         playerAttack = newColiderBox.AddComponent<PlayerAttack_Instant>();
-        playerAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(1.5f, 2, weaponData.Range), new Vector3(0, 1, 1), weaponData.AttackPoint);
+        playerAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, 1), weaponData);
     }
     public void PlayAttack()
     {
-        playerAnimator.SetTrigger("OneHand_Attack");
+        playerAnimator.speed = PlayerStat.Instance.AttackSpeed;
+        animEndTime = ONEHANDATTACK_LENGTH / PlayerStat.Instance.AttackSpeed;
+        playerAnimator.SetTrigger("Attack");
+
+        Invoke("CallEndCallback", animEndTime);
+        Invoke("ExecuteAttack", weaponData.TriggerDelay);
+    }
+    private void ExecuteAttack()
+    {
         playerAttack.Execute();
+    }
+    private void CallEndCallback()
+    {
+        attackEndCallback();
     }
     public void ReleaseBehaviour()
     {

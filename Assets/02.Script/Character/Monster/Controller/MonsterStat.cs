@@ -98,6 +98,11 @@ public class MonsterStat : MonoBehaviour, ICharacterStat
         get { return data; }
     }
     public Action changedStatusCallback;
+    private void OnEnable()
+    {
+        healthPoint = maxHealthPoint;
+        changedStatusCallback?.Invoke();
+    }
     public void Initialize()
     {
         data = MonsterDB.Instance.GetMonsterData(MonsterCode);

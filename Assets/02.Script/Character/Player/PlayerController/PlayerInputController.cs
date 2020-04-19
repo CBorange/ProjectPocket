@@ -13,12 +13,16 @@ public class PlayerInputController : MonoBehaviour
     {
         interactAction = PlayerActManager.Instance.ExecuteAttack;
     }
+    private void Update()
+    {
+        PC_PlayerActionInput();
+    }
     private void FixedUpdate()
     {
 #if UNITY_EDITOR
+        
         PC_CameraInput();
         PC_PlayerMoveInput();
-        PC_PlayerActionInput();
 #endif
 #if UNITY_ANDROID
 
@@ -51,8 +55,10 @@ public class PlayerInputController : MonoBehaviour
 
     private void PC_PlayerActionInput()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.X))
+        {
             interactAction();
+        }
     }
 
     // InteractChange Callback

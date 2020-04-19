@@ -49,6 +49,7 @@ public class PlayerActManager : MonoBehaviour, IActController
     public Transform WeaponGrapPosition;
     public Animator animator;
     private GameObject weaponModel;
+    private bool nowAttacking;
 
     private CharacterBehaviour currentBehaviour;
     public CharacterBehaviour CurrentBehaviour
@@ -87,15 +88,23 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void ExecuteAttack()
     {
-        if (currentBehaviour != CharacterBehaviour.Idle)
+        if (nowAttacking)
             return;
+        if (currentBehaviour != CharacterBehaviour.Idle)
+        {
+            Debug.Log("플레이어 상태가 Idle이 아님.");
+            return;
+        }
         if (equipedWeaponBehaviour == null)
             return;
+        nowAttacking = true;
         equipedWeaponBehaviour.PlayAttack();
         currentBehaviour = CharacterBehaviour.Attack;
     }
     public void EndAttack()
     {
+        Debug.Log("EndAttack");
+        nowAttacking = false;
         currentBehaviour = CharacterBehaviour.Idle;
     }
 

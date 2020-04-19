@@ -178,12 +178,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                     break;
                 case "KillMonster":
                     TargetMonsterData[] monsterDatas = newProgress.OriginalQuestData.Behaviour_KillMonster.TargetMonster;
-
-                    int[] monsterCode = new int[monsterDatas.Length];
-                    for (int i = 0; i < monsterCode.Length; ++i)
-                        monsterCode[i] = monsterDatas[i].MonsterCode;
-
-                    questProgress_KillMonster.StartQuest(questCode, monsterCode);
+                    questProgress_KillMonster.StartQuest(questCode, monsterDatas);
                     break;
             }
         }

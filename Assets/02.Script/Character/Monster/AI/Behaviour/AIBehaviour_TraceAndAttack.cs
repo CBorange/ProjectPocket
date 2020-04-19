@@ -72,10 +72,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         while (nowMoving && aiState == AI_TraceAndAttack_State.SearchPlayer) 
         {
             yield return new WaitForEndOfFrame();
-            Debug.Log($"SearchPlayer remainingDistance : {NavAgent.remainingDistance}");
             if (AgentIsArrivedOnTarget()) 
             {
-                Debug.Log("SearchPlayer ArrivedOnTarget");
                 nowMoving = false;
                 NavAgent.isStopped = true;
                 MobAnimator.SetBool("Move", false);
@@ -87,19 +85,16 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     }
     private IEnumerator TracePlayer()
     {
-        Debug.Log("Start TracePlayer");
         AttackArea.gameObject.SetActive(true);
         NavAgent.isStopped = false;
         trackingPlayer = true;
         MobAnimator.SetBool("Move", true);
 
-        Debug.Log($"{aiState.ToString()}");
         while (trackingPlayer && aiState == AI_TraceAndAttack_State.TracePlayer)
         {
             yield return new WaitForEndOfFrame();
             if (aiState != AI_TraceAndAttack_State.TracePlayer)
                 yield break;
-            Debug.Log($"remainingDistance : {NavAgent.remainingDistance}");
             NavAgent.SetDestination(player.position);
             if (AgentIsArrivedOnTarget())
             {
@@ -117,7 +112,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         NavAgent.SetDestination(Controller.SpawnCoord);
         MobAnimator.SetBool("Move", true);
 
-        Debug.Log($"Start ReturnSpawnCoord : Controller : {Controller.SpawnCoord} ReturnCoord : {NavAgent.destination}");
         while (nowReturing)
         {
             yield return new WaitForEndOfFrame();
@@ -132,7 +126,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     }
     private IEnumerator AttackPlayer()
     {
-        Debug.Log("Start AttackPlayer");
         NavAgent.isStopped = true;
         attackingPlayer = true;
         MobAnimator.SetBool("Attack", true);

@@ -62,7 +62,10 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     KillMonsterProgressInfo[] killMonsters = PlayerQuest.Instance.GetDetailedKillMonsterProgresses(data.QuestCode);
                     for (int i = 0; i < killMonsters.Length; ++i)
                     {
-
+                        string mobName = MonsterDB.Instance.GetMonsterData(killMonsters[i].TargetMonster).MonsterKorName;
+                        builder.Append($"[{mobName} : {killMonsters[i].CurrentKillCount} / {killMonsters[i].GoalKillCount}]");
+                        if (i < killMonsters.Length - 1)
+                            builder.Append(",");
                     }
                     break;
                 case "Building":
@@ -154,6 +157,15 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                         ItemData item = ItemDB.Instance.GetItemData(items[i].ItemCode);
                         builder.Append($"[{item.Name} / {items[i].ItemCount}개]");
                         if (i < items.Length - 1)
+                            builder.Append(", ");
+                    }
+                    break;
+                case "GetStatus":
+                    RewardStatus[] statuses = data.Reward_GetStatus.RewardStatuss;
+                    for (int i = 0; i < statuses.Length; ++i)
+                    {
+                        builder.Append($"[{statuses[i].StatusName} / {statuses[i].Amount} 영구 획득]");
+                        if (i < statuses.Length - 1)
                             builder.Append(", ");
                     }
                     break;

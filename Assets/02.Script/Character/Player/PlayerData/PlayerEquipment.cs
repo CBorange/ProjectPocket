@@ -113,6 +113,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
         PlayerStat.Instance.AddChangeAP(equipedWeapon.ItemCode, equipedWeapon.AttackPoint);
+        PlayerStat.Instance.AddChangeAttackSpeed(equipedWeapon.ItemCode, equipedWeapon.AttackSpeed);
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {

@@ -59,17 +59,18 @@ public class QuestProgress_KillMonster
             Debug.Log($"QuestProgress_Discussion 퀘스트 성공 실패, {questCode}");
         }
     }
-    public void StartQuest(int questCode, int[] targetMonsters)
+    public void StartQuest(int questCode, TargetMonsterData[] targets)
     {
         TotalKillMonsterProgress newProgress = new TotalKillMonsterProgress();
         newProgress.QuestCode = questCode;
         newProgress.Completed = false;
-        newProgress.Progress = new KillMonsterProgressInfo[targetMonsters.Length];
-        for (int i = 0; i < targetMonsters.Length; ++i)
+        newProgress.Progress = new KillMonsterProgressInfo[targets.Length];
+        for (int i = 0; i < targets.Length; ++i)
         {
             newProgress.Progress[i] = new KillMonsterProgressInfo();
-            newProgress.Progress[i].TargetMonster = targetMonsters[i];
-            newProgress.Progress[i].KillCount = 0;
+            newProgress.Progress[i].TargetMonster = targets[i].MonsterCode;
+            newProgress.Progress[i].CurrentKillCount = 0;
+            newProgress.Progress[i].GoalKillCount = targets[i].KillCount;
         }
         totalProgressDic.Add(questCode, newProgress);
     }
@@ -85,5 +86,6 @@ public class TotalKillMonsterProgress
 public class KillMonsterProgressInfo
 {
     public int TargetMonster;
-    public int KillCount;
+    public int CurrentKillCount;
+    public int GoalKillCount;
 }

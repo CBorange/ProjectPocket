@@ -51,6 +51,7 @@ public class PlayerMovementController : MonoBehaviour
         if (collision.collider.transform.position.y < transform.position.y)
         {
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
+            animator.speed = 1;
             animator.SetBool("FlyAir", false);
         }
     }
@@ -81,6 +82,7 @@ public class PlayerMovementController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
         transform.Translate(transform.forward * PlayerStat.Instance.MoveSpeed * Time.deltaTime, Space.World);
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Move;
+        animator.speed = PlayerStat.Instance.MoveSpeed / 2;
         animator.SetBool("Walk", true);
     }
     public void Jump()
@@ -89,6 +91,7 @@ public class PlayerMovementController : MonoBehaviour
             return;
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.JumpSpeed, ForceMode.Impulse);
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
+        animator.speed = 1;
         animator.SetTrigger("Jumped");
         animator.SetBool("FlyAir", true);
     }
