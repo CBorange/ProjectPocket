@@ -7,6 +7,7 @@ TagManager:
   - Player_WeaponColBox
   - NPC
   - PLAYER
+  - Monster
   layers:
   - Default
   - TransparentFX

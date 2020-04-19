@@ -38,13 +38,13 @@ public class MonsterSpawner : MonoBehaviour
         {
             if (activeMobPool.Count != MaxSpawnCount)
             {
+                activeMobPool.Add(deactiveMobPool[0]);
+
                 deactiveMobPool[0].SetActive(true);
                 Vector3 spawnPos = CalculateSpawnCoord();
                 deactiveMobPool[0].transform.position = spawnPos;
                 deactiveMobPool[0].GetComponent<MonsterController>().SpawnCoord = spawnPos;
                 deactiveMobPool.RemoveAt(0);
-
-                activeMobPool.Add(deactiveMobPool[0]);
             }
             yield return new WaitForSeconds(SpawnDelay);
         }

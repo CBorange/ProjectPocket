@@ -28,12 +28,16 @@ public class PlayerAttack_Instant : MonoBehaviour
     private void Refresh()
     {
         transform.localScale = colliderSize;
-        transform.position = playerTransform.position + colliderPosition;
+        transform.localPosition = colliderPosition;
         transform.rotation = playerTransform.rotation;
         return;
     }
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag.Equals("Monster"))
+        {
+            other.GetComponent<MonsterStat>().GetDamage(attackPoint);
+            gameObject.SetActive(false);
+        }
     }
 }

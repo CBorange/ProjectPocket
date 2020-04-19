@@ -65,7 +65,6 @@ public class MonsterAttack_Instant : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("InstantAttack");
         if (other.tag.Equals("PLAYER"))
         {
             other.GetComponent<PlayerActManager>().GetDamage(attackPoint);

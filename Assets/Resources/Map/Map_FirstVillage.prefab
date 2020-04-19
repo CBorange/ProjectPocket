@@ -5286,7 +5286,7 @@ Animator:
   m_GameObject: {fileID: 7315697872584787260}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: bff429107601444d59c67940e6ad78c4, type: 3}
-  m_Controller: {fileID: 9100000, guid: 8df5b386369d54778a922298504d1aba, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -6239,6 +6239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 153029073751661359}
+  - component: {fileID: -8203431292417746991}
   m_Layer: 0
   m_Name: Map_FirstVillage
   m_TagString: Untagged
@@ -6264,6 +6265,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8203431292417746991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8610685178780757749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c3c92e956b9164ebd9875daabeb761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerStartPos: {fileID: 153029074068305224}
+  Spawners: []
 --- !u!1 &8623024092499582777
 GameObject:
   m_ObjectHideFlags: 0

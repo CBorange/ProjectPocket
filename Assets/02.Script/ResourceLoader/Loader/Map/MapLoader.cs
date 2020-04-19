@@ -53,7 +53,7 @@ public class MapLoader : MonoBehaviour
     public void LoadMap(string mapName)
     {
         if (loadedMap != null)
-            Destroy(loadedMap);
+            Destroy(loadedMap.gameObject);
 
         loadingPanel.OpenPanel();
         loadingPanel.SetLoadingText($"맵 : {mapName}");

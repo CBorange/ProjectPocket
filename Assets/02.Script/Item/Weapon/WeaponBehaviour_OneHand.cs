@@ -21,6 +21,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
 
         // Create ColiderBox
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
+        newColiderBox.transform.parent = PlayerActManager.Instance.transform;
         playerAttack = newColiderBox.AddComponent<PlayerAttack_Instant>();
         playerAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(1.5f, 2, weaponData.Range), new Vector3(0, 1, 1), weaponData.AttackPoint);
     }
