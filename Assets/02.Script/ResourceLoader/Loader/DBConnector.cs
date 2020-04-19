@@ -127,11 +127,19 @@ public class DBConnector : MonoBehaviour
         string inventoryJSON = dataArray[1].ToString();
 
         InventoryJSON jsonObject = JsonUtility.FromJson<InventoryJSON>(inventoryJSON);
-        ImpliedItemData[] impliedItemDatas = jsonObject.impliedItemDatas;
-        if (impliedItemDatas.Length == 0) 
+        InventoryJSONUnit[] inventoryItemJSONInfos = jsonObject.ItemUnits;
+        if (inventoryItemJSONInfos.Length == 0)
             UserInventoryProvider.Instance.Initialize(null);
         else
-            UserInventoryProvider.Instance.Initialize(impliedItemDatas);
+        {
+            InventoryItem[] inventoryItems = new InventoryItem[inventoryItemJSONInfos.Length];
+            for (int i = 0; i < inventoryItems.Length; ++i)
+            {
+                ItemData data = ItemDB.Instance.GetItemData(inventoryItemJSONInfos[i].ItemCode);
+                inventoryItems[i] = new InventoryItem(data, inventoryItemJSONInfos[i].ItemCount);
+            }
+            UserInventoryProvider.Instance.Initialize(inventoryItems);
+        }
         return "Success";
     }
     public string LoadUserEquipment()
@@ -148,24 +156,13 @@ public class DBConnector : MonoBehaviour
             return "Success";
         }
         object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
-        int[] itemArray = new int[dataArray.Length];
+        int equipedWeaponCode = (int)dataArray[1];
+        int equipedRingCode = (int)dataArray[2];
+        int equipedNecklaceCode = (int)dataArray[3];
 
-        for (int i = 1; i < dataArray.Length; ++i)
-            itemArray[i] = (int)dataArray[i];
-
-        ImpliedItemData weaponData = null;
-        ImpliedItemData ringData = null;
-        ImpliedItemData necklaceData = null;
-        if (itemArray[0] != 0)
-            weaponData = new ImpliedItemData("Weapon", itemArray[0], 1);
-        if (itemArray[1] != 0)
-            weaponData = new ImpliedItemData("Accesorie", itemArray[1], 1);
-        if (itemArray[2] != 0)
-            weaponData = new ImpliedItemData("Accesorie", itemArray[2], 1);
-
-        UserEquipmentProvider.Instance.Initialize(weaponData,
-                                                  ringData,
-                                                  necklaceData);
+        UserEquipmentProvider.Instance.Initialize(ItemDB.Instance.GetWeaponData(equipedWeaponCode),
+                                                  ItemDB.Instance.GetAccesorieData(equipedRingCode),
+                                                  ItemDB.Instance.GetAccesorieData(equipedNecklaceCode));
         return "Success";
     }
     public string LoadUserQuests()

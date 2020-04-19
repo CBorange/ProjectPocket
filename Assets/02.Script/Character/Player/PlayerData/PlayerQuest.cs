@@ -195,10 +195,14 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             {
                 case "GetItem":
                     RewardItem[] items = data.Reward_GetItem.RewardItems;
+                    InventoryItem[] newItems = new InventoryItem[items.Length];
                     for (int itemIdx = 0; itemIdx < items.Length; ++itemIdx)
                     {
-                        PlayerInventory.Instance.AddItemToInventory(new ImpliedItemData(items[itemIdx].ItemType, items[itemIdx].ItemCode, items[itemIdx].ItemCount));
+                        ItemData rewardItem = ItemDB.Instance.GetItemData(items[itemIdx].ItemCode);
+                        newItems[itemIdx] = new InventoryItem(rewardItem, items[itemIdx].ItemCount);
+                        
                     }
+                    PlayerInventory.Instance.AddItemToInventory(newItems);
                     break;
                 case "GetStatus":
                     RewardStatus[] statuss = data.Reward_GetStatus.RewardStatuss;

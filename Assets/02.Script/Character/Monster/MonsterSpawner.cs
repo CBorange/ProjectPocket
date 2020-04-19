@@ -27,6 +27,7 @@ public class MonsterSpawner : MonoBehaviour
         for (int i = 0; i < MaxSpawnCount; ++i)
         {
             GameObject newMonster = Instantiate(SpawnMobPrefab, transform);
+            newMonster.GetComponent<MonsterController>().Initialize(DeathMonster);
             newMonster.gameObject.SetActive(false);
 
             deactiveMobPool.Add(newMonster);
@@ -43,7 +44,9 @@ public class MonsterSpawner : MonoBehaviour
                 deactiveMobPool[0].SetActive(true);
                 Vector3 spawnPos = CalculateSpawnCoord();
                 deactiveMobPool[0].transform.position = spawnPos;
-                deactiveMobPool[0].GetComponent<MonsterController>().SpawnCoord = spawnPos;
+                MonsterController controller = deactiveMobPool[0].GetComponent<MonsterController>();
+                controller.SpawnCoord = spawnPos;
+                controller.Respawn();
                 deactiveMobPool.RemoveAt(0);
             }
             yield return new WaitForSeconds(SpawnDelay);
@@ -59,5 +62,10 @@ public class MonsterSpawner : MonoBehaviour
         coord.y = SpawnHeight;
 
         return coord;
+    }
+    private void DeathMonster(GameObject deathMonster)
+    {
+        activeMobPool.Remove(deathMonster);
+        deactiveMobPool.Add(deathMonster);
     }
 }

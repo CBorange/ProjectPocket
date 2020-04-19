@@ -17,22 +17,22 @@ public class UserEquipmentProvider
         }
     }
 
-    private ImpliedItemData weaponItem;
-    public ImpliedItemData WeaponItem
+    private WeaponData weaponItem;
+    public WeaponData WeaponItem
     {
         get { return weaponItem; }
     }
-    private ImpliedItemData accesorie_Ring;
-    public ImpliedItemData Accesorie_Ring
+    private AccesorieData accesorie_Ring;
+    public AccesorieData Accesorie_Ring
     {
         get { return accesorie_Ring; }
     }
-    private ImpliedItemData accesorie_Necklace;
-    public ImpliedItemData Accesorie_Necklace
+    private AccesorieData accesorie_Necklace;
+    public AccesorieData Accesorie_Necklace
     {
         get { return accesorie_Necklace; }
     }
-    public void Initialize(ImpliedItemData weaponData, ImpliedItemData ringData, ImpliedItemData necklaceData)
+    public void Initialize(WeaponData weaponData, AccesorieData ringData, AccesorieData necklaceData)
     {
         weaponItem = weaponData;
         accesorie_Ring = ringData;

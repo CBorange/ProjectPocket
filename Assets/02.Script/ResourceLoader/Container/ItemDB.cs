@@ -4,20 +4,6 @@ using System;
 using UnityEngine;
 using System.Data;
 
-[System.Serializable]
-public class ImpliedItemData
-{
-    public string ItemType;
-    public int ItemCode;
-    public int ItemCount;
-    public ImpliedItemData() { }
-    public ImpliedItemData(string itemType, int itemCode, int itemCount)
-    {
-        ItemType = itemType;
-        ItemCode = itemCode;
-        ItemCount = itemCount;
-    }
-}
 public class ItemDB
 {
     // Singleton
@@ -52,14 +38,14 @@ public class ItemDB
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
 
-            string[] splitedGrapPoint = dataItems[7].ToString().Split(',');
-            string[] splitedGrapRotation = dataItems[8].ToString().Split(',');
+            string[] splitedGrapPoint = dataItems[8].ToString().Split(',');
+            string[] splitedGrapRotation = dataItems[9].ToString().Split(',');
             Vector3 grapPoint = new Vector3(float.Parse(splitedGrapPoint[0]), float.Parse(splitedGrapPoint[1]), float.Parse(splitedGrapPoint[2]));
             Vector3 grapRotation = new Vector3(float.Parse(splitedGrapRotation[0]), float.Parse(splitedGrapRotation[1]), float.Parse(splitedGrapRotation[2]));
 
             WeaponData newData = new WeaponData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2],
-                dataItems[3].ToString(), Convert.ToSingle(dataItems[4]), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]),
-                grapPoint, grapRotation, Convert.ToSingle(dataItems[9]), Convert.ToSingle(dataItems[10]));
+                dataItems[3].ToString(), dataItems[4].ToString(), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]), Convert.ToSingle(dataItems[7]),
+                grapPoint, grapRotation, Convert.ToSingle(dataItems[10]), Convert.ToSingle(dataItems[11]));
             weaponDatas.Add((int)dataItems[2], newData);
         }
     }
@@ -69,7 +55,7 @@ public class ItemDB
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
-            ExpendableData newData = new ExpendableData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2]);
+            ExpendableData newData = new ExpendableData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
             expendableDatas.Add((int)dataItems[2], newData);
         }
     }
@@ -79,7 +65,8 @@ public class ItemDB
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
-            AccesorieData newData = new AccesorieData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
+            AccesorieData newData = new AccesorieData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString()
+                , dataItems[4].ToString());
             accesorieDatas.Add((int)dataItems[2], newData);
         }
     }
@@ -89,7 +76,7 @@ public class ItemDB
         for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
         {
             object[] dataItems = rowCollection[rowIdx].ItemArray;
-            EtcData newData = new EtcData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2]);
+            EtcData newData = new EtcData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
             etcDatas.Add((int)dataItems[2], newData);
         }
     }

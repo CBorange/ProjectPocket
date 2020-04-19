@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class InventoryItem
+{
+    public ItemData OriginalItemData;
+    public int ItemCount;
+    public InventoryItem() { }
+    public InventoryItem(ItemData data, int itemCount)
+    {
+        OriginalItemData = data;
+        ItemCount = itemCount;
+    }
+}
 public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
 {
     #region Singleton
@@ -39,69 +50,70 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
     }
     #endregion
     // Data
-    private Dictionary<int, ImpliedItemData> impliedWeaponDataInfos;
-    public Dictionary<int, ImpliedItemData> ImpliedWeaponDataInfos
+    private Dictionary<int, InventoryItem> weaponItems;
+    public Dictionary<int, InventoryItem> WeaponItems
     {
-        get { return impliedWeaponDataInfos; }
+        get { return weaponItems; }
     }
-    private Dictionary<int, ImpliedItemData> impliedAccesorieDataInfos;
-    public Dictionary<int, ImpliedItemData> ImpliedAccesorieDataInfos
+    private Dictionary<int, InventoryItem> accesorieItems;
+    public Dictionary<int, InventoryItem> AccesorieItems
     {
-        get { return impliedAccesorieDataInfos; }
+        get { return accesorieItems; }
     }
-    private Dictionary<int, ImpliedItemData> impliedExpendableDataInfos;
-    public Dictionary<int, ImpliedItemData> ImpliedExpendableDataInfos
+    private Dictionary<int, InventoryItem> expendableItems;
+    public Dictionary<int, InventoryItem> ExpendableItems
     {
-        get { return impliedExpendableDataInfos; }
+        get { return expendableItems; }
     }
-    private Dictionary<int, ImpliedItemData> impliedEtcDataInfos;
-    public Dictionary<int, ImpliedItemData> ImpliedEtcDataInfos
+    private Dictionary<int, InventoryItem> etcItems;
+    public Dictionary<int, InventoryItem> EtcItems
     {
-        get { return impliedEtcDataInfos; }
+        get { return etcItems; }
     }
-    private Dictionary<int, ImpliedItemData> allItems;
-    public Dictionary<int, ImpliedItemData> AllItems
+    private Dictionary<int, InventoryItem> allItems;
+    public Dictionary<int, InventoryItem> AllItems
     {
         get { return allItems; }
     }
 
     public void Initialize()
     {
-        impliedWeaponDataInfos = new Dictionary<int, ImpliedItemData>();
-        impliedAccesorieDataInfos = new Dictionary<int, ImpliedItemData>();
-        impliedExpendableDataInfos = new Dictionary<int, ImpliedItemData>();
-        impliedEtcDataInfos = new Dictionary<int, ImpliedItemData>();
-        allItems = new Dictionary<int, ImpliedItemData>();
+        weaponItems = new Dictionary<int, InventoryItem>();
+        accesorieItems = new Dictionary<int, InventoryItem>();
+        expendableItems = new Dictionary<int, InventoryItem>();
+        etcItems = new Dictionary<int, InventoryItem>();
+        allItems = new Dictionary<int, InventoryItem>();
 
-        ImpliedItemData[] inventoryItems = UserInventoryProvider.Instance.ImplitedItemDatas;
+        InventoryItem[] inventoryItems = UserInventoryProvider.Instance.InventoryItems;
         if (inventoryItems == null)
-            return;                                                                                                       
-        for (int i = 0; i < inventoryItems.Length; ++i)
-        {
-            AddItemToInventory(inventoryItems[i]);
-        }
+            return;
+        AddItemToInventory(inventoryItems);
     }
-    public void AddItemToInventory(ImpliedItemData data)
+    public void AddItemToInventory(InventoryItem[] items)
     {
-        switch (data.ItemType)
+        for (int i = 0; i < items.Length; ++i)
         {
-            case "Weapon":
-                if (allItems.ContainsKey(data.ItemCode))
-                    return;
-                impliedWeaponDataInfos.Add(data.ItemCode, data);
-                break;
-            case "Expendable":
-                impliedExpendableDataInfos.Add(data.ItemCode, data);
-                break;
-            case "Accesorie":
-                if (allItems.ContainsKey(data.ItemCode))
-                    return;
-                impliedAccesorieDataInfos.Add(data.ItemCode, data);
-                break;
-            case "Etc":
-                impliedEtcDataInfos.Add(data.ItemCode, data);
-                break;
+            ItemData data = items[i].OriginalItemData;
+            switch (data.ItemType)
+            {
+                case "Weapon":
+                    if (allItems.ContainsKey(data.ItemCode))
+                        return;
+                    weaponItems.Add(data.ItemCode, items[i]);
+                    break;
+                case "Expendable":
+                    expendableItems.Add(data.ItemCode, items[i]);
+                    break;
+                case "Accesorie":
+                    if (allItems.ContainsKey(data.ItemCode))
+                        return;
+                    accesorieItems.Add(data.ItemCode, items[i]);
+                    break;
+                case "Etc":
+                    etcItems.Add(data.ItemCode, items[i]);
+                    break;
+            }
+            allItems.Add(data.ItemCode, items[i]);
         }
-        allItems.Add(data.ItemCode, data);
     }
 }

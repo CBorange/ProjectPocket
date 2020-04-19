@@ -5,5 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class InventoryJSON
 {
-    public ImpliedItemData[] impliedItemDatas;
+    public InventoryJSONUnit[] ItemUnits;
+}
+
+[System.Serializable]
+public class InventoryJSONUnit
+{
+    public int ItemCode;
+    public int ItemCount;
 }

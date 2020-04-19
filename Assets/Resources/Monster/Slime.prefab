@@ -328,9 +328,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterCode: 80001
+  DeathAnimLength: 1.333
   SpawnCoord: {x: 0, y: 0, z: 0}
   Stat: {fileID: 3857998600224539579}
   PanelController: {fileID: 1518240192738254624}
+  MobAnimator: {fileID: 7137104848642341761}
 --- !u!114 &3857998600224539579
 MonoBehaviour:
   m_ObjectHideFlags: 0

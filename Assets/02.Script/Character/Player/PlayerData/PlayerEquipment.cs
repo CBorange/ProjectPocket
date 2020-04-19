@@ -44,32 +44,15 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     {
         get { return equipedWeapon; }
     }
-    private ImpliedItemData equipedWeaponImpliedData;
-    public ImpliedItemData EquipedWeaponImpliedData
-    {
-        get { return equipedWeaponImpliedData; }
-    }
-
     private AccesorieData equipedRing;
     public AccesorieData EquipedRing
     {
         get { return equipedRing; }
     }
-    private ImpliedItemData equipedRingImpliedData;
-    public ImpliedItemData EquipedRingImpliedData
-    {
-        get { return equipedRingImpliedData; }
-    }
-
     private AccesorieData equipedNecklace;
     public AccesorieData EquipedNecklace
     {
         get { return equipedNecklace; }
-    }
-    private ImpliedItemData equipedNecklaceImpliedData;
-    public ImpliedItemData EquipedNecklaceImpliedData
-    {
-        get { return equipedNecklaceImpliedData; }
     }
 
     public void Initialize()
@@ -89,17 +72,14 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         PlayerStat.Instance.RemoveChangeAP(equipedWeapon.ItemCode);
         PlayerStat.Instance.RemoveChangeAttackSpeed(equipedWeapon.ItemCode);
         equipedWeapon = null;
-        equipedWeaponImpliedData = null;
     }
     public void UnequipAccesorie_Ring()
     {
         equipedRing = null;
-        equipedRingImpliedData = null;
     }
     public void UnequipAccesorie_Necklace()
     {
         equipedNecklace = null;
-        equipedNecklaceImpliedData = null;
     }
 
     // Equip
@@ -110,7 +90,6 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
 
         WeaponData weaponData = ItemDB.Instance.GetWeaponData(itemCode);
         equipedWeapon = weaponData;
-        equipedWeaponImpliedData = new ImpliedItemData("Weapon", itemCode, 1);
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
         PlayerStat.Instance.AddChangeAP(equipedWeapon.ItemCode, equipedWeapon.AttackPoint);
@@ -119,11 +98,9 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public void EquipAccesorie_Ring(AccesorieData data)
     {
         equipedRing = data;
-        equipedRingImpliedData = new ImpliedItemData("Accesorie", data.ItemCode, 1);
     }
     public void EquipAccesorie_Necklace(AccesorieData data)
     {
         equipedNecklace = data;
-        equipedNecklaceImpliedData = new ImpliedItemData("Accesorie", data.ItemCode, 1);
     }
 }

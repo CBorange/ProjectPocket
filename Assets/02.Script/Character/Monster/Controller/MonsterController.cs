@@ -9,18 +9,31 @@ public class MonsterController : MonoBehaviour, IActController
 {
     // Data
     public int MonsterCode;
+    public float DeathAnimLength;
     public Vector3 SpawnCoord;
+    private Action<GameObject> deathCallback;
 
     // Controller
     public MonsterStat Stat;
     public MonsterPanelController PanelController;
+    public Animator MobAnimator;
     private MonsterAttackSystem[] attackSystems;
+    private IAIBehaviour currentAI;
 
-    public void Initialize()
+    public void Initialize(Action<GameObject> deathCallback)
     {
+        this.deathCallback = deathCallback;
         Stat.Initialize();
         PanelController.Initialize();
         InitializeAttackSystems();
+
+        currentAI = GetComponent<IAIBehaviour>();
+        currentAI.Initialize();
+    }
+    public void Respawn()
+    {
+        PanelController.Respawn();
+        currentAI.Respawn();
     }
     private void InitializeAttackSystems()
     {
@@ -72,6 +85,13 @@ public class MonsterController : MonoBehaviour, IActController
     }
     public void CharacterDeath()
     {
-        
+        MobAnimator.SetTrigger("Death");
+        PanelController.Death();
+        Invoke("ExecuteDeathFunction", DeathAnimLength);
+    }
+    private void ExecuteDeathFunction()
+    {
+        deathCallback(gameObject);
+        gameObject.SetActive(false);
     }
 }

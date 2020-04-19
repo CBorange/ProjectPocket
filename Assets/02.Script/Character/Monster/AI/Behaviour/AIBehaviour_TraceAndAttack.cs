@@ -9,9 +9,10 @@ public enum AI_TraceAndAttack_State
     SearchPlayer,
     TracePlayer,
     ReturnSpawnCoord,
-    AttackPlayer
+    AttackPlayer,
+    Death
 };
-public class AIBehaviour_TraceAndAttack : MonoBehaviour
+public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
 {
     // Controller
     public Animator MobAnimator;
@@ -34,16 +35,14 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     private bool trackingPlayer;
     private bool attackingPlayer;
 
-    private void Awake()
+    public void Initialize()
     {
-        Controller.Initialize();
-
         CognitionArea.Initiailize(PlayerEnterInCognitionArea, PlayerExitInCognitionArea, TargetIdentifyRange);
         AttackArea.Initiailize(PlayerEnterInAttackArea, PlayerExitInAttackArea, Stat.CurrentData.AttackRange);
 
         SettingAgent();
     }
-    private void OnEnable()
+    public void Respawn()
     {
         StartAI();
     }
@@ -59,7 +58,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
     // Behaviours
     private IEnumerator SearchPlayer()
     {
-        Debug.Log("SearchPlayer");
         bool nowMoving = true;
         CognitionArea.gameObject.SetActive(true);
         Vector3 randMoveVec = new Vector3(Random.Range(-RandomMoveRange, RandomMoveRange), 0, Random.Range(-RandomMoveRange, RandomMoveRange));
@@ -72,6 +70,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         while (nowMoving && aiState == AI_TraceAndAttack_State.SearchPlayer) 
         {
             yield return new WaitForEndOfFrame();
+            if (aiState != AI_TraceAndAttack_State.SearchPlayer)
+                yield break;
             if (AgentIsArrivedOnTarget()) 
             {
                 nowMoving = false;
@@ -112,9 +112,11 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         NavAgent.SetDestination(Controller.SpawnCoord);
         MobAnimator.SetBool("Move", true);
 
-        while (nowReturing)
+        while (nowReturing && aiState == AI_TraceAndAttack_State.ReturnSpawnCoord)
         {
             yield return new WaitForEndOfFrame();
+            if (aiState != AI_TraceAndAttack_State.ReturnSpawnCoord)
+                yield break;
             if (AgentIsArrivedOnTarget())
             {
                 NavAgent.isStopped = true;
@@ -133,6 +135,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
         {
             Controller.ExecuteAttack();
             yield return new WaitForSeconds(AttackActionLength);
+            if (aiState == AI_TraceAndAttack_State.AttackPlayer)
+                yield break;
         }
     }
     private bool AgentIsArrivedOnTarget()
@@ -145,7 +149,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour
             return false;
     }
 
-    // Callback Call by Monster Cognition Colider
+    // Callback
     private void PlayerEnterInCognitionArea(Transform player)
     {
         this.player = player;

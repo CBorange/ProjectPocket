@@ -18,3 +18,8 @@ public class MonsterData
     public float AttackSpread;
     public float AttackHeight;
 }
+[System.Serializable]
+public class DropItem
+{
+    public int ItemCode;
+}

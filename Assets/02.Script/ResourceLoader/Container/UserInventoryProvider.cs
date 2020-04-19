@@ -17,13 +17,13 @@ public class UserInventoryProvider
         }
     }
 
-    private ImpliedItemData[] impliedItemDatas;
-    public ImpliedItemData[] ImplitedItemDatas
+    private InventoryItem[] inventoryItems;
+    public InventoryItem[] InventoryItems
     {
-        get { return impliedItemDatas; }
+        get { return inventoryItems; }
     }
-    public void Initialize(ImpliedItemData[] datas)
+    public void Initialize(InventoryItem[] datas)
     {
-        impliedItemDatas = datas;
+        inventoryItems = datas;
     }
 }

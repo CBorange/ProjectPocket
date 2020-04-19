@@ -20,6 +20,14 @@ public class MonsterPanelController : MonoBehaviour
         WorldUI_Canvas = GameObject.Find("UICanvas_World").transform;
         CreatePanelUI();
     }
+    public void Respawn()
+    {
+        statusPanelController.Respawn();
+    }
+    public void Death()
+    {
+        statusPanelController.Death();
+    }
     private void CreatePanelUI()
     {
         GameObject newPanel = Instantiate(StatusPanelPrefab, WorldUI_Canvas);

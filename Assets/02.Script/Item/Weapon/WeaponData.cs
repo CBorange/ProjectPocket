@@ -4,24 +4,6 @@ using UnityEngine;
 
 public class WeaponData : ItemData
 {
-    private string name;
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
-    private string introduce;
-    public string Introduce
-    {
-        get { return introduce; }
-        set { introduce = value; }
-    }
-    private int itemCode;
-    public int ItemCode
-    {
-        get { return itemCode; }
-        set { itemCode = value; }
-    }
     private string weaponType;
     public string WeaponType
     {
@@ -71,12 +53,13 @@ public class WeaponData : ItemData
         set { triggerHold = value; }
     }
 
-    public WeaponData(string name, string introduce, int itemCode, string weaponType, float attackPoint, float attackSpeed, float range,
+    public WeaponData(string name, string introduce, int itemCode, string itemType, string weaponType, float attackPoint, float attackSpeed, float range,
         Vector3 grapPoint, Vector3 grapRotation, float triggerDelay, float triggerHold)
     {
         this.name = name;
         this.introduce = introduce;
         this.itemCode = itemCode;
+        this.itemType = itemType;
         this.weaponType = weaponType;
         this.attackPoint = attackPoint;
         this.attackSpeed = attackSpeed;

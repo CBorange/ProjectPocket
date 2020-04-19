@@ -13,13 +13,8 @@ public class ItemSelectToggle : MonoBehaviour
     public Text ItemCountText;
 
     // Data
-    private ImpliedItemData impliedItemData;
-    public ImpliedItemData CurrentItemImpliedData
-    {
-        get { return impliedItemData; }
-    }
-    private ItemData currentItem;
-    public ItemData CurrentItem
+    private InventoryItem currentItem;
+    public InventoryItem CurrentItem
     {
         get { return currentItem; }
     }
@@ -30,14 +25,12 @@ public class ItemSelectToggle : MonoBehaviour
         noticeSelected_CALLBACK = selectedNoticeCallback;
     }
 
-    public void Refresh(ImpliedItemData impliedData, bool equiped)
+    public void Refresh(InventoryItem item, bool equiped)
     {
-        impliedItemData = impliedData;
-        currentItem = ItemDB.Instance.GetItemData(impliedData.ItemCode);
-
+        currentItem = item;
         try
         {
-            string itemImagePath = $"Image/ItemPreview/{impliedData.ItemType}/{currentItem.Name}";
+            string itemImagePath = $"Image/ItemPreview/{currentItem.OriginalItemData.ItemType}/{currentItem.OriginalItemData.Name}";
             ItemImage.sprite = Resources.Load<Sprite>(itemImagePath);
         }
         catch(Exception)
@@ -45,12 +38,12 @@ public class ItemSelectToggle : MonoBehaviour
             ItemImage.sprite = null;
         }
 
-        ItemName.text = currentItem.Name;
+        ItemName.text = currentItem.OriginalItemData.Name;
         NoticeEquipThisText.gameObject.SetActive(equiped);
-        if (impliedData.ItemType != "Weapon" && impliedData.ItemType != "Accesorie")
+        if (currentItem.OriginalItemData.ItemType != "Weapon" && currentItem.OriginalItemData.ItemType != "Accesorie")
         {
             ItemCountText.gameObject.SetActive(true);
-            ItemCountText.text = impliedData.ItemCount.ToString();
+            ItemCountText.text = currentItem.ItemCount.ToString();
         }
         else
             ItemCountText.gameObject.SetActive(false);
@@ -62,6 +55,6 @@ public class ItemSelectToggle : MonoBehaviour
     {
         if (!selected)
             return;
-        noticeSelected_CALLBACK(this, impliedItemData.ItemType);
+        noticeSelected_CALLBACK(this, currentItem.OriginalItemData.ItemType);
     }
 }

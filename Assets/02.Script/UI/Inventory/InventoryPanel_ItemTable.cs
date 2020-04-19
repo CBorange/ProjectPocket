@@ -15,13 +15,13 @@ public class InventoryPanel_ItemTable : MonoBehaviour
 
     // Data
     private InventoryCategory inventoryCategory;
-    private List<ImpliedItemData> currentItemDatas;
+    private List<InventoryItem> currentItems;
     private ItemSelectToggle selectedItemToggle;
 
     // 외부호출 Method
     public void Initialize()
     {
-        currentItemDatas = new List<ImpliedItemData>();
+        currentItems = new List<InventoryItem>();
         selectTogglePool = new List<ItemSelectToggle>();
         selectTogglePool.Capacity = 0;
         CreateSelectTogglePool(30);
@@ -49,24 +49,24 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             selectTogglePool[i].gameObject.SetActive(false);
         }
 
-        currentItemDatas.Clear();
+        currentItems.Clear();
         switch (inventoryCategory)
         {
             case InventoryCategory.Weapon:
-                foreach (var kvp in PlayerInventory.Instance.ImpliedWeaponDataInfos)
-                    currentItemDatas.Add(kvp.Value);
+                foreach (var kvp in PlayerInventory.Instance.WeaponItems)
+                    currentItems.Add(kvp.Value);
                 break;
             case InventoryCategory.Accesorie:
-                foreach (var kvp in PlayerInventory.Instance.ImpliedAccesorieDataInfos)
-                    currentItemDatas.Add(kvp.Value);
+                foreach (var kvp in PlayerInventory.Instance.AccesorieItems)
+                    currentItems.Add(kvp.Value);
                 break;
             case InventoryCategory.Expendable:
-                foreach (var kvp in PlayerInventory.Instance.ImpliedExpendableDataInfos)
-                    currentItemDatas.Add(kvp.Value);
+                foreach (var kvp in PlayerInventory.Instance.ExpendableItems)
+                    currentItems.Add(kvp.Value);
                 break;
             case InventoryCategory.Etc:
-                foreach (var kvp in PlayerInventory.Instance.ImpliedEtcDataInfos)
-                    currentItemDatas.Add(kvp.Value);
+                foreach (var kvp in PlayerInventory.Instance.EtcItems)
+                    currentItems.Add(kvp.Value);
                 break;
         }
         LoadItemToggle();
@@ -77,13 +77,13 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     public void UseItem()
     {
-        switch(selectedItemToggle.CurrentItemImpliedData.ItemType)
+        switch(selectedItemToggle.CurrentItem.OriginalItemData.ItemType)
         {
             case "Weapon":
-                PlayerEquipment.Instance.EquipWeapon(selectedItemToggle.CurrentItemImpliedData.ItemCode);
+                PlayerEquipment.Instance.EquipWeapon(selectedItemToggle.CurrentItem.OriginalItemData.ItemCode);
                 break;
             case "Accesorie":
-                AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(selectedItemToggle.CurrentItemImpliedData.ItemCode);
+                AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(selectedItemToggle.CurrentItem.OriginalItemData.ItemCode);
 
                 if (accesorieData.AccesorieType.Equals("Ring"))
                     PlayerEquipment.Instance.EquipAccesorie_Ring(accesorieData);
@@ -113,39 +113,40 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     private void LoadItemToggle()
     {
-        for (int i = 0; i < currentItemDatas.Count; ++i)
+        for (int i = 0; i < currentItems.Count; ++i)
         {
-            if (currentItemDatas[i].ItemType.Equals("Weapon"))
+            ItemData data = currentItems[i].OriginalItemData;
+            if (data.ItemType.Equals("Weapon"))
             {
                 if (PlayerEquipment.Instance.EquipedWeapon != null &&
-                    PlayerEquipment.Instance.EquipedWeapon.ItemCode == currentItemDatas[i].ItemCode)
-                    selectTogglePool[i].Refresh(currentItemDatas[i], true);
+                    PlayerEquipment.Instance.EquipedWeapon.ItemCode == data.ItemCode)
+                    selectTogglePool[i].Refresh(currentItems[i], true);
                 else
-                    selectTogglePool[i].Refresh(currentItemDatas[i], false);
+                    selectTogglePool[i].Refresh(currentItems[i], false);
             }
-            else if (currentItemDatas[i].ItemType.Equals("Accesorie"))
+            else if (data.ItemType.Equals("Accesorie"))
             {
-                AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(currentItemDatas[i].ItemCode);
+                AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(data.ItemCode);
                 switch(accesorie.AccesorieType)
                 {
                     case "Ring":
                         if (PlayerEquipment.Instance.EquipedRing != null &&
-                            PlayerEquipment.Instance.EquipedRing.ItemCode == currentItemDatas[i].ItemCode)
-                            selectTogglePool[i].Refresh(currentItemDatas[i], true);
+                            PlayerEquipment.Instance.EquipedRing.ItemCode == data.ItemCode)
+                            selectTogglePool[i].Refresh(currentItems[i], true);
                         else
-                            selectTogglePool[i].Refresh(currentItemDatas[i], false);
+                            selectTogglePool[i].Refresh(currentItems[i], false);
                         break;
                     case "Necklace":
                         if (PlayerEquipment.Instance.EquipedNecklace != null &&
-                            PlayerEquipment.Instance.EquipedNecklace.ItemCode == currentItemDatas[i].ItemCode)
-                            selectTogglePool[i].Refresh(currentItemDatas[i], true);
+                            PlayerEquipment.Instance.EquipedNecklace.ItemCode == data.ItemCode)
+                            selectTogglePool[i].Refresh(currentItems[i], true);
                         else
-                            selectTogglePool[i].Refresh(currentItemDatas[i], false);
+                            selectTogglePool[i].Refresh(currentItems[i], false);
                         break;
                 }
             }
             else
-                selectTogglePool[i].Refresh(currentItemDatas[i], false);
+                selectTogglePool[i].Refresh(currentItems[i], false);
         }
     }
 
@@ -165,6 +166,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         else if (itemType.Equals("Accesorie"))
             inventoryPanel.ActiveUseItemBtn();
 
-        inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
+        inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.OriginalItemData.Name,
+            selectToggle.CurrentItem.OriginalItemData.Introduce);
     }
 }

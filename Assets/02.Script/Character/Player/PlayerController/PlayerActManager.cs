@@ -103,7 +103,6 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void EndAttack()
     {
-        Debug.Log("EndAttack");
         nowAttacking = false;
         currentBehaviour = CharacterBehaviour.Idle;
     }

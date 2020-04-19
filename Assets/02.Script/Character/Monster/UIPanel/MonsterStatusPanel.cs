@@ -21,9 +21,14 @@ public class MonsterStatusPanel : MonoBehaviour
 
         stat.Attach_ChangedCallback(ChangedStatus);
     }
-    private void OnEnable()
+    public void Respawn()
     {
+        gameObject.SetActive(true);
         ChangedStatus();
+    }
+    public void Death()
+    {
+        gameObject.SetActive(false);
     }
     private void FixedUpdate()
     {

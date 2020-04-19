@@ -33,9 +33,9 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
         PlayerLevel.text = $"LV. <color=cyan>{PlayerStat.Instance.Level.ToString()}</color>";
 
         //Apply Data To UI
-        WeaponToggle.Refresh(PlayerEquipment.Instance.EquipedWeaponImpliedData);
-        RingToggle.Refresh(PlayerEquipment.Instance.EquipedRingImpliedData);
-        NecklaceToggle.Refresh(PlayerEquipment.Instance.EquipedNecklaceImpliedData);
+        WeaponToggle.Refresh(PlayerEquipment.Instance.EquipedWeapon);
+        RingToggle.Refresh(PlayerEquipment.Instance.EquipedRing);
+        NecklaceToggle.Refresh(PlayerEquipment.Instance.EquipedNecklace);
     }
     public void DeselectAllToggle()
     {
@@ -47,7 +47,7 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
     }
     public void UnequipItem()
     {
-        string itmeType = currentToggle.CurrentItemImpliedData.ItemType;
+        string itmeType = currentToggle.CurrentItem.ItemType;
         switch(itmeType)
         {
             case "Weapon":
