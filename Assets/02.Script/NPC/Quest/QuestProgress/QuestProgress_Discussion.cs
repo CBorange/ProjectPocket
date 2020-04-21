@@ -10,7 +10,7 @@ public class QuestProgress_Discussion
     private Dictionary<int, TotalDiscussionProgress> totalProgressDic;
 
     // Getter
-    public bool GetHasCompletedOnTotalDiscussion(int questCode)
+    public bool GetHasCompletedByQuestCode(int questCode)
     {
         TotalDiscussionProgress totalProgress = null;
         bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);

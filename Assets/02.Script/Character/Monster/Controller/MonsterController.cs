@@ -17,6 +17,7 @@ public class MonsterController : MonoBehaviour, IActController
     public MonsterStat Stat;
     public MonsterPanelController PanelController;
     public Animator MobAnimator;
+    public ItemDropper Dropper;
     private MonsterAttackSystem[] attackSystems;
     private IAIBehaviour currentAI;
 
@@ -24,6 +25,7 @@ public class MonsterController : MonoBehaviour, IActController
     {
         this.deathCallback = deathCallback;
         Stat.Initialize();
+        Dropper.Initialize(transform.parent);
         PanelController.Initialize();
         InitializeAttackSystems();
 
@@ -87,6 +89,7 @@ public class MonsterController : MonoBehaviour, IActController
     {
         MobAnimator.SetTrigger("Death");
         PanelController.Death();
+        Dropper.Death();
         Invoke("ExecuteDeathFunction", DeathAnimLength);
     }
     private void ExecuteDeathFunction()

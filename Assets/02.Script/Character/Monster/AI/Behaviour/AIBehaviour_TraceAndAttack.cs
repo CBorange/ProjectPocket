@@ -130,13 +130,15 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     {
         NavAgent.isStopped = true;
         attackingPlayer = true;
-        MobAnimator.SetBool("Attack", true);
         while (attackingPlayer)
         {
+            MobAnimator.SetBool("Attack", true);
             Controller.ExecuteAttack();
             yield return new WaitForSeconds(AttackActionLength);
             if (aiState == AI_TraceAndAttack_State.AttackPlayer)
-                yield break;
+            {
+                MobAnimator.SetBool("Attack", false);
+            }
         }
     }
     private bool AgentIsArrivedOnTarget()

@@ -10,7 +10,7 @@ public class QuestProgress_KillMonster
     private Dictionary<int, TotalKillMonsterProgress> totalProgressDic;
 
     // Getter
-    public bool GetHasCompletedOnTotalKillMonster(int questCode)
+    public bool GetHasCompletedByQuestCode(int questCode)
     {
         TotalKillMonsterProgress progress = null;
         bool success = totalProgressDic.TryGetValue(questCode, out progress);

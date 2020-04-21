@@ -17,9 +17,21 @@ public class MonsterData
     public float AttackRange;
     public float AttackSpread;
     public float AttackHeight;
+    public DropItemData[] DropItemDatas;
+    public DropGoldData GoldData;
 }
 [System.Serializable]
-public class DropItem
+public class DropItemData
 {
     public int ItemCode;
+    public int DropPercentage;
+    public int MinDropCount;
+    public int MaxDropCount;
+}
+[System.Serializable]
+public class DropGoldData
+{
+    public int MinDropAmount;
+    public int MaxDropAmount;
+    public string GoldPrefab;
 }

@@ -6,7 +6,7 @@ using System;
 public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
 {
     // Constant
-    private const float ONEHANDATTACK_LENGTH = 1.167f;
+    private const float ONEHANDATTACK_LENGTH = 0.833f;
 
     // Controller
     private Animator playerAnimator;
@@ -30,7 +30,8 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
         newColiderBox.transform.parent = PlayerActManager.Instance.transform;
         playerAttack = newColiderBox.AddComponent<PlayerAttack_Instant>();
-        playerAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, 1), weaponData);
+        playerAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, 0.5f), weaponData);
+        playerAttack.gameObject.SetActive(false);
     }
     public void PlayAttack()
     {

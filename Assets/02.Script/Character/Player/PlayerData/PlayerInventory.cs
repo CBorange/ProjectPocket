@@ -93,27 +93,54 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
     {
         for (int i = 0; i < items.Length; ++i)
         {
-            ItemData data = items[i].OriginalItemData;
-            switch (data.ItemType)
-            {
-                case "Weapon":
-                    if (allItems.ContainsKey(data.ItemCode))
-                        return;
-                    weaponItems.Add(data.ItemCode, items[i]);
-                    break;
-                case "Expendable":
-                    expendableItems.Add(data.ItemCode, items[i]);
-                    break;
-                case "Accesorie":
-                    if (allItems.ContainsKey(data.ItemCode))
-                        return;
-                    accesorieItems.Add(data.ItemCode, items[i]);
-                    break;
-                case "Etc":
-                    etcItems.Add(data.ItemCode, items[i]);
-                    break;
-            }
-            allItems.Add(data.ItemCode, items[i]);
+            AddItemIntoInventoryProcess(items[i]);
+        }
+    }
+    public void AddItemToInventory(InventoryItem item)
+    {
+        AddItemIntoInventoryProcess(item);
+    }
+    private void AddItemIntoInventoryProcess(InventoryItem item)
+    {
+        ItemData data = item.OriginalItemData;
+        switch (data.ItemType)
+        {
+            case "Weapon":
+                if (weaponItems.ContainsKey(data.ItemCode))
+                    return;
+                weaponItems.Add(data.ItemCode, item);
+                allItems.Add(data.ItemCode, item);
+                break;
+            case "Expendable":
+                InventoryItem foundExpendable = null;
+                if (expendableItems.TryGetValue(data.ItemCode, out foundExpendable))
+                {
+                    foundExpendable.ItemCount += item.ItemCount;
+                }
+                else
+                {
+                    expendableItems.Add(data.ItemCode, item);
+                    allItems.Add(data.ItemCode, item);
+                }
+                break;
+            case "Accesorie":
+                if (accesorieItems.ContainsKey(data.ItemCode))
+                    return;
+                accesorieItems.Add(data.ItemCode, item);
+                allItems.Add(data.ItemCode, item);
+                break;
+            case "Etc":
+                InventoryItem foundEtc = null;
+                if (etcItems.TryGetValue(data.ItemCode, out foundEtc))
+                {
+                    foundEtc.ItemCount += item.ItemCount;
+                }
+                else
+                {
+                    etcItems.Add(data.ItemCode, item);
+                    allItems.Add(data.ItemCode, item);
+                }
+                break;
         }
     }
 }

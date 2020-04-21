@@ -256,6 +256,7 @@ GameObject:
   - component: {fileID: 3857998600224539579}
   - component: {fileID: 583112224255859815}
   - component: {fileID: 1518240192738254624}
+  - component: {fileID: 4975563337031941532}
   - component: {fileID: 2505426973540037920}
   - component: {fileID: 7968963757917875350}
   - component: {fileID: 3698646366384294191}
@@ -333,6 +334,7 @@ MonoBehaviour:
   Stat: {fileID: 3857998600224539579}
   PanelController: {fileID: 1518240192738254624}
   MobAnimator: {fileID: 7137104848642341761}
+  Dropper: {fileID: 4975563337031941532}
 --- !u!114 &3857998600224539579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +385,19 @@ MonoBehaviour:
   Stat: {fileID: 3857998600224539579}
   StatusPanelPrefab: {fileID: 4496771186380701448, guid: de6ed7980d9a9b441824cb3b8798fec1,
     type: 3}
+--- !u!114 &4975563337031941532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5056255903561208865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6038ed368594c4a8f06049cdd99e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stat: {fileID: 3857998600224539579}
 --- !u!54 &2505426973540037920
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -56,11 +56,10 @@ public class MonsterAttack_Instant : MonoBehaviour
     {
         Refresh();
         gameObject.SetActive(true);
-        StartCoroutine(IE_ExecuteTrigger());
+        Invoke("TurnOffTrigger", triggerHoldTime);
     }
-    private IEnumerator IE_ExecuteTrigger()
+    private void TurnOffTrigger()
     {
-        yield return new WaitForSeconds(triggerHoldTime);
         gameObject.SetActive(false);
     }
     private void OnTriggerEnter(Collider other)

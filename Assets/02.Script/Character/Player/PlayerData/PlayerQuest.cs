@@ -105,12 +105,12 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                 switch (currentQuest.QuestCategorys[categoryIdx])
                 {
                     case "Discussion":
-                        bool completedDiscussion = questProgress_Discussion.GetHasCompletedOnTotalDiscussion(currentQuest.QuestCode);
+                        bool completedDiscussion = questProgress_Discussion.GetHasCompletedByQuestCode(currentQuest.QuestCode);
                         if (completedDiscussion)
                             completedCategoryCount += 1;
                         break;
                     case "KillMonster":
-                        bool completedKillMonster = questProgress_KillMonster.GetHasCompletedOnTotalKillMonster(currentQuest.QuestCode);
+                        bool completedKillMonster = questProgress_KillMonster.GetHasCompletedByQuestCode(currentQuest.QuestCode);
                         if (completedKillMonster)
                             completedCategoryCount += 1;
                         break;
