@@ -126,7 +126,8 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
 
     public void KilledMonster(int monsterCode)
     {
-
+        questProgress_KillMonster.KilledMonster(monsterCode);
+        UpdateAllQuestProgress();
     }
 
     /// <summary>

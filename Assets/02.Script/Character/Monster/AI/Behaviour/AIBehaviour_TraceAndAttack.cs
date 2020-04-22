@@ -32,6 +32,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     private Transform player;
 
     // Parameter For AI State
+    private bool readyToNextSearch;
     private bool trackingPlayer;
     private bool attackingPlayer;
 
@@ -46,14 +47,25 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     {
         StartAI();
     }
+    public void Death()
+    {
+
+    }
     private void StartAI()
     {
         aiState = AI_TraceAndAttack_State.SearchPlayer;
-        StartCoroutine("SearchPlayer");
+        StartCoroutine("FSM");
     }
     private void SettingAgent()
     {
         NavAgent.speed = Stat.MoveSpeed;
+    }
+    private IEnumerator FSM()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(aiState.ToString());
+        }
     }
     // Behaviours
     private IEnumerator SearchPlayer()
@@ -63,7 +75,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
         Vector3 randMoveVec = new Vector3(Random.Range(-RandomMoveRange, RandomMoveRange), 0, Random.Range(-RandomMoveRange, RandomMoveRange));
         Vector3 newDest = transform.position + randMoveVec;
         NavAgent.isStopped = false;
-        NavAgent.velocity = Vector3.zero;
         NavAgent.SetDestination(newDest);
         MobAnimator.SetBool("Move", true);
 
@@ -77,11 +88,19 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
                 nowMoving = false;
                 NavAgent.isStopped = true;
                 MobAnimator.SetBool("Move", false);
-                yield return new WaitForSeconds(3f);
+
+                readyToNextSearch = false;
+                Invoke("WaitTimeForNextSearch", 3f);
+                yield return new WaitUntil(() => readyToNextSearch);
+
                 if (aiState == AI_TraceAndAttack_State.SearchPlayer)
                     StartCoroutine("SearchPlayer");
             }
         }
+    }
+    private void WaitTimeForNextSearch()
+    {
+        readyToNextSearch = true;
     }
     private IEnumerator TracePlayer()
     {
@@ -108,7 +127,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
         CognitionArea.gameObject.SetActive(false);
         AttackArea.gameObject.SetActive(false);
         NavAgent.isStopped = false;
-        NavAgent.velocity = Vector3.zero;
         NavAgent.SetDestination(Controller.SpawnCoord);
         MobAnimator.SetBool("Move", true);
 
@@ -132,11 +150,13 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
         attackingPlayer = true;
         while (attackingPlayer)
         {
+            MobAnimator.SetBool("Move", false);
             MobAnimator.SetBool("Attack", true);
             Controller.ExecuteAttack();
             yield return new WaitForSeconds(AttackActionLength);
             if (aiState == AI_TraceAndAttack_State.AttackPlayer)
             {
+                Debug.Log("AttackAnimationOver");
                 MobAnimator.SetBool("Attack", false);
             }
         }
@@ -155,28 +175,25 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     private void PlayerEnterInCognitionArea(Transform player)
     {
         this.player = player;
+        readyToNextSearch = true;
         aiState = AI_TraceAndAttack_State.TracePlayer;
-        StartCoroutine("TracePlayer");
     }
     private void PlayerExitInCognitionArea()
     {
         trackingPlayer = false;
         NavAgent.isStopped = true;
         aiState = AI_TraceAndAttack_State.ReturnSpawnCoord;
-        StartCoroutine("ReturnSpawnCoord");
         
     }
     private void PlayerEnterInAttackArea(Transform player)
     {
         this.player = player;
         aiState = AI_TraceAndAttack_State.AttackPlayer;
-        StartCoroutine("AttackPlayer");
     }
     private void PlayerExitInAttackArea()
     {
         attackingPlayer = false;
         MobAnimator.SetBool("Attack", false);
         aiState = AI_TraceAndAttack_State.TracePlayer;
-        StartCoroutine("TracePlayer");
     }
 }

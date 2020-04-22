@@ -16,12 +16,12 @@ public class DroppedCoin : MonoBehaviour
     public void Drop(int coinAmount, Vector3 deathPos)
     {
         gameObject.SetActive(true);
-        transform.position = new Vector3(deathPos.x, deathPos.y + 3, deathPos.z);
+        transform.position = new Vector3(deathPos.x, deathPos.y + 1, deathPos.z);
         this.coinAmount = coinAmount;
 
-        Vector3 forceVec = Vector3.up * 3f;
-        forceVec.x = UnityEngine.Random.Range(0.1f, 1f);
-        forceVec.z = UnityEngine.Random.Range(0.1f, 1f);
+        Vector3 forceVec = Vector3.up * 4f;
+        forceVec.x = UnityEngine.Random.Range(0.3f, 1f);
+        forceVec.z = UnityEngine.Random.Range(0.3f, 1f);
         MyBody.AddForce(forceVec, ForceMode.Impulse);
         Invoke("ReleaseByTime", 30f);
     }

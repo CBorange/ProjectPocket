@@ -90,11 +90,13 @@ public class MonsterController : MonoBehaviour, IActController
         MobAnimator.SetTrigger("Death");
         PanelController.Death();
         Dropper.Death();
+        currentAI.Death();
         Invoke("ExecuteDeathFunction", DeathAnimLength);
     }
     private void ExecuteDeathFunction()
     {
         deathCallback(gameObject);
         gameObject.SetActive(false);
+        PlayerQuest.Instance.KilledMonster(MonsterCode);
     }
 }

@@ -18,6 +18,7 @@ public class MonsterStatusPanel : MonoBehaviour
     {
         monsterStat = stat;
         MonsterObject = monsterObj;
+        gameObject.SetActive(false);
 
         stat.Attach_ChangedCallback(ChangedStatus);
     }

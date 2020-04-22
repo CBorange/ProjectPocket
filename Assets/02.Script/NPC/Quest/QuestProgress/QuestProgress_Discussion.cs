@@ -13,8 +13,7 @@ public class QuestProgress_Discussion
     public bool GetHasCompletedByQuestCode(int questCode)
     {
         TotalDiscussionProgress totalProgress = null;
-        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
-        if (success)
+        if (totalProgressDic.TryGetValue(questCode, out totalProgress)) 
         {
             if (totalProgress.Completed)
                 return true;
@@ -30,8 +29,7 @@ public class QuestProgress_Discussion
     public DiscussionProgressInfo[] GetDetailedDiscussionProgresses(int questCode)
     {
         TotalDiscussionProgress totalProgress = null;
-        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
-        if (success)
+        if (totalProgressDic.TryGetValue(questCode, out totalProgress))
         {
             return totalProgress.Progress;
         }
@@ -84,7 +82,7 @@ public class QuestProgress_Discussion
         }
         return null;
     }
-    public void CompleteQuest(int questCode)
+    public void CompleteQuest(int questCode) 
     {
         if (!totalProgressDic.Remove(questCode))
         {

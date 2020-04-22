@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 [System.Serializable]
 public class QuestProgress_KillMonster
@@ -13,8 +14,7 @@ public class QuestProgress_KillMonster
     public bool GetHasCompletedByQuestCode(int questCode)
     {
         TotalKillMonsterProgress progress = null;
-        bool success = totalProgressDic.TryGetValue(questCode, out progress);
-        if (success)
+        if (totalProgressDic.TryGetValue(questCode, out progress))
         {
             if (progress.Completed)
                 return true;
@@ -31,8 +31,7 @@ public class QuestProgress_KillMonster
     public KillMonsterProgressInfo[] GetDetailedKillMonsterProgresses(int questCode)
     {
         TotalKillMonsterProgress totalProgress = null;
-        bool success = totalProgressDic.TryGetValue(questCode, out totalProgress);
-        if (success)
+        if (totalProgressDic.TryGetValue(questCode, out totalProgress))
         {
             return totalProgress.Progress;
         }
@@ -73,6 +72,37 @@ public class QuestProgress_KillMonster
             newProgress.Progress[i].GoalKillCount = targets[i].KillCount;
         }
         totalProgressDic.Add(questCode, newProgress);
+    }
+    private void UpdateProgress()
+    {
+        foreach (var kvp in totalProgressDic)
+        {
+            KillMonsterProgressInfo[] progressInfos = kvp.Value.Progress;
+            int huntCompleteCount = 0;
+            for (int i = 0; i < progressInfos.Length; ++i)
+            {
+                if (progressInfos[i].CurrentKillCount >= progressInfos[i].CurrentKillCount)
+                    huntCompleteCount += 1;
+            }
+            if (huntCompleteCount == progressInfos.Length)
+                kvp.Value.Completed = true;
+        }
+    }
+    public void KilledMonster(int monsterCode)
+    {
+        foreach (var kvp in totalProgressDic)
+        {
+            KillMonsterProgressInfo[] progressInfos = kvp.Value.Progress;
+            for (int i = 0; i < progressInfos.Length; ++i)
+            {
+                if ((progressInfos[i].TargetMonster == monsterCode) &&
+                    (progressInfos[i].GoalKillCount >= progressInfos[i].CurrentKillCount))
+                {
+                    progressInfos[i].CurrentKillCount += 1;
+                    UpdateProgress();
+                }
+            }
+        }
     }
 }
 [System.Serializable]

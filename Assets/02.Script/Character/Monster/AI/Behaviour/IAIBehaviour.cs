@@ -6,4 +6,5 @@ public interface IAIBehaviour
 {
     void Initialize();
     void Respawn();
+    void Death();
 }
