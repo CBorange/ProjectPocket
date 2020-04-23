@@ -92,9 +92,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
                 readyToNextSearch = false;
                 Invoke("WaitTimeForNextSearch", 3f);
                 yield return new WaitUntil(() => readyToNextSearch);
-
-                if (aiState == AI_TraceAndAttack_State.SearchPlayer)
-                    StartCoroutine("SearchPlayer");
             }
         }
     }
@@ -140,7 +137,6 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
                 NavAgent.isStopped = true;
                 nowReturing = false;
                 aiState = AI_TraceAndAttack_State.SearchPlayer;
-                StartCoroutine("SearchPlayer");
             }
         }
     }
@@ -163,9 +159,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     }
     private bool AgentIsArrivedOnTarget()
     {
-        if ((!NavAgent.pathPending) &&
-                (NavAgent.remainingDistance <= NavAgent.stoppingDistance) &&
-                (!NavAgent.hasPath))
+        if ((NavAgent.remainingDistance <= NavAgent.stoppingDistance))
             return true;
         else
             return false;

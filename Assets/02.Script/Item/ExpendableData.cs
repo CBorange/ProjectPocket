@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class ExpendableEffect
+{
+    public string StatName;
+    public int StatAmount;
+    public bool EffectDuration;
+}
+[System.Serializable]
 public class ExpendableData : ItemData
 {
-    public ExpendableData(string name, string introduce, int itemCode, string itemType)
-    {
-        this.name = name;
-        this.introduce = introduce;
-        this.itemCode = itemCode;
-        this.itemType = itemType;
-    }
+    public ExpendableEffect[] Effects;
 }

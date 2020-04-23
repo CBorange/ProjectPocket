@@ -228,25 +228,53 @@ public class DBConnector : MonoBehaviour
         DataSet weaponDataset = ConnectToDB("Item_DB", weaponQuery);
         if (weaponDataset == null)
             return "Fail";
-        ItemDB.Instance.ContainWeaponData(weaponDataset);
+        DataRowCollection weaponRow = weaponDataset.Tables[0].Rows;
+        for (int i = 0; i < weaponRow.Count; ++i)
+        {
+            object[] items = weaponRow[i].ItemArray;
+            string jsonSTR = items[1].ToString();
+            WeaponData newWeapon = JsonUtility.FromJson<WeaponData>(jsonSTR);
+            ItemDB.Instance.ContainWeaponData(newWeapon);
+        }
 
         string expendableQuery = $"SELECT * FROM dbo.Expendable";
         DataSet expendableDataset = ConnectToDB("Item_DB", expendableQuery);
         if (expendableDataset == null)
             return "Fail";
-        ItemDB.Instance.ContainExpandableData(expendableDataset);
+        DataRowCollection expendableRow = expendableDataset.Tables[0].Rows;
+        for (int i = 0; i < expendableRow.Count; ++i)
+        {
+            object[] items = expendableRow[i].ItemArray;
+            string jsonSTR = items[1].ToString();
+            ExpendableData newExpendable = JsonUtility.FromJson<ExpendableData>(jsonSTR);
+            ItemDB.Instance.ContainExpandableData(newExpendable);
+        }
 
         string accesorieQuery = $"SELECT * FROM dbo.Accesorie";
         DataSet accesorieDataset = ConnectToDB("Item_DB", accesorieQuery);
         if (accesorieDataset == null)
             return "Fail";
-        ItemDB.Instance.ContainAccesorieData(accesorieDataset);
+        DataRowCollection accesorieRow = accesorieDataset.Tables[0].Rows;
+        for (int i = 0; i < accesorieRow.Count; ++i)
+        {
+            object[] items = accesorieRow[i].ItemArray;
+            string jsonSTR = items[1].ToString();
+            AccesorieData newAccesorie = JsonUtility.FromJson<AccesorieData>(jsonSTR);
+            ItemDB.Instance.ContainAccesorieData(newAccesorie);
+        }
 
         string etcQuery = $"SELECT * FROM dbo.Etc";
         DataSet etcDataset = ConnectToDB("Item_DB", etcQuery);
         if (etcDataset == null)
             return "Fail";
-        ItemDB.Instance.ContainEtcData(etcDataset);
+        DataRowCollection etcRow = etcDataset.Tables[0].Rows;
+        for (int i = 0; i < etcRow.Count; ++i)
+        {
+            object[] items = etcRow[i].ItemArray;
+            string jsonSTR = items[1].ToString();
+            EtcData newETC = JsonUtility.FromJson<EtcData>(jsonSTR);
+            ItemDB.Instance.ContainEtcData(newETC);
+        }
 
         return "Success";
     }

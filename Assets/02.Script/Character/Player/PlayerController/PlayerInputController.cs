@@ -15,18 +15,23 @@ public class PlayerInputController : MonoBehaviour
     }
     private void Update()
     {
+        #if UNITY_EDITOR
         PC_PlayerActionInput();
+        PC_PlayerJumpInput();
+        #endif
+        #if UNITY_ANDROID
+
+        #endif
     }
     private void FixedUpdate()
     {
-#if UNITY_EDITOR
-        
+        #if UNITY_EDITOR
         PC_CameraInput();
         PC_PlayerMoveInput();
-#endif
-#if UNITY_ANDROID
+        #endif
+        #if UNITY_ANDROID
 
-#endif
+        #endif
     }
 
     private void PC_CameraInput()
@@ -48,7 +53,9 @@ public class PlayerInputController : MonoBehaviour
         verMove = Input.GetAxisRaw("Vertical");
 
         movementController.HorizontalMovement(horMove, verMove);
-
+    }
+    private void PC_PlayerJumpInput()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
             movementController.Jump();
     }

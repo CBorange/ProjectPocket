@@ -69,8 +69,11 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public void UnequipWeapon()
     {
         PlayerActManager.Instance.UnEquipWeapon();
-        PlayerStat.Instance.RemoveChangeAP(equipedWeapon.ItemCode);
-        PlayerStat.Instance.RemoveChangeAttackSpeed(equipedWeapon.ItemCode);
+        ItemStat[] weaponStats = equipedWeapon.WeaponStat;
+        for (int statIdx = 0; statIdx < weaponStats.Length; ++statIdx)
+        {
+            PlayerStat.Instance.RemoveChangeableStat(weaponStats[statIdx].StatName, equipedWeapon.ItemCode);
+        }
         equipedWeapon = null;
     }
     public void UnequipAccesorie_Ring()
@@ -92,8 +95,11 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         equipedWeapon = weaponData;
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
-        PlayerStat.Instance.AddChangeAP(equipedWeapon.ItemCode, equipedWeapon.AttackPoint);
-        PlayerStat.Instance.AddChangeAttackSpeed(equipedWeapon.ItemCode, equipedWeapon.AttackSpeed);
+        ItemStat[] weaponStats = equipedWeapon.WeaponStat;
+        for (int statIdx = 0; statIdx < weaponStats.Length; ++statIdx)
+        {
+            PlayerStat.Instance.AddChangeableStat(weaponStats[statIdx].StatName, equipedWeapon.ItemCode, weaponStats[statIdx].StatValue);
+        }
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {

@@ -924,7 +924,7 @@ MonoBehaviour:
   SpawnArea: 5
   SpawnHeight: 2
   SpawnDelay: 5
-  MaxSpawnCount: 5
+  MaxSpawnCount: 10
 --- !u!1 &5248498850080566768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,6 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c3c92e956b9164ebd9875daabeb761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FallingLimit: -5
   PlayerStartPos: {fileID: 4803235878109139946}
   Spawners:
   - {fileID: 7107346165418239245}

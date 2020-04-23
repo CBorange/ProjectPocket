@@ -122,12 +122,17 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     }
 
     // Character Change Status 
-    private Dictionary<int, float> apChanged;
-    private Dictionary<int, float> spChanged;
-    private Dictionary<int, float> hpChanged;
-    private Dictionary<int, float> moveSpeedChanged;
-    private Dictionary<int, float> jumpSpeedChanged;
-    private Dictionary<int, float> attackSpeedChanged;
+    private Dictionary<int, float> attackPoint_StatChange;
+    private Dictionary<int, float> sheildPoint_StatChange;
+    private Dictionary<int, float> healthPoint_StatChange;
+    private Dictionary<int, float> moveSpeed_StatChange;
+    private Dictionary<int, float> jumpSpeed_StatChange;
+    private Dictionary<int, float> attackSpeed_StatChange;
+
+    // Character Stat Change Method
+    private Dictionary<string, Action<int, float>> addChangeable_StatDic;
+    private Dictionary<string, Action<int>> removeChangeable_StatDic;
+    private Dictionary<string, Action<float>> addPermanence_StatDic;
 
     // Player Only Stat
     private int levelupExperience;
@@ -165,6 +170,12 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     private Action changedStatusCallback;
     public void Initialize()
     {
+        InitPlayerStat();
+        InitChangedStatDictionary();
+        changedStatusCallback();
+    }
+    private void InitPlayerStat()
+    {
         UserInfoProvider userData = UserInfoProvider.Instance;
         origin_MoveSpeed = userData.MoveSpeed;
         origin_JumpSpeed = userData.JumpSpeed;
@@ -186,15 +197,27 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         max_workPoint = userData.WorkPoint;
         workPoint = max_workPoint;
         gold = userData.Gold;
+    }
+    private void InitChangedStatDictionary()
+    {
+        attackPoint_StatChange = new Dictionary<int, float>();
+        sheildPoint_StatChange = new Dictionary<int, float>();
+        healthPoint_StatChange = new Dictionary<int, float>();
+        moveSpeed_StatChange = new Dictionary<int, float>();
+        jumpSpeed_StatChange = new Dictionary<int, float>();
+        attackSpeed_StatChange = new Dictionary<int, float>();
 
-        apChanged = new Dictionary<int, float>();
-        spChanged = new Dictionary<int, float>();
-        hpChanged = new Dictionary<int, float>();
-        moveSpeedChanged = new Dictionary<int, float>();
-        jumpSpeedChanged = new Dictionary<int, float>();
-        attackSpeedChanged = new Dictionary<int, float>();
+        addChangeable_StatDic = new Dictionary<string, Action<int, float>>();
+        addChangeable_StatDic.Add("AttackPoint", AddChangeableAP);
+        addChangeable_StatDic.Add("AttackSpeed", AddChangeableAttackSpeed);
 
-        changedStatusCallback();
+        removeChangeable_StatDic = new Dictionary<string, Action<int>>();
+        removeChangeable_StatDic.Add("AttackPoint", RemoveChangeableAP);
+        removeChangeable_StatDic.Add("AttackSpeed", RemoveChangeableAttackSpeed);
+
+        addPermanence_StatDic = new Dictionary<string, Action<float>>();
+        addPermanence_StatDic.Add("AttackPoint", AddPermanenceAP);
+        addPermanence_StatDic.Add("AttackSpeed", AddPermanenceAttackSpeed);
     }
     public void AttachUICallback(Action callback)
     {
@@ -217,26 +240,59 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         changedStatusCallback();
     }
 
+    // Getter For Change Method
+    public void AddChangeableStat(string statName, int id, float amount)
+    {
+        Action<int, float> foundMethod = null;
+        if (!addChangeable_StatDic.TryGetValue(statName, out foundMethod))
+        {
+            Debug.Log($"{statName} : 스텟 변화량 추가 Method가 존재하지 않습니다.");
+            return;
+        }
+        foundMethod(id, amount);
+
+    }
+    public void RemoveChangeableStat(string statName, int id)
+    {
+        Action<int> foundMethod = null;
+        if (!removeChangeable_StatDic.TryGetValue(statName, out foundMethod))
+        {
+            Debug.Log($"{statName} : 스텟 변화량 제거 Method가 존재하지 않습니다.");
+            return;
+        }
+        foundMethod(id);
+    }
+    public void AddPermanenceStat(string statName, float amount)
+    {
+        Action<float> foundMethod = null;
+        if (!addPermanence_StatDic.TryGetValue(statName, out foundMethod))
+        {
+            Debug.Log($"{statName} : 스텟 영구 추가 Method가 존재하지 않습니다.");
+            return;
+        }
+        foundMethod(amount);
+    }
+
     // AP Change
-    public void AddPermanenceAP(float ap)
+    private void AddPermanenceAP(float ap)
     {
         origin_AttackPoint += ap;
-        ApplyAPChangeValue();
+        UpdateAttackPoint();
     }
-    public void AddChangeAP(int id, float ap)
+    private void AddChangeableAP(int id, float ap)
     {
-        apChanged.Add(id, ap);
-        ApplyAPChangeValue();
+        attackPoint_StatChange.Add(id, ap);
+        UpdateAttackPoint();
     }
-    public void RemoveChangeAP(int id)
+    private void RemoveChangeableAP(int id)
     {
-        apChanged.Remove(id);
-        ApplyAPChangeValue();
+        attackPoint_StatChange.Remove(id);
+        UpdateAttackPoint();
     }
-    private void ApplyAPChangeValue()
+    private void UpdateAttackPoint()
     {
         float changedValue = 0;
-        foreach (var kvp in apChanged)
+        foreach (var kvp in attackPoint_StatChange)
         {
             changedValue += kvp.Value;
         }
@@ -245,25 +301,25 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     }
 
     // AttackSpeed Change
-    public void AddPermanenceAttackSpeed(float attackSpeed)
+    private void AddPermanenceAttackSpeed(float attackSpeed)
     {
         origin_AttackSpeed += attackSpeed;
-        ApplyAttackSpeedChangeValue();
+        UpdateAttackSpeed();
     }
-    public void AddChangeAttackSpeed(int id, float attackSpeed)
+    private void AddChangeableAttackSpeed(int id, float attackSpeed)
     {
-        attackSpeedChanged.Add(id, attackSpeed);
-        ApplyAttackSpeedChangeValue();
+        attackSpeed_StatChange.Add(id, attackSpeed);
+        UpdateAttackSpeed();
     }
-    public void RemoveChangeAttackSpeed(int id)
+    private void RemoveChangeableAttackSpeed(int id)
     {
-        attackSpeedChanged.Remove(id);
-        ApplyAttackSpeedChangeValue();
+        attackSpeed_StatChange.Remove(id);
+        UpdateAttackSpeed();
     }
-    private void ApplyAttackSpeedChangeValue()
+    private void UpdateAttackSpeed()
     {
         float changedValue = 0;
-        foreach (var kvp in attackSpeedChanged)
+        foreach (var kvp in attackSpeed_StatChange)
         {
             changedValue += kvp.Value;
         }

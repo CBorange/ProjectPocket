@@ -41,6 +41,7 @@ public class PlayerMovementController : MonoBehaviour
     public FollowCamera followCamera;
     public Animator animator;
     public Rigidbody myRigidbody;
+    public bool NowJumping;
 
     private void Start()
     {
@@ -48,8 +49,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.transform.position.y < transform.position.y)
+        Vector3 point = collision.contacts[0].point;
+        if (point.y < transform.position.y + 0.5f) 
         {
+            NowJumping = false;
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.speed = 1;
             animator.SetBool("FlyAir", false);
@@ -87,9 +90,12 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Jump()
     {
-        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Jump)
+        if (NowJumping)
+        {
             return;
+        }
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.JumpSpeed, ForceMode.Impulse);
+        NowJumping = true;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
         animator.speed = 1;
         animator.SetTrigger("Jumped");

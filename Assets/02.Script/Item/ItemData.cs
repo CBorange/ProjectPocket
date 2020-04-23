@@ -2,30 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class ItemStat
+{
+    public string StatName;
+    public float StatValue;
+}
+[System.Serializable]
 public class ItemData
 {
-    protected string name;
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
-    protected string introduce;
-    public string Introduce
-    {
-        get { return introduce; }
-        set { introduce = value; }
-    }
-    protected string itemType;
-    public string ItemType
-    {
-        get { return itemType; }
-        set { itemType = value; }
-    }
-    protected int itemCode;
-    public int ItemCode
-    {
-        get { return itemCode; }
-        set { itemCode = value; }
-    }
+    public string Name;
+    public string Introduce;
+    public string ItemType;
+    public int SellPrice;
+    public int ItemCode;
 }

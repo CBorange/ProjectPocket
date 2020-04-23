@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
+    public float FallingLimit;
     public Transform PlayerStartPos;
     public MonsterSpawner[] Spawners;
 
@@ -12,6 +13,13 @@ public class MapController : MonoBehaviour
         for (int i = 0; i < Spawners.Length; ++i)
         {
             Spawners[i].Initialize();
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (PlayerActManager.Instance.transform.position.y < FallingLimit)
+        {
+            PlayerActManager.Instance.transform.position = PlayerStartPos.position;
         }
     }
 }

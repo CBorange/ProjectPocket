@@ -31,54 +31,21 @@ public class ItemDB
     private Dictionary<int, EtcData> etcDatas;
 
     // Data Contain Method
-    public void ContainWeaponData(DataSet dataSet)
+    public void ContainWeaponData(WeaponData data)
     {
-        DataRowCollection rowCollection = dataSet.Tables[0].Rows;
-        for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
-        {
-            object[] dataItems = rowCollection[rowIdx].ItemArray;
-
-            string[] splitedGrapPoint = dataItems[8].ToString().Split(',');
-            string[] splitedGrapRotation = dataItems[9].ToString().Split(',');
-            Vector3 grapPoint = new Vector3(float.Parse(splitedGrapPoint[0]), float.Parse(splitedGrapPoint[1]), float.Parse(splitedGrapPoint[2]));
-            Vector3 grapRotation = new Vector3(float.Parse(splitedGrapRotation[0]), float.Parse(splitedGrapRotation[1]), float.Parse(splitedGrapRotation[2]));
-
-            WeaponData newData = new WeaponData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2],
-                dataItems[3].ToString(), dataItems[4].ToString(), Convert.ToSingle(dataItems[5]), Convert.ToSingle(dataItems[6]), Convert.ToSingle(dataItems[7]),
-                grapPoint, grapRotation, Convert.ToSingle(dataItems[10]), Convert.ToSingle(dataItems[11]));
-            weaponDatas.Add((int)dataItems[2], newData);
-        }
+        weaponDatas.Add(data.ItemCode, data);
     }
-    public void ContainExpandableData(DataSet dataSet)
+    public void ContainExpandableData(ExpendableData data)
     {
-        DataRowCollection rowCollection = dataSet.Tables[0].Rows;
-        for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
-        {
-            object[] dataItems = rowCollection[rowIdx].ItemArray;
-            ExpendableData newData = new ExpendableData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
-            expendableDatas.Add((int)dataItems[2], newData);
-        }
+        expendableDatas.Add(data.ItemCode, data);
     }
-    public void ContainAccesorieData(DataSet dataSet)
+    public void ContainAccesorieData(AccesorieData data)
     {
-        DataRowCollection rowCollection = dataSet.Tables[0].Rows;
-        for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
-        {
-            object[] dataItems = rowCollection[rowIdx].ItemArray;
-            AccesorieData newData = new AccesorieData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString()
-                , dataItems[4].ToString());
-            accesorieDatas.Add((int)dataItems[2], newData);
-        }
+        accesorieDatas.Add(data.ItemCode, data);
     }
-    public void ContainEtcData(DataSet dataSet)
+    public void ContainEtcData(EtcData data)
     {
-        DataRowCollection rowCollection = dataSet.Tables[0].Rows;
-        for (int rowIdx = 0; rowIdx < rowCollection.Count; ++rowIdx)
-        {
-            object[] dataItems = rowCollection[rowIdx].ItemArray;
-            EtcData newData = new EtcData(dataItems[0].ToString(), dataItems[1].ToString(), (int)dataItems[2], dataItems[3].ToString());
-            etcDatas.Add((int)dataItems[2], newData);
-        }
+        etcDatas.Add(data.ItemCode, data);
     }
 
     // Get Method
