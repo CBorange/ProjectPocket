@@ -333,5 +333,12 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         gold += amount;
         changedStatusCallback();
     }
+    public void RemoveGold(int amount)
+    {
+        if (gold - amount < 0)
+            Debug.Log("소지금이 0원 보다 적음");
+        gold -= amount;
+        changedStatusCallback();
+    }
     #endregion
 }

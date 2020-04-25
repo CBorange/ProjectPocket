@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemSelectToggle : MonoBehaviour
+public class InventoryItemSelectToggle : MonoBehaviour
 {
     // UI
     public Image ItemImage;
@@ -18,9 +18,9 @@ public class ItemSelectToggle : MonoBehaviour
     {
         get { return currentItem; }
     }
-    private Action<ItemSelectToggle, string> noticeSelected_CALLBACK;
+    private Action<InventoryItemSelectToggle, string> noticeSelected_CALLBACK;
 
-    public void Initialize(Action<ItemSelectToggle, string> selectedNoticeCallback)
+    public void Initialize(Action<InventoryItemSelectToggle, string> selectedNoticeCallback)
     {
         noticeSelected_CALLBACK = selectedNoticeCallback;
     }

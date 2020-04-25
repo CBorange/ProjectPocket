@@ -43,7 +43,7 @@ public class SphericalCoordinate
         minElevation = Mathf.Deg2Rad * minElevation;
         maxElevation = Mathf.Deg2Rad * maxElevation;
 
-        Radius = 3f;
+        Radius = 4f;
         Azimuth = Mathf.Atan2(initializePos.z, initializePos.x);
         Elevation = Mathf.Asin(initializePos.y / Radius);
     }

@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class ShopInfo
+{
+    public string[] SalesItemTypes;
+    public ShopItem[] WeaponItems;
+    public ShopItem[] AccesorieItems;
+    public ShopItem[] ExpendableItems;
+    public ShopItem[] EtcItems;
+}
+[System.Serializable]
+public class ShopItem
+{
+    public int ItemCode;
+    public int Price;
+}
+[System.Serializable]
 public class NPCData
 {
     // JSON Parsing
@@ -12,8 +27,7 @@ public class NPCData
     public string[] Behaviours;
     public int[] Quest;
     public string[] Disccusion;
-    public string[] Shop;
-
+    public ShopInfo ShopData;
 
     // Quest
     [System.NonSerialized]

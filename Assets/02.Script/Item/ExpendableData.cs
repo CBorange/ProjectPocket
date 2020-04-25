@@ -7,7 +7,7 @@ public class ExpendableEffect
 {
     public string StatName;
     public int StatAmount;
-    public bool EffectDuration;
+    public int EffectDuration;
 }
 [System.Serializable]
 public class ExpendableData : ItemData

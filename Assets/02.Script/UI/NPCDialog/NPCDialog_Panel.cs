@@ -82,6 +82,10 @@ public class NPCDialog_Panel : MonoBehaviour
     {
         UIPanelTurner.Instance.Open_NPC_QuestPanel(currentNPC);
     }
+    public void OpenShopPanel()
+    {
+        UIPanelTurner.Instance.Open_ShopPanel(currentNPC);
+    }
 
     public void StartDiscussion()
     {

@@ -11,18 +11,18 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     // UI : ItemToggle
     public ToggleGroup contentsView;
     public GameObject selectTogglePrefab;
-    private List<ItemSelectToggle> selectTogglePool;
+    private List<InventoryItemSelectToggle> selectTogglePool;
 
     // Data
     private InventoryCategory inventoryCategory;
     private List<InventoryItem> currentItems;
-    private ItemSelectToggle selectedItemToggle;
+    private InventoryItemSelectToggle selectedItemToggle;
 
     // 외부호출 Method
     public void Initialize()
     {
         currentItems = new List<InventoryItem>();
-        selectTogglePool = new List<ItemSelectToggle>();
+        selectTogglePool = new List<InventoryItemSelectToggle>();
         selectTogglePool.Capacity = 0;
         CreateSelectTogglePool(30);
     }
@@ -104,7 +104,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             GameObject newSelectToggle = Instantiate(selectTogglePrefab, contentsView.transform);
             newSelectToggle.GetComponent<Toggle>().group = contentsView.GetComponent<ToggleGroup>();
 
-            ItemSelectToggle itemSelectToggle = newSelectToggle.GetComponent<ItemSelectToggle>();
+            InventoryItemSelectToggle itemSelectToggle = newSelectToggle.GetComponent<InventoryItemSelectToggle>();
             itemSelectToggle.Initialize(ItemSelected);
 
             selectTogglePool.Add(itemSelectToggle);
@@ -151,7 +151,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
 
     // 아이템 토글이 선택되었을 시 Toggle->Panel로 호출되는 Callback
-    private void ItemSelected(ItemSelectToggle selectToggle, string itemType)
+    private void ItemSelected(InventoryItemSelectToggle selectToggle, string itemType)
     {
         contentsView.allowSwitchOff = false;
         inventoryPanel.DeselectAllEquipmentToggles();

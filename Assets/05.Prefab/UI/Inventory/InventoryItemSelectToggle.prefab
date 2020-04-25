@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 4918442644124742740}
   - component: {fileID: 4918442644124742699}
   m_Layer: 5
-  m_Name: ItemSelectToggle
+  m_Name: InventoryItemSelectToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
