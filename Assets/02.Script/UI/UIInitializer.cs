@@ -10,6 +10,8 @@ public class UIInitializer : MonoBehaviour
     public NPCDialog_Panel npcDialog_Panel;
     public ShopPanel shopPanel;
     public NPC_QuestPanel npc_QuestPanel;
+    public ResourceInteractPanel resourceInteractPanel;
+    public GatheringProgressPanel gatheringProgressPanel;
 
     private void Start()
     {
@@ -19,5 +21,7 @@ public class UIInitializer : MonoBehaviour
         shopPanel.Initialize();
         player_QuestPanel.Initialize();
         npc_QuestPanel.Initialize();
+        resourceInteractPanel.Initialize();
+        gatheringProgressPanel.Initiaialize();
     }
 }

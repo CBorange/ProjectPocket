@@ -78,6 +78,12 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_AttackSpeed; }
     }
 
+    private float origin_GatheringPower;
+    public float Origin_GatheringPower
+    {
+        get { return origin_GatheringPower; }
+    }
+
     // Character Current Stat
     private float moveSpeed;
     public float MoveSpeed
@@ -121,6 +127,12 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return attackSpeed; }
     }
 
+    private float gatheringPower;
+    public float GatheringPower
+    {
+        get { return gatheringPower; }
+    }
+
     // Character Change Status 
     private Dictionary<int, float> attackPoint_StatChange;
     private Dictionary<int, float> sheildPoint_StatChange;
@@ -128,6 +140,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     private Dictionary<int, float> moveSpeed_StatChange;
     private Dictionary<int, float> jumpSpeed_StatChange;
     private Dictionary<int, float> attackSpeed_StatChange;
+    private Dictionary<int, float> gatheringPower_StatChange;
 
     // Character Stat Change Method
     private Dictionary<string, Action<int, float>> addChangeable_StatDic;
@@ -183,6 +196,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         origin_MaxShieldPoint = userData.ShieldPoint;
         origin_AttackPoint = userData.AttackPoint;
         origin_AttackSpeed = userData.AttackSpeed;
+        origin_GatheringPower = userData.GatheringPower;
 
         moveSpeed = Origin_MoveSpeed;
         jumpSpeed = Origin_JumpSpeed;
@@ -191,6 +205,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         shieldPoint = origin_MaxShieldPoint;
         attackPoint = Origin_AttackPoint;
         attackSpeed = Origin_AttackSpeed;
+        gatheringPower = origin_GatheringPower;
         levelupExperience = userData.LevelupExperience;
         currentExperience = userData.CurrentExperience;
         level = userData.Level;
@@ -206,18 +221,22 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         moveSpeed_StatChange = new Dictionary<int, float>();
         jumpSpeed_StatChange = new Dictionary<int, float>();
         attackSpeed_StatChange = new Dictionary<int, float>();
+        gatheringPower_StatChange = new Dictionary<int, float>();
 
         addChangeable_StatDic = new Dictionary<string, Action<int, float>>();
         addChangeable_StatDic.Add("AttackPoint", AddChangeableAP);
         addChangeable_StatDic.Add("AttackSpeed", AddChangeableAttackSpeed);
+        addChangeable_StatDic.Add("GatheringPower", AddChangeableGP);
 
         removeChangeable_StatDic = new Dictionary<string, Action<int>>();
         removeChangeable_StatDic.Add("AttackPoint", RemoveChangeableAP);
         removeChangeable_StatDic.Add("AttackSpeed", RemoveChangeableAttackSpeed);
+        removeChangeable_StatDic.Add("GatheringPower", RemoveChangeableGP);
 
         addPermanence_StatDic = new Dictionary<string, Action<float>>();
         addPermanence_StatDic.Add("AttackPoint", AddPermanenceAP);
         addPermanence_StatDic.Add("AttackSpeed", AddPermanenceAttackSpeed);
+        addPermanence_StatDic.Add("GatheringPower", AddPermanenceGP);
     }
     public void AttachUICallback(Action callback)
     {
@@ -273,6 +292,32 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         foundMethod(amount);
     }
 
+    // GP Change
+    private void AddPermanenceGP(float gp)
+    {
+        origin_GatheringPower += gp;
+        UpdateGatheringPower();
+    }
+    private void AddChangeableGP(int id, float gp)
+    {
+        gatheringPower_StatChange.Add(id, gp);
+        UpdateGatheringPower();
+    }
+    private void RemoveChangeableGP(int id)
+    {
+        gatheringPower_StatChange.Remove(id);
+        UpdateGatheringPower();
+    }
+    private void UpdateGatheringPower()
+    {
+        float changedValue = 0;
+        foreach (var kvp in gatheringPower_StatChange)
+        {
+            changedValue += kvp.Value;
+        }
+        gatheringPower = origin_GatheringPower + changedValue;
+        changedStatusCallback();
+    }
     // AP Change
     private void AddPermanenceAP(float ap)
     {

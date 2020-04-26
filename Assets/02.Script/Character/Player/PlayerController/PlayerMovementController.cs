@@ -60,9 +60,12 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void HorizontalMovement(float moveVecX, float moveVecZ)
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering)
+            return;
         if (moveVecX == 0 && moveVecZ == 0)
         {
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
+            animator.speed = 1;
             animator.SetBool("Walk", false);
             return;
         }
@@ -90,10 +93,11 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Jump()
     {
-        if (NowJumping)
-        {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering)
             return;
-        }
+        if (NowJumping)
+            return;
+
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.JumpSpeed, ForceMode.Impulse);
         NowJumping = true;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
@@ -108,5 +112,10 @@ public class PlayerMovementController : MonoBehaviour
         else if (angle <= 180)
             angle = 360 + (angle * -2);
         return angle;
+    }
+    public void LookTarget(GameObject target)
+    {
+        transform.LookAt(target.transform);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 }

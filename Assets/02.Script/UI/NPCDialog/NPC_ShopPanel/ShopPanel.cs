@@ -13,6 +13,7 @@ public class ShopPanel : MonoBehaviour
     public Toggle[] ItemCategoryToggles;
 
     // Data
+    private string beforeItemCategoryType;
     private NPCData currentNPC;
     public NPCData CurrentNPC
     {
@@ -21,6 +22,7 @@ public class ShopPanel : MonoBehaviour
 
     public void Initialize()
     {
+        beforeItemCategoryType = string.Empty;
         itemTable.Initialize();
         interactPanel.Initialize();
     }
@@ -65,6 +67,10 @@ public class ShopPanel : MonoBehaviour
     // Item CategoryToggle Callbacks
     public void SelectCategoryToggle(string type)
     {
+        if (beforeItemCategoryType.Equals(type)) 
+            return;
+        beforeItemCategoryType = type;
+        Debug.Log($"ChangedCategory : {type}");
         itemTable.ChangeItemCategory(type);
     }
 }

@@ -40,71 +40,35 @@ public class PlayerActManager : MonoBehaviour, IActController
         }
     }
     #endregion
-    private IWeaponBehaviour equipedWeaponBehaviour;
-    public IWeaponBehaviour EquipedWeaponBehaviour
-    {
-        get { return equipedWeaponBehaviour; }
-    }
 
-    public Transform WeaponGrapPosition;
-    public Animator animator;
-    private GameObject weaponModel;
-    private bool nowAttacking;
-
+    // Data
     private CharacterBehaviour currentBehaviour;
     public CharacterBehaviour CurrentBehaviour
     {
         get { return currentBehaviour; }
         set { currentBehaviour = value; }
     }
+    // Controller
+    public PlayerWeaponController WeaponController;
 
     // Weapon, Attack Method
     public void EquipWeapon(WeaponData weaponData)
     {
-        UnEquipWeapon();
-
-        weaponModel = Instantiate(Resources.Load<GameObject>($"Weapon/{weaponData.Name}"), WeaponGrapPosition);
-        weaponModel.transform.localPosition = weaponData.GrapPoint;
-        weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
-
-        // WeaponType에 따른 Behaviour 클래스 생성
-        Type behaviourType = Type.GetType($"WeaponBehaviour_{weaponData.WeaponType}");
-        if (behaviourType != null)
-        {
-            weaponModel.AddComponent(behaviourType);
-            equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
-        }
-        equipedWeaponBehaviour.CreateBehaviour(weaponData, EndAttack);
+        WeaponController.EquipWeapon(weaponData);
     }
     public void UnEquipWeapon()
     {
-        if (weaponModel != null)
-        {
-            equipedWeaponBehaviour.ReleaseBehaviour();
-            equipedWeaponBehaviour = null;
-            Destroy(weaponModel);
-            weaponModel = null;
-        }
+        WeaponController.UnEquipWeapon();
     }
     public void ExecuteAttack()
     {
-        if (nowAttacking)
+        if (currentBehaviour == CharacterBehaviour.Gathering)
             return;
-        if (currentBehaviour != CharacterBehaviour.Idle)
-        {
-            Debug.Log("플레이어 상태가 Idle이 아님.");
-            return;
-        }
-        if (equipedWeaponBehaviour == null)
-            return;
-        nowAttacking = true;
-        equipedWeaponBehaviour.PlayAttack();
-        currentBehaviour = CharacterBehaviour.Attack;
+        WeaponController.ExecuteAttack();
     }
     public void EndAttack()
     {
-        nowAttacking = false;
-        currentBehaviour = CharacterBehaviour.Idle;
+        WeaponController.EndAttack();
     }
 
     // GetDamage Method
@@ -115,6 +79,7 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void CharacterDeath()
     {
+        CurrentBehaviour = CharacterBehaviour.Death;
         // 사망 모션, 처리
     }
 }

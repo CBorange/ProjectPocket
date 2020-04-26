@@ -10,7 +10,7 @@ public class Shop_AlertPopup : MonoBehaviour
     public void OpenPopup()
     {
         gameObject.SetActive(true);
-        Invoke("TurnOffPopup", 3f);
+        Invoke("TurnOffPopup", 1f);
     }
     public void ClosePopup()
     {

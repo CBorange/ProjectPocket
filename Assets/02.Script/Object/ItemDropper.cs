@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
 {
-    // Controller
-    public MonsterStat Stat;
-
     // Data
     private Transform droppedItemPoolObj;
     private DropItemData[] itemDatas;
@@ -16,33 +13,37 @@ public class ItemDropper : MonoBehaviour
     private Dictionary<int, List<DroppedItem>> deactiveDroppedItems;
     private List<DroppedCoin> deactiveDroppedCoins;
 
-    public void Initialize(Transform mobSpawnerTrans)
+    public void Initialize(Transform dropObjPoolParentTrans, DropItemData[] itemDatas, DropGoldData goldData)
     {
-        CreateDroppedItemPoolObject(mobSpawnerTrans);
+        CreateDroppedItemPoolObject(dropObjPoolParentTrans);
 
         deactiveDroppedItems = new Dictionary<int, List<DroppedItem>>();
         deactiveDroppedCoins = new List<DroppedCoin>();
 
-        itemDatas = Stat.CurrentData.DropItemDatas;
-        goldData = Stat.CurrentData.GoldData;
+        this.itemDatas = itemDatas;
+        this.goldData = goldData;
 
         CreateDropItemPool(2);
-        CreateDropCoin(2);
+        if (goldData != null)
+            CreateDropCoin(2);
     }
     public void Death()
     {
         // Coin
-        int dropCoinAmount = UnityEngine.Random.Range(goldData.MinDropAmount, goldData.MaxDropAmount);
-        while (true)
+        if (goldData != null)
         {
-            if (deactiveDroppedCoins.Count > 0)
+            int dropCoinAmount = UnityEngine.Random.Range(goldData.MinDropAmount, goldData.MaxDropAmount);
+            while (true)
             {
-                deactiveDroppedCoins[0].Drop(dropCoinAmount, transform.position);
-                deactiveDroppedCoins.RemoveAt(0);
-                break;
+                if (deactiveDroppedCoins.Count > 0)
+                {
+                    deactiveDroppedCoins[0].Drop(dropCoinAmount, transform.position);
+                    deactiveDroppedCoins.RemoveAt(0);
+                    break;
+                }
+                else
+                    CreateDropCoin(2);
             }
-            else
-                CreateDropCoin(2);
         }
 
         // Item
@@ -65,6 +66,7 @@ public class ItemDropper : MonoBehaviour
                 {
                     for (int dropIdx = 0; dropIdx < dropAmount; ++dropIdx)
                     {
+                        Debug.Log($"Drop : {dropIdx}");
                         pool[0].Drop(transform.position);
                         pool.RemoveAt(0);
                     }
@@ -75,11 +77,11 @@ public class ItemDropper : MonoBehaviour
             }
         }
     }
-    private void CreateDroppedItemPoolObject(Transform mobSpawnerTrans)
+    private void CreateDroppedItemPoolObject(Transform dropObjPoolParentTrans)
     {
         GameObject pool = new GameObject("DroppedItemPool");
         pool.transform.position = Vector3.zero;
-        pool.transform.parent = mobSpawnerTrans;
+        pool.transform.parent = dropObjPoolParentTrans;
         droppedItemPoolObj = pool.transform;
     }
     private void CreateDropItemPool(int createMultiple)

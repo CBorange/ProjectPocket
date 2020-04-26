@@ -69,23 +69,35 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     public void UnequipWeapon()
     {
         PlayerActManager.Instance.UnEquipWeapon();
-        ItemStat[] weaponStats = equipedWeapon.WeaponStat;
-        for (int statIdx = 0; statIdx < weaponStats.Length; ++statIdx)
-        {
-            PlayerStat.Instance.RemoveChangeableStat(weaponStats[statIdx].StatName, equipedWeapon.ItemCode);
-        }
+        RemoveItemStat(equipedWeapon.WeaponStat, equipedWeapon.ItemCode);
         equipedWeapon = null;
     }
     public void UnequipAccesorie_Ring()
     {
+        RemoveItemStat(equipedRing.AccesorieStat, equipedRing.ItemCode);
         equipedRing = null;
     }
     public void UnequipAccesorie_Necklace()
     {
+        RemoveItemStat(equipedNecklace.AccesorieStat, equipedNecklace.ItemCode);
         equipedNecklace = null;
     }
 
     // Equip
+    private void ApplyItemStat(ItemStat[] stat, int itemCode)
+    {
+        for (int i = 0; i < stat.Length; ++i)
+        {
+            PlayerStat.Instance.AddChangeableStat(stat[i].StatName, itemCode, stat[i].StatValue);
+        }
+    }
+    private void RemoveItemStat(ItemStat[] stat, int itemCode)
+    {
+        for (int i = 0; i < stat.Length; ++i)
+        {
+            PlayerStat.Instance.RemoveChangeableStat(stat[i].StatName, itemCode);
+        }
+    }
     public void EquipWeapon(int itemCode)
     {
         if (equipedWeapon != null)
@@ -95,18 +107,16 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         equipedWeapon = weaponData;
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
-        ItemStat[] weaponStats = equipedWeapon.WeaponStat;
-        for (int statIdx = 0; statIdx < weaponStats.Length; ++statIdx)
-        {
-            PlayerStat.Instance.AddChangeableStat(weaponStats[statIdx].StatName, equipedWeapon.ItemCode, weaponStats[statIdx].StatValue);
-        }
+        ApplyItemStat(equipedWeapon.WeaponStat, equipedWeapon.ItemCode);
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {
         equipedRing = data;
+        ApplyItemStat(equipedRing.AccesorieStat, equipedRing.ItemCode);
     }
     public void EquipAccesorie_Necklace(AccesorieData data)
     {
         equipedNecklace = data;
+        ApplyItemStat(equipedNecklace.AccesorieStat, equipedNecklace.ItemCode);
     }
 }

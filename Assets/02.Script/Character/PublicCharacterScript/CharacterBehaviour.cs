@@ -8,5 +8,6 @@ public enum CharacterBehaviour
     Move,
     Jump,
     Idle,
-    Death
+    Death,
+    Gathering
 }

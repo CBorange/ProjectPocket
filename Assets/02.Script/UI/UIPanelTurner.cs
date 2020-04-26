@@ -47,6 +47,8 @@ public class UIPanelTurner : MonoBehaviour
     public NPC_QuestPanel npc_QuestPanel;
     public ShopPanel ShopPanel;
     public Player_QuestPanel player_QuestPanel;
+    public ResourceInteractPanel resourceInteractPanel;
+    public GatheringProgressPanel gatheringProgressPanel;
 
     public void Open_UIPanelTurnerBtns()
     {
@@ -86,5 +88,13 @@ public class UIPanelTurner : MonoBehaviour
     public void Open_Player_QuestPanel()
     {
         player_QuestPanel.OpenPanel();
+    }
+    public void Open_ResourceInteractPanel(ResourceController controller, Vector3 resourceScreenPos)
+    {
+        resourceInteractPanel.OpenPanel(controller, resourceScreenPos);
+    }
+    public void Open_GatheringProgressPanel(ResourceController controller)
+    {
+        gatheringProgressPanel.OpenPanel(controller);
     }
 }

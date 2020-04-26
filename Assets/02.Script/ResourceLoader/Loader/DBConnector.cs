@@ -63,7 +63,7 @@ public class DBConnector : MonoBehaviour
                 return dataSet;
             }
         }
-        catch(Exception e)
+        catch(Exception)
         {
             return null;
         }
@@ -98,20 +98,21 @@ public class DBConnector : MonoBehaviour
             return "서버에 연결할 수 없습니다.";
 
         object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
-        UserInfoProvider.Instance.Initialize(dataArray[0].ToString().Trim(),
-                                     dataArray[1].ToString().Trim(),
-                                     dataArray[2].ToString().Trim(),
-                                     dataArray[3].ToString().Trim(),
-                                     dataArray[4].ToString().Trim(),
-                                     dataArray[5].ToString().Trim(),
-                                     dataArray[6].ToString().Trim(),
-                                     dataArray[7].ToString().Trim(),
-                                     dataArray[8].ToString().Trim(),
-                                     (int)dataArray[9],
+        UserInfoProvider.Instance.Initialize(dataArray[0].ToString(),
+                                     dataArray[1].ToString(),
+                                     dataArray[2].ToString(),
+                                     Convert.ToSingle(dataArray[3]),
+                                     Convert.ToSingle(dataArray[4]),
+                                     Convert.ToSingle(dataArray[5]),
+                                     Convert.ToSingle(dataArray[6]),
+                                     Convert.ToSingle(dataArray[7]),
+                                     Convert.ToSingle(dataArray[8]),
+                                     Convert.ToSingle(dataArray[9]),
                                      (int)dataArray[10],
                                      (int)dataArray[11],
                                      (int)dataArray[12],
-                                     (int)dataArray[13]);
+                                     (int)dataArray[13],
+                                     (int)dataArray[14]);
         return "Success";
     }
 
@@ -291,6 +292,16 @@ public class DBConnector : MonoBehaviour
             npcData.QuestDatas[i] = QuestDB.Instance.GetQuestData(npcData.Quest[i]);
 
         return npcData;
+    }
+    public ResourceData LoadResourceData(int resourceCode)
+    {
+        string query = $"SELECT * FROM dbo.Resource WHERE ResourceCode = '{resourceCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+        ResourceData resourceData = JsonUtility.FromJson<ResourceData>(jsonStr);
+
+        return resourceData;
     }
     /// <summary>
     /// 이 함수는 오로지 QuestDB -> GetQuestData Method에 의해서만 호출되어야 합니다.

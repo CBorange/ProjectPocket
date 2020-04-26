@@ -25,7 +25,7 @@ public class MonsterController : MonoBehaviour, IActController
     {
         this.deathCallback = deathCallback;
         Stat.Initialize();
-        Dropper.Initialize(transform.parent);
+        Dropper.Initialize(transform.parent, Stat.CurrentData.DropItemDatas, Stat.CurrentData.GoldData);
         PanelController.Initialize();
         InitializeAttackSystems();
 

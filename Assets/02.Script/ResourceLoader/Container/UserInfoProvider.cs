@@ -71,6 +71,11 @@ public class UserInfoProvider
         get { return attackSpeed; }
         set { attackSpeed = value; }
     }
+    private float gatheringPower;
+    public float GatheringPower
+    {
+        get { return gatheringPower; }
+    }
     private int levelupExperience;
     public int LevelupExperience
     {
@@ -102,8 +107,8 @@ public class UserInfoProvider
         set { gold = value; }
     }
 
-    public void Initialize(string account, string lastMap, string lastPos, string moveSpeed, string jumpSpeed,
-        string healthPoint, string shieldPoint, string attackPoint, string attackSpeed, int levelupExperience, int currentExperience, int level,
+    public void Initialize(string account, string lastMap, string lastPos, float moveSpeed, float jumpSpeed,
+        float healthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, int levelupExperience, int currentExperience, int level,
         int workPoint, int gold)
     {
         // Account
@@ -114,12 +119,13 @@ public class UserInfoProvider
         this.lastPos = new Vector3(float.Parse(splitedPos[0]), float.Parse(splitedPos[1]), float.Parse(splitedPos[2]));
 
         // Stat
-        this.moveSpeed = float.Parse(moveSpeed);
-        this.jumpSpeed = float.Parse(jumpSpeed);
-        this.healthPoint = float.Parse(healthPoint);
-        this.shieldPoint = float.Parse(shieldPoint);
-        this.attackPoint = float.Parse(attackPoint);
-        this.attackSpeed = float.Parse(attackSpeed);
+        this.moveSpeed = moveSpeed;
+        this.jumpSpeed = jumpSpeed;
+        this.healthPoint = healthPoint;
+        this.shieldPoint = shieldPoint;
+        this.attackPoint = attackPoint;
+        this.attackSpeed = attackSpeed;
+        this.gatheringPower = gatheringPower;
         this.levelupExperience = levelupExperience;
         this.currentExperience = currentExperience;
         this.level = level;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InventoryPanel_ItemTable : MonoBehaviour
 {
-    // Panel
+    // Controller
     public InventoryPanel inventoryPanel;
 
     // UI : ItemToggle

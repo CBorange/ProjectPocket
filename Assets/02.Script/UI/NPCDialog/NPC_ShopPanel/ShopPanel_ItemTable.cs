@@ -76,11 +76,15 @@ public class ShopPanel_ItemTable : MonoBehaviour
         ShopTitleText.text = $"[{npcName}] 상점 : {itemType}";
 
         for (int i = 0; i < itemTogglePool.Count; ++i)
+        {
             itemTogglePool[i].gameObject.SetActive(false);
+        }
         for (int i = 0; i < currentItems.Length; ++i)
         {
             itemTogglePool[i].Refresh(currentItems[i]);
         }
+        if (currentItems.Length > 0)
+            itemTogglePool[0].SelectToggle(true);
     }
     // Callback
     public void ChangeItemCategory(string type)

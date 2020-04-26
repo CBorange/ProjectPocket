@@ -18,7 +18,6 @@ public class InventoryPanel : MonoBehaviour
     public InventoryPanel_PlayerInfo playerInfo;
 
     // UI
-    public ToggleGroup itemCategoryToggleGroup;
     public Toggle[] itemCategoryToggles;
 
     // UI : ItemIntroduce
@@ -28,6 +27,8 @@ public class InventoryPanel : MonoBehaviour
     public Button useItem_Btn;
     public Button unequip_Btn;
 
+    // Data
+    private int beforeCategoryType = -1;
     public void Initialize()
     {
         itemTable.Initialize();
@@ -36,19 +37,16 @@ public class InventoryPanel : MonoBehaviour
     // Open/Close Panel
     public void OpenPanel()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering)
+            return;
         // UI 초기화
         gameObject.SetActive(true);
 
-        itemCategoryToggleGroup.allowSwitchOff = false;
         itemCategoryToggles[0].isOn = true;
         RefreshPlayerInfoPanel();
     }
     public void ClosePanel()
     {
-        itemCategoryToggleGroup.allowSwitchOff = true;
-        for (int i = 0; i < itemCategoryToggles.Length; ++i)
-            itemCategoryToggles[i].isOn = false;
-
         gameObject.SetActive(false);
     }
 
@@ -102,28 +100,12 @@ public class InventoryPanel : MonoBehaviour
     }
 
     // 인벤토리 카테고리 변경 토글 Property Changed Callback
-    public void ChangeCategoryToWeapon(bool selected)
+    public void ChangeCategory(int type)
     {
-        if (!selected)
+        if (beforeCategoryType == type)
             return;
-        itemTable.Change_ItemCategory(InventoryCategory.Weapon);
-    }
-    public void ChangeCategoryToAccesorie(bool selected)
-    {
-        if (!selected)
-            return;
-        itemTable.Change_ItemCategory(InventoryCategory.Accesorie);
-    }
-    public void ChangeCategoryToExpendable(bool selected)
-    {
-        if (!selected)
-            return;
-        itemTable.Change_ItemCategory(InventoryCategory.Expendable);
-    }
-    public void ChangeCategoryToEtc(bool selected)
-    {
-        if (!selected)
-            return;
-        itemTable.Change_ItemCategory(InventoryCategory.Etc);
+        Debug.Log($"ChangeInventroy Category : {type}");
+        beforeCategoryType = type;
+        itemTable.Change_ItemCategory((InventoryCategory)type);
     }
 }
