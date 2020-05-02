@@ -104,7 +104,6 @@ public class InventoryPanel : MonoBehaviour
     {
         if (beforeCategoryType == type)
             return;
-        Debug.Log($"ChangeInventroy Category : {type}");
         beforeCategoryType = type;
         itemTable.Change_ItemCategory((InventoryCategory)type);
     }

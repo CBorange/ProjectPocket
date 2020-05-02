@@ -8,6 +8,8 @@ TagManager:
   - NPC
   - PLAYER
   - Monster
+  - Resource
+  - Building
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Monster
   - DropItem
   - Resource
-  - 
+  - Building
   - 
   - 
   - 

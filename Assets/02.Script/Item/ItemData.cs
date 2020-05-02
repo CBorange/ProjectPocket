@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ItemStat
+public class StatAdditional
 {
     public string StatName;
     public float StatValue;

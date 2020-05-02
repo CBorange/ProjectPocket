@@ -63,7 +63,7 @@ public class UIText_Util
         engItemTypeToKor.TryGetValue(type, out found);
         return found;
     }
-    public string GetKorItemStatByEng(string stat)
+    public string GetKorStatByEng(string stat)
     {
         string found = null;
         if (!engItemStatToKor.TryGetValue(stat, out found))

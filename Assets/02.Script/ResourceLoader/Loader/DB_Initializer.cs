@@ -22,6 +22,8 @@ public class DB_Initializer : MonoBehaviour
             Debug.Log("유저 장비 로드 에러");
         if (!DBConnector.Instance.LoadUserQuests().Equals("Success"))
             Debug.Log("유저 퀘스트 로드 에러");
+        if (!DBConnector.Instance.LoadUserBuilding().Equals("Success"))
+            Debug.Log("유저 빌딩 정보 로드 에러");
     }
     private void LoadRuntimeData()
     {
@@ -29,5 +31,6 @@ public class DB_Initializer : MonoBehaviour
         PlayerStat.Instance.Initialize();
         PlayerEquipment.Instance.Initialize();
         PlayerQuest.Instance.Initialize();
+        PlayerBuilding.Instance.Initialize();
     }
 }

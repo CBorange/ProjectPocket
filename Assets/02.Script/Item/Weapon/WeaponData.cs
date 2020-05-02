@@ -11,5 +11,5 @@ public class WeaponData : ItemData
     public Vector3 GrapRotation;
     public float TriggerDelay;
     public float TriggerHold;
-    public ItemStat[] WeaponStat;
+    public StatAdditional[] WeaponStat;
 }

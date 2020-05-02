@@ -86,13 +86,22 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     private void RaycastToObject()
     {
         RaycastHit hit;
-        
-        int layerMask = 1 << LayerMask.NameToLayer("Resource");
+
+        int layerMask = (1 << LayerMask.NameToLayer("Resource")) + (1 << LayerMask.NameToLayer("Building"));
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
         Debug.DrawRay(PlayerCamera.transform.position, mousePos * 100f, Color.blue, 1f);
         if (Physics.Raycast(PlayerCamera.transform.position, mousePos, out hit, 100f, layerMask)) 
         {
-            hit.collider.transform.parent.GetComponent<ResourceController>().StartIteractWithResource();
+            string tag = hit.collider.tag;
+            switch(tag)
+            {
+                case "Resource":
+                    hit.collider.transform.parent.GetComponent<ResourceController>().StartIteractWithResource();
+                    break;
+                case "Building":
+                    hit.collider.GetComponent<BuildingController>().StartInteract();
+                    break;
+            }
         }
     }
     private void ReleaseMouseDoubleClickWait()

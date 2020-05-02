@@ -143,6 +143,25 @@ public class DBConnector : MonoBehaviour
         }
         return "Success";
     }
+    public string LoadUserBuilding()
+    {
+        string query = $"SELECT * FROM dbo.PlayerBuilding WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
+        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+
+        if (dataSet == null)
+            return "서버에 연결할 수 없습니다.";
+
+        object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
+        string buildingJSON = dataArray[1].ToString();
+
+        BuildingJSON jsonObj = JsonUtility.FromJson<BuildingJSON>(buildingJSON);
+        BuildingStatus[] statuses = jsonObj.Statuses;
+        if (statuses.Length == 0)
+            UserBuildingProvider.Instance.Initialize(null);
+        else
+            UserBuildingProvider.Instance.Initialize(statuses);
+        return "Success";
+    }
     public string LoadUserEquipment()
     {
         string query = $"SELECT * FROM dbo.PlayerEquipments WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
@@ -302,6 +321,16 @@ public class DBConnector : MonoBehaviour
         ResourceData resourceData = JsonUtility.FromJson<ResourceData>(jsonStr);
 
         return resourceData;
+    }
+    public BuildingData LoadBuildingData(int buildingCode)
+    {
+        string query = $"SELECT * FROM dbo.Building WHERE BuildingCode = '{buildingCode}'";
+        DataSet dataSet = ConnectToDB("Game_DB", query);
+
+        string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+        BuildingData buildingData = JsonUtility.FromJson<BuildingData>(jsonStr);
+
+        return buildingData;
     }
     /// <summary>
     /// 이 함수는 오로지 QuestDB -> GetQuestData Method에 의해서만 호출되어야 합니다.

@@ -58,10 +58,10 @@ public class ShopPanel_InteractPanel : MonoBehaviour
         {
             case "Weapon":
                 WeaponData weapon = ItemDB.Instance.GetWeaponData(currentItemData.ItemCode);
-                ItemStat[] weaponStat = weapon.WeaponStat;
+                StatAdditional[] weaponStat = weapon.WeaponStat;
                 for (int i = 1; i < weaponStat.Length + 1; ++i)
                 {
-                    builder.Append($"{UIText_Util.Instance.GetKorItemStatByEng(weaponStat[i - 1].StatName)} +{weaponStat[i - 1].StatValue}");
+                    builder.Append($"{UIText_Util.Instance.GetKorStatByEng(weaponStat[i - 1].StatName)} +{weaponStat[i - 1].StatValue}");
                     if (i % 2 != 0)
                         builder.Append("            ");
                     else
@@ -71,10 +71,10 @@ public class ShopPanel_InteractPanel : MonoBehaviour
                 break;
             case "Accesorie":
                 AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(currentItemData.ItemCode);
-                ItemStat[] accesorieStat = accesorie.AccesorieStat;
+                StatAdditional[] accesorieStat = accesorie.AccesorieStat;
                 for (int i = 1; i < accesorieStat.Length + 1; ++i)
                 {
-                    builder.Append($"{UIText_Util.Instance.GetKorItemStatByEng(accesorieStat[i - 1].StatName)} +{accesorieStat[i - 1].StatValue}");
+                    builder.Append($"{UIText_Util.Instance.GetKorStatByEng(accesorieStat[i - 1].StatName)} +{accesorieStat[i - 1].StatValue}");
                     if (i % 2 != 0)
                         builder.Append("            ");
                     else
@@ -93,7 +93,7 @@ public class ShopPanel_InteractPanel : MonoBehaviour
                         duration = "<color=cyan>즉시 발동</color>";
                     else
                         duration = $"<color=green>{effects[i].EffectDuration.ToString()}초 지속</color>";
-                    builder.Append($"{UIText_Util.Instance.GetKorItemStatByEng(effects[i].StatName)} +{effects[i].StatAmount}            {duration}");
+                    builder.Append($"{UIText_Util.Instance.GetKorStatByEng(effects[i].StatName)} +{effects[i].StatAmount}            {duration}");
                     builder.AppendLine();
                 }
                 ItemStat.text = builder.ToString();

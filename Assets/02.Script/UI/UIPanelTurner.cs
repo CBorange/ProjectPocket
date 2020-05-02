@@ -49,6 +49,8 @@ public class UIPanelTurner : MonoBehaviour
     public Player_QuestPanel player_QuestPanel;
     public ResourceInteractPanel resourceInteractPanel;
     public GatheringProgressPanel gatheringProgressPanel;
+    public BuildingUpgradePanel buildingUpgradePanel;
+    public BuildingInteractPanel buildingInteractPanel;
 
     public void Open_UIPanelTurnerBtns()
     {
@@ -96,5 +98,13 @@ public class UIPanelTurner : MonoBehaviour
     public void Open_GatheringProgressPanel(ResourceController controller)
     {
         gatheringProgressPanel.OpenPanel(controller);
+    }
+    public void Open_BuildingInteractPanel(BuildingData data, BuildingController controller, Vector3 buildingScreenPos)
+    {
+        buildingInteractPanel.OpenPanel(data, controller, buildingScreenPos);
+    }
+    public void Open_BuildingUpgradePanel(BuildingData data, StructureBuilder builder)
+    {
+        buildingUpgradePanel.OpenPanel(data, builder);
     }
 }

@@ -12,6 +12,8 @@ public class UIInitializer : MonoBehaviour
     public NPC_QuestPanel npc_QuestPanel;
     public ResourceInteractPanel resourceInteractPanel;
     public GatheringProgressPanel gatheringProgressPanel;
+    public BuildingInteractPanel buildingInteractPanel;
+    public BuildingUpgradePanel buildingUpgradePanel;
 
     private void Start()
     {
@@ -23,5 +25,7 @@ public class UIInitializer : MonoBehaviour
         npc_QuestPanel.Initialize();
         resourceInteractPanel.Initialize();
         gatheringProgressPanel.Initiaialize();
+        buildingInteractPanel.Initialize();
+        buildingUpgradePanel.Initialize();
     }
 }

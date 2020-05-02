@@ -70,7 +70,6 @@ public class ShopPanel : MonoBehaviour
         if (beforeItemCategoryType.Equals(type)) 
             return;
         beforeItemCategoryType = type;
-        Debug.Log($"ChangedCategory : {type}");
         itemTable.ChangeItemCategory(type);
     }
 }

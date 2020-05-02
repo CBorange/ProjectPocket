@@ -6,5 +6,5 @@ using UnityEngine;
 public class AccesorieData : ItemData
 {
     public string AccesorieType;
-    public ItemStat[] AccesorieStat;
+    public StatAdditional[] AccesorieStat;
 }

@@ -84,14 +84,14 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     }
 
     // Equip
-    private void ApplyItemStat(ItemStat[] stat, int itemCode)
+    private void ApplyItemStat(StatAdditional[] stat, int itemCode)
     {
         for (int i = 0; i < stat.Length; ++i)
         {
             PlayerStat.Instance.AddChangeableStat(stat[i].StatName, itemCode, stat[i].StatValue);
         }
     }
-    private void RemoveItemStat(ItemStat[] stat, int itemCode)
+    private void RemoveItemStat(StatAdditional[] stat, int itemCode)
     {
         for (int i = 0; i < stat.Length; ++i)
         {
