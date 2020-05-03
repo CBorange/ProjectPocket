@@ -6,11 +6,30 @@ public class BuildingController : MonoBehaviour
 {
     // Data
     private BuildingData currentData;
+    private StatAdditional[] buildingStat;
+    private int currentGrade;
 
+    public void RemoveEffect()
+    {
+        for (int i = 0; i < buildingStat.Length; ++i)
+        {
+            PlayerStat.Instance.RemoveChangeableStat(buildingStat[i].StatName, currentData.BuildingCode);
+        }
+    }
     public void Initialize(BuildingData data)
     {
         currentData = data;
+        ApplyBuildingEffect();
+    }
+    private void ApplyBuildingEffect()
+    {
+        currentGrade = PlayerBuilding.Instance.GetBuildingStatus(currentData.BuildingCode).Grade;
+        buildingStat = currentData.StatsByGrade[currentGrade].BuildingStats;
 
+        for (int i = 0; i < buildingStat.Length; ++i)
+        {
+            PlayerStat.Instance.AddChangeableStat(buildingStat[i].StatName, currentData.BuildingCode, buildingStat[i].StatValue);
+        }
     }
     public void StartInteract()
     {

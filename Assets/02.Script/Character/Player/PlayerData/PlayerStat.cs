@@ -136,7 +136,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     // Character Change Status 
     private Dictionary<int, float> attackPoint_StatChange;
     private Dictionary<int, float> sheildPoint_StatChange;
-    private Dictionary<int, float> healthPoint_StatChange;
+    private Dictionary<int, float> maxHealthPoint_StatChange;
     private Dictionary<int, float> moveSpeed_StatChange;
     private Dictionary<int, float> jumpSpeed_StatChange;
     private Dictionary<int, float> attackSpeed_StatChange;
@@ -217,7 +217,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     {
         attackPoint_StatChange = new Dictionary<int, float>();
         sheildPoint_StatChange = new Dictionary<int, float>();
-        healthPoint_StatChange = new Dictionary<int, float>();
+        maxHealthPoint_StatChange = new Dictionary<int, float>();
         moveSpeed_StatChange = new Dictionary<int, float>();
         jumpSpeed_StatChange = new Dictionary<int, float>();
         attackSpeed_StatChange = new Dictionary<int, float>();
@@ -227,16 +227,19 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         addChangeable_StatDic.Add("AttackPoint", AddChangeableAP);
         addChangeable_StatDic.Add("AttackSpeed", AddChangeableAttackSpeed);
         addChangeable_StatDic.Add("GatheringPower", AddChangeableGP);
+        addChangeable_StatDic.Add("MaxHealthPoint", AddChangeableMaxHP);
 
         removeChangeable_StatDic = new Dictionary<string, Action<int>>();
         removeChangeable_StatDic.Add("AttackPoint", RemoveChangeableAP);
         removeChangeable_StatDic.Add("AttackSpeed", RemoveChangeableAttackSpeed);
         removeChangeable_StatDic.Add("GatheringPower", RemoveChangeableGP);
+        removeChangeable_StatDic.Add("MaxHealthPoint", RemoveChangeableMaxHP);
 
         addPermanence_StatDic = new Dictionary<string, Action<float>>();
         addPermanence_StatDic.Add("AttackPoint", AddPermanenceAP);
         addPermanence_StatDic.Add("AttackSpeed", AddPermanenceAttackSpeed);
         addPermanence_StatDic.Add("GatheringPower", AddPermanenceGP);
+        addPermanence_StatDic.Add("MaxHealthPoint", AddPermanenceMaxHP);
     }
     public void AttachUICallback(Action callback)
     {
@@ -292,6 +295,32 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         foundMethod(amount);
     }
 
+    // MaxHP Change
+    private void AddPermanenceMaxHP(float gp)
+    {
+        origin_MaxHealthPoint += gp;
+        UpdateMaxHealthPoint();
+    }
+    private void AddChangeableMaxHP(int id, float gp)
+    {
+        maxHealthPoint_StatChange.Add(id, gp);
+        UpdateMaxHealthPoint();
+    }
+    private void RemoveChangeableMaxHP(int id)
+    {
+        maxHealthPoint_StatChange.Remove(id);
+        UpdateMaxHealthPoint();
+    }
+    private void UpdateMaxHealthPoint()
+    {
+        float changedValue = 0;
+        foreach (var kvp in maxHealthPoint_StatChange)
+        {
+            changedValue += kvp.Value;
+        }
+        maxHealthPoint = origin_MaxHealthPoint + changedValue;
+        changedStatusCallback();
+    }
     // GP Change
     private void AddPermanenceGP(float gp)
     {

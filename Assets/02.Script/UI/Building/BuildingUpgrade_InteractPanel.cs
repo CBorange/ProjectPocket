@@ -61,22 +61,28 @@ public class BuildingUpgrade_InteractPanel : MonoBehaviour
             SetConstructButtonActive("이전단계 건설 필요!", false);
             return;
         }
+        if (currentData.StatsByGrade[selectedGrade].RequiredGold > PlayerStat.Instance.Gold)
+        {
+            SetConstructButtonActive("골드 부족!", false);
+            return;
+        }
         BuildingCost[] costs = currentData.StatsByGrade[selectedGrade].ConstructionCost;
+        int numOfCorrectCount = 0;
         for (int i = 0; i < costs.Length; ++i)
         {
             ItemData item = ItemDB.Instance.GetItemData(costs[i].NeedItem);
 
-            InventoryItem needItem = null;
-            if (PlayerInventory.Instance.AllItems.TryGetValue(item.ItemCode, out needItem))
+            InventoryItem foundInventoryItem = null;
+            if (PlayerInventory.Instance.AllItems.TryGetValue(item.ItemCode, out foundInventoryItem))
             {
-                if (needItem.ItemCount == costs[i].NeedItemCount)
-                {
-                    SetConstructButtonActive("건설!", true);
-                    return;
-                }
+                if (foundInventoryItem.ItemCount >= costs[i].NeedItemCount)
+                    numOfCorrectCount += 1;
             }
-            SetConstructButtonActive("재료 부족!", false);
         }
+        if (numOfCorrectCount == costs.Length)
+            SetConstructButtonActive("건설!", true);
+        else
+            SetConstructButtonActive("재료 부족!", false);
     }
     private void RefreshCost()
     {
@@ -118,7 +124,7 @@ public class BuildingUpgrade_InteractPanel : MonoBehaviour
         BuildingStatus status = PlayerBuilding.Instance.GetBuildingStatus(currentData.BuildingCode);
         status.Grade = selectedGrade;
 
-        currentBuilder.CreateBuilding(status.BuildingCode);
+        currentBuilder.CreateNewBuilding(status.BuildingCode);
         UpgradePanel.ClosePanel();
     }
 }

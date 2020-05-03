@@ -28,16 +28,18 @@ public class GradeSelectToggle : MonoBehaviour
         Title.text = $"[{currentData.BuildingName}] <color=#FFA500FF>{currentGrade + 1}</color> 단계";
         StatAdditional[] stats = currentData.StatsByGrade[currentGrade].BuildingStats;
         StringBuilder builder = new StringBuilder();
+        if (stats.Length == 0)
+        {
+            builder.Append("효과 없음");
+            StatIntroduce.text = builder.ToString();
+            return;
+        }
         for (int i = 0; i < stats.Length; ++i)
         {
-            if (stats[i].StatName.Equals("") && stats[i].StatValue == 0)
-                builder.Append("효과 없음");
-            else
-                builder.Append($"{UIText_Util.Instance.GetKorStatByEng(stats[i].StatName)} + {stats[i].StatValue}");
+            builder.Append($"{UIText_Util.Instance.GetKorStatByEng(stats[i].StatName)} + {stats[i].StatValue}");
             if (i < stats.Length - 1)
                 builder.AppendLine();
         }
-        StatIntroduce.text = builder.ToString();
     }
     public void SelectToggle(bool select)
     {

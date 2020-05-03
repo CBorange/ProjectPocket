@@ -89,6 +89,71 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
             return;
         AddItemToInventory(inventoryItems);
     }
+    public void RemoveItemFromInventory(int itemCode, int count)
+    {
+        ItemData data = ItemDB.Instance.GetItemData(itemCode);
+        switch(data.ItemType)
+        {
+            case "Weapon":
+                if (!weaponItems.Remove(itemCode))
+                {
+                    Debug.Log($"{itemCode} 에 해당하는 무기 가 인벤토리에 없습니다.");
+                    return;
+                }
+                allItems.Remove(itemCode);
+                break;
+            case "Accesorie":
+                if (!accesorieItems.Remove(itemCode))
+                {
+                    Debug.Log($"{itemCode} 에 해당하는 악세사리 가 인벤토리에 없습니다.");
+                    return;
+                }
+                allItems.Remove(itemCode);
+                break;
+            case "Expendable":
+                InventoryItem foundExpendable = null;
+                if (expendableItems.TryGetValue(itemCode, out foundExpendable))
+                {
+                    if (foundExpendable.ItemCount - count < 1)
+                    {
+                        if (foundExpendable.ItemCount - count < 0)
+                            Debug.Log($"{itemCode} 에 해당하는 소모품의 소지개수가 {foundExpendable.ItemCount} 개 인데, {count} 개를 인벤토리에서 제거하려 시도했습니다." +
+                                $"아이템은 제거됩니다.");
+                        expendableItems.Remove(itemCode);
+                        allItems.Remove(itemCode);
+                    }
+                    else
+                        foundExpendable.ItemCount -= count;
+                }
+                else
+                {
+                    Debug.Log($"{itemCode} 에 해당하는 소모품이 인벤토리에 없습니다.");
+                    return;
+                }
+                break;
+            case "Etc":
+                InventoryItem foundEtc = null;
+                if (etcItems.TryGetValue(itemCode, out foundEtc))
+                {
+                    if (foundEtc.ItemCount - count < 1)
+                    {
+                        if (foundEtc.ItemCount - count < 0)
+                            Debug.Log($"{itemCode} 에 해당하는 기타 의 소지개수가 {foundEtc.ItemCount} 개 인데, {count} 개를 인벤토리에서 제거하려 시도했습니다." +
+                                $"아이템은 제거됩니다.");
+                        etcItems.Remove(itemCode);
+                        allItems.Remove(itemCode);
+                    }
+                    else
+                        foundEtc.ItemCount -= count;
+                }
+                else
+                {
+                    Debug.Log($"{itemCode} 에 해당하는 기타 아이템이 인벤토리에 없습니다.");
+                    return;
+                }
+                break;
+        }
+    }
     public void AddItemToInventory(InventoryItem[] items)
     {
         for (int i = 0; i < items.Length; ++i)
