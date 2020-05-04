@@ -77,18 +77,24 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     public void UseItem()
     {
-        switch(selectedItemToggle.CurrentItem.OriginalItemData.ItemType)
+        ItemData data = selectedItemToggle.CurrentItem.OriginalItemData;
+        switch (data.ItemType)
         {
             case "Weapon":
-                PlayerEquipment.Instance.EquipWeapon(selectedItemToggle.CurrentItem.OriginalItemData.ItemCode);
+                PlayerEquipment.Instance.EquipWeapon(data.ItemCode);
                 break;
             case "Accesorie":
-                AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(selectedItemToggle.CurrentItem.OriginalItemData.ItemCode);
+                AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(data.ItemCode);
 
                 if (accesorieData.AccesorieType.Equals("Ring"))
                     PlayerEquipment.Instance.EquipAccesorie_Ring(accesorieData);
                 else if (accesorieData.AccesorieType.Equals("Necklace"))
                     PlayerEquipment.Instance.EquipAccesorie_Necklace(accesorieData);
+                break;
+            case "Expendable":
+                ExpendableData expendableData = ItemDB.Instance.GetExpendableData(data.ItemCode);
+                PlayerBuffer.Instance.ApplyStatEffectByExpendable(expendableData);
+                PlayerInventory.Instance.RemoveItemFromInventory(expendableData.ItemCode, 1);
                 break;
         }
         inventoryPanel.RefreshPlayerInfoPanel();

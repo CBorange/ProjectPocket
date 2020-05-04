@@ -247,6 +247,8 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     }
 
     #region Status Change Method
+
+    // Special Stat Callback
     public void GetDamage(float ap)
     {
         float damage = ap - shieldPoint;
@@ -261,6 +263,15 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         }
         changedStatusCallback();
     }
+    public void Heal(float amount)
+    {
+        if (amount + healthPoint > maxHealthPoint)
+            healthPoint = maxHealthPoint;
+        else
+            healthPoint += amount;
+
+        changedStatusCallback();
+    }
 
     // Getter For Change Method
     public void AddChangeableStat(string statName, int id, float amount)
@@ -273,6 +284,31 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         }
         foundMethod(id, amount);
 
+    }
+    public bool GetExistChangeableStatInDic(string statName, int id)
+    {
+        switch(statName)
+        {
+            case "AttackPoint":
+                if (attackPoint_StatChange.ContainsKey(id))
+                    return true;
+                return false;
+            case "AttackSpeed":
+                if (attackSpeed_StatChange.ContainsKey(id))
+                    return true;
+                return false;
+            case "GatheringPower":
+                if (gatheringPower_StatChange.ContainsKey(id))
+                    return true;
+                return false;
+            case "MaxHealthPoint":
+                if (maxHealthPoint_StatChange.ContainsKey(id))
+                    return true;
+                return false;
+            default:
+                Debug.Log($"{statName} 에 해당하는 ChangeableStat 이 없습니다.");
+                return false;
+        }
     }
     public void RemoveChangeableStat(string statName, int id)
     {
@@ -294,6 +330,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         }
         foundMethod(amount);
     }
+
 
     // MaxHP Change
     private void AddPermanenceMaxHP(float gp)
