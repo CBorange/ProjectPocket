@@ -119,6 +119,10 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                         if (currentQuest.Behaviour_Building.GetHasCompletedAllBuildingConstruct())
                             completedCategoryCount += 1;
                         break;
+                    case "GetItem":
+                        if (currentQuest.Behaviour_GetItem.GetHasCompletedAllItemGet())
+                            completedCategoryCount += 1;
+                        break;
                 }
             }
             if (completedCategoryCount == currentQuest.QuestCategorys.Length)
@@ -155,8 +159,9 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     }
 
     public void UpdateGetItemQuest()
-    { 
-
+    {
+        UpdateAllQuestProgress();
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
     public void UpdateBuildingQuest()
     {
@@ -192,6 +197,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             }
         }
 
+        UpdateAllQuestProgress();
         NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
     public void CompleteQuest(int npcCode, QuestData data)
@@ -228,7 +234,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             }
         }
 
-        // 퀘스트 종류별로 퀘스트 진행상황 Contain Class Update
+        // 퀘스트 종류별로 퀘스트 완료 처리
         for (int i = 0; i < data.QuestCategorys.Length; ++i)
         {
             switch (data.QuestCategorys[i])
@@ -238,6 +244,11 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                     break;
                 case "KillMonster":
                     questProgress_KillMonster.CompleteQuest(data.QuestCode);
+                    break;
+                case "GetItem":
+                    TargetItemData[] items = data.Behaviour_GetItem.TargetItem;
+                    for (int itemIdx = 0; itemIdx < items.Length; ++itemIdx)
+                        PlayerInventory.Instance.RemoveItemFromInventory(items[itemIdx].ItemCode, items[itemIdx].ItemCount);
                     break;
             }
         }

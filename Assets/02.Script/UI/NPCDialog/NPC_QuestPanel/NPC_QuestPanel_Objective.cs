@@ -98,12 +98,10 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     TargetNPCData[] targetNPC = currnetData.Behaviour_Discussion.TargetNPC;
                     for (int i = 0; i < targetNPC.Length; ++i)
                     {
-                        if (i == targetNPC.Length)
-                            builder.Append($"[{targetNPC[i].NPCName}]");
-                        else
-                            builder.Append($"[{targetNPC[i].NPCName}], ");
+                        builder.Append($"[{targetNPC[i].NPCName}]");
+                        if (i < targetNPC.Length - 1)
+                            builder.AppendLine();
                     }
-                    builder.Append(" 와 대화하세요.");
                     break;
                 case "KillMonster":
                     builder.Append("몬스터 사냥 : ");
@@ -111,12 +109,10 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     TargetMonsterData[] targetMonster = currnetData.Behaviour_KillMonster.TargetMonster;
                     for (int i = 0; i < targetMonster.Length; ++i)
                     {
-                        if (i == targetMonster.Length)
-                            builder.Append($"[{targetMonster[i].MonsterName} / {targetMonster[i].KillCount}마리]");
-                        else
-                            builder.Append($"[{targetMonster[i].MonsterName} / {targetMonster[i].KillCount}마리], ");
+                        builder.Append($"[{targetMonster[i].MonsterName} / {targetMonster[i].KillCount}마리]");
+                        if (i < targetMonster.Length - 1)
+                            builder.AppendLine();
                     }
-                    builder.Append(" 사냥하세요.");
                     break;
                 case "Building":
                     builder.Append("건물 증축 : ");
@@ -124,25 +120,21 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
                     TargetBuildingData[] targetBulding = currnetData.Behaviour_Building.TargetBuilding;
                     for (int i = 0; i < targetBulding.Length; ++i)
                     {
-                        if (i == targetBulding.Length)
-                            builder.Append($"[{targetBulding[i].BuildingName} / {targetBulding[i].BuildingGrade}단계]");
-                        else
-                            builder.Append($"[{targetBulding[i].BuildingName} / {targetBulding[i].BuildingGrade}단계], ");
+                        builder.Append($"[{targetBulding[i].BuildingName} / {targetBulding[i].BuildingGrade + 1}단계]");
+                        if (i < targetBulding.Length - 1)
+                            builder.AppendLine();
                     }
-                    builder.Append(" 까지 업그레이드 하세요.");
                     break;
-                case "ItemGet":
+                case "GetItem":
                     builder.Append("아이템 획득 : ");
                     builder.AppendLine();
                     TargetItemData[] targetItem = currnetData.Behaviour_GetItem.TargetItem;
                     for (int i = 0; i < targetItem.Length; ++i)
                     {
-                        if (i == targetItem.Length)
-                            builder.Append($"[{targetItem[i].ItemName} / {targetItem[i].ItemCount}개]");
-                        else
-                            builder.Append($"[{targetItem[i].ItemName} / {targetItem[i].ItemCount}개], ");
+                        builder.Append($"[{targetItem[i].ItemName} / {targetItem[i].ItemCount}개]");
+                        if (i < targetItem.Length - 1)
+                            builder.AppendLine();
                     }
-                    builder.Append(" 아이템을 획득하세요.");
                     break;
             }
         }

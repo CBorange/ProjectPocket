@@ -69,8 +69,28 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     }
                     break;
                 case "Building":
+                    builder.Append("건물 증축 : ");
+                    builder.AppendLine();
+                    TargetBuildingData[] targetBuildings = data.Behaviour_Building.TargetBuilding;
+                    for (int i = 0; i < targetBuildings.Length; ++i)
+                    {
+                        int currentGrade = PlayerBuilding.Instance.GetBuildingStatus(targetBuildings[i].BuildingCode).Grade;
+                        builder.Append($"[{targetBuildings[i].BuildingName} : {currentGrade + 1}/{targetBuildings[i].BuildingGrade + 1} 단계]");
+                        if (i < targetBuildings.Length - 1)
+                            builder.Append(",");
+                    }
                     break;
-                case "ItemGet":
+                case "GetItem":
+                    builder.Append("아이템 획득 : ");
+                    builder.AppendLine();
+                    TargetItemData[] targetItems = data.Behaviour_GetItem.TargetItem;
+                    for (int i = 0; i < targetItems.Length; ++i)
+                    {
+                        InventoryItem itemInInventory = PlayerInventory.Instance.GetItem(targetItems[i].ItemCode);
+                        builder.Append($"[{itemInInventory.OriginalItemData.Name} : {itemInInventory.ItemCount} / {targetItems[i].ItemCount}]");
+                        if (i < targetItems.Length - 1)
+                            builder.AppendLine();
+                    }
                     break;
             }
         }

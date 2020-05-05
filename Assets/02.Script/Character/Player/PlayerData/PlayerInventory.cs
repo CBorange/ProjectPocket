@@ -87,7 +87,18 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
         InventoryItem[] inventoryItems = UserInventoryProvider.Instance.InventoryItems;
         if (inventoryItems == null)
             return;
-        AddItemToInventory(inventoryItems);
+        for (int i = 0; i < inventoryItems.Length; ++i)
+        {
+            AddItemIntoInventoryProcess(inventoryItems[i]);
+        }
+    }
+    public InventoryItem GetItem(int itemCode)
+    {
+        InventoryItem foundItem = null;
+        if (allItems.TryGetValue(itemCode, out foundItem))
+            return foundItem;
+        else
+            return null;
     }
     public void RemoveItemFromInventory(int itemCode, int count)
     {
@@ -160,10 +171,12 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
         {
             AddItemIntoInventoryProcess(items[i]);
         }
+        PlayerQuest.Instance.UpdateGetItemQuest();
     }
     public void AddItemToInventory(InventoryItem item)
     {
         AddItemIntoInventoryProcess(item);
+        PlayerQuest.Instance.UpdateGetItemQuest();
     }
     private void AddItemIntoInventoryProcess(InventoryItem item)
     {

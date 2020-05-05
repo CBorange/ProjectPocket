@@ -20,7 +20,8 @@ public class NPCDialog_DiscussionController : MonoBehaviour
         this.discussion = discussion;
         currentDiscussionIndex = 0;
 
-        Next_Btn.gameObject.SetActive(true);
+        if (discussion.Length > 1)
+            Next_Btn.gameObject.SetActive(true);
         BackToPanel_Btn.gameObject.SetActive(true);
 
         RefreshDiscussionContents();
