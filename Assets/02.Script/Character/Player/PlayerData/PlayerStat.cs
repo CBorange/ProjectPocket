@@ -84,6 +84,12 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_GatheringPower; }
     }
 
+    private float origin_MaxWorkPoint;
+    public float Origin_MaxWorkPoint
+    {
+        get { return origin_MaxWorkPoint; }
+    }
+
     // Character Current Stat
     private float moveSpeed;
     public float MoveSpeed
@@ -192,16 +198,17 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         UserInfoProvider userData = UserInfoProvider.Instance;
         origin_MoveSpeed = userData.MoveSpeed;
         origin_JumpSpeed = userData.JumpSpeed;
-        origin_MaxHealthPoint = userData.HealthPoint;
+        origin_MaxHealthPoint = userData.MaxHealthPoint;
         origin_MaxShieldPoint = userData.ShieldPoint;
         origin_AttackPoint = userData.AttackPoint;
         origin_AttackSpeed = userData.AttackSpeed;
         origin_GatheringPower = userData.GatheringPower;
+        origin_MaxWorkPoint = userData.MaxWorkPoint;
 
         moveSpeed = Origin_MoveSpeed;
         jumpSpeed = Origin_JumpSpeed;
         maxHealthPoint = origin_MaxHealthPoint;
-        healthPoint = maxHealthPoint;
+        healthPoint = userData.HealthPoint;
         shieldPoint = origin_MaxShieldPoint;
         attackPoint = Origin_AttackPoint;
         attackSpeed = Origin_AttackSpeed;
@@ -209,8 +216,8 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         levelupExperience = userData.LevelupExperience;
         currentExperience = userData.CurrentExperience;
         level = userData.Level;
-        max_workPoint = userData.WorkPoint;
-        workPoint = max_workPoint;
+        max_workPoint = userData.MaxWorkPoint;
+        workPoint = userData.WorkPoint;
         gold = userData.Gold;
     }
     private void InitChangedStatDictionary()
@@ -269,6 +276,23 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
             healthPoint = maxHealthPoint;
         else
             healthPoint += amount;
+
+        changedStatusCallback();
+    }
+    public void DoWork(int pointUsage)
+    {
+        if (workPoint - pointUsage < 0)
+            Debug.Log("남은 노동력을 초과하여 사용하여 시도함 : PlayerStat");
+        workPoint -= pointUsage;
+
+        changedStatusCallback();
+    }
+    public void RecoverWorkPoint(int amount)
+    {
+        if (amount + workPoint > max_workPoint)
+            workPoint = max_workPoint;
+        else
+            workPoint += amount;
 
         changedStatusCallback();
     }

@@ -7,6 +7,7 @@ public class ResourceInteractPanel : MonoBehaviour
 {
     // UI
     public Text ResourceName;
+    public Text WorkPointUsageText;
 
     // Controller
     private ResourceController resourceController;
@@ -32,6 +33,7 @@ public class ResourceInteractPanel : MonoBehaviour
         currentData = resourceController.CurrentData;
 
         ResourceName.text = currentData.ResourceName;
+        WorkPointUsageText.text = $"소모 노동력 : {currentData.WorkPointUsage}";
     }
     public void ClosePanel()
     {
@@ -39,6 +41,8 @@ public class ResourceInteractPanel : MonoBehaviour
     }
     public void StartGathering()
     {
+        if (PlayerStat.Instance.WorkPoint - currentData.WorkPointUsage < 0)
+            return;
         if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
             return;
         gameObject.SetActive(false);

@@ -38,7 +38,6 @@ public class GatheringProgressPanel : MonoBehaviour
     }
     private void Refresh()
     {
-        Debug.Log(PlayerStat.Instance.GatheringPower);
         ResoureName.text = currentData.ResourceName;
         ProgressSlider.maxValue = currentData.HealthPoint;
         ProgressSlider.value = 0;

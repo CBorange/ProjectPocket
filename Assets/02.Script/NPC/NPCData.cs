@@ -73,7 +73,7 @@ public class NPCData
         for (int questIdx = 0; questIdx < QuestDatas.Length; ++questIdx)
         {
             QuestData currentData = QuestDatas[questIdx];
-            if (!PlayerQuest.Instance.GetQuestIsInComplete(currentData.QuestCode))
+            if (!PlayerQuest.Instance.GetQuestIsInComplete(currentData.QuestCode))  // 퀘스트 완료목록에 존재하지 않으면
             {
                 // Divide Complete & InProgress Quest
                 if (PlayerQuest.Instance.GetQuestIsInProgress(currentData.QuestCode))

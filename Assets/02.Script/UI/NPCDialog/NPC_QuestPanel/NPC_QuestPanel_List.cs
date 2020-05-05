@@ -79,6 +79,7 @@ public class NPC_QuestPanel_List : MonoBehaviour
     {
         if (selectToggle.ToggleCategory == QuestSelectToggleCategory.Acceptable)
         {
+            // 완료가능 퀘스트 토글 전부 비활성화
             for (int i = 0; i < completeSelectTogglePool.Count; ++i)
             {
                 completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
@@ -88,6 +89,7 @@ public class NPC_QuestPanel_List : MonoBehaviour
         }
         else if(selectToggle.ToggleCategory == QuestSelectToggleCategory.Complete)
         {
+            // 수락가능 퀘스트 토글 전부 비활성화
             for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
             {
                 acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;

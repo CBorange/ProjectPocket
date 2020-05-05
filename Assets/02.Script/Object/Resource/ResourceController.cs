@@ -27,6 +27,7 @@ public class ResourceController : MonoBehaviour
     }
     public void EndGathering()
     {
+        PlayerStat.Instance.DoWork(currentData.WorkPointUsage);
         dropper.Death();
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
         isActivated = false;

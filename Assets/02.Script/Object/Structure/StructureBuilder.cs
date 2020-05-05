@@ -27,6 +27,7 @@ public class StructureBuilder : MonoBehaviour
             Destroy(currentBuilding.gameObject);
         }
 
+        PlayerQuest.Instance.UpdateBuildingQuest();
         currentBuildingStatus = PlayerBuilding.Instance.GetBuildingStatus(buildingCode);
         currentData = BuildingDB.Instance.GetBuildingData(buildingCode);
 

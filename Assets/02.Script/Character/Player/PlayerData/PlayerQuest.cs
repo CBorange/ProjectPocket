@@ -94,6 +94,9 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         else
             completedQuests = new Dictionary<int, QuestData>();
     }
+    /// <summary>
+    /// 퀘스트의 각 Behaviour가 완수 되었는지 검사하고 이를 해당 QuestProgress에 업데이트 시킴
+    /// </summary>
     private void UpdateAllQuestProgress()
     {
         foreach (var kvp in questsInProgress)
@@ -105,13 +108,15 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                 switch (currentQuest.QuestCategorys[categoryIdx])
                 {
                     case "Discussion":
-                        bool completedDiscussion = questProgress_Discussion.GetHasCompletedByQuestCode(currentQuest.QuestCode);
-                        if (completedDiscussion)
+                        if (questProgress_Discussion.GetHasCompletedByQuestCode(currentQuest.QuestCode))
                             completedCategoryCount += 1;
                         break;
                     case "KillMonster":
-                        bool completedKillMonster = questProgress_KillMonster.GetHasCompletedByQuestCode(currentQuest.QuestCode);
-                        if (completedKillMonster)
+                        if (questProgress_KillMonster.GetHasCompletedByQuestCode(currentQuest.QuestCode))
+                            completedCategoryCount += 1;
+                        break;
+                    case "Building":
+                        if (currentQuest.Behaviour_Building.GetHasCompletedAllBuildingConstruct())
                             completedCategoryCount += 1;
                         break;
                 }
@@ -128,6 +133,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     {
         questProgress_KillMonster.KilledMonster(monsterCode);
         UpdateAllQuestProgress();
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
 
     /// <summary>
@@ -141,6 +147,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     {
         string[] discussionSTR = questProgress_Discussion.GetDiscussionSTR(npcCode);
         UpdateAllQuestProgress();
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
         if (discussionSTR != null)
             return discussionSTR;
         else
@@ -153,7 +160,8 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     }
     public void UpdateBuildingQuest()
     {
-
+        UpdateAllQuestProgress();
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
 
     public void StartQuest(int npcCode, int questCode)
@@ -220,30 +228,24 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             }
         }
 
-        // 퀘스트 리스트 변경
-        int categoryCompleteCount = 0;
+        // 퀘스트 종류별로 퀘스트 진행상황 Contain Class Update
         for (int i = 0; i < data.QuestCategorys.Length; ++i)
         {
             switch (data.QuestCategorys[i])
             {
                 case "Discussion":
                     questProgress_Discussion.CompleteQuest(data.QuestCode);
-                    categoryCompleteCount += 1;
                     break;
                 case "KillMonster":
                     questProgress_KillMonster.CompleteQuest(data.QuestCode);
-                    categoryCompleteCount += 1;
                     break;
             }
         }
-        if (categoryCompleteCount == data.QuestCategorys.Length)
+        if (questsInProgress.Remove(data.QuestCode))
+            completedQuests.Add(data.QuestCode, data);
+        else
         {
-            if (questsInProgress.Remove(data.QuestCode))
-                completedQuests.Add(data.QuestCode, data);
-            else
-            {
-                Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
-            }
+            Debug.Log($"퀘스트 성공 실패, {data.QuestCode}");
         }
         NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }

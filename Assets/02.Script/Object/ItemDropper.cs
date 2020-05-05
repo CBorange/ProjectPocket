@@ -66,7 +66,6 @@ public class ItemDropper : MonoBehaviour
                 {
                     for (int dropIdx = 0; dropIdx < dropAmount; ++dropIdx)
                     {
-                        Debug.Log($"Drop : {dropIdx}");
                         pool[0].Drop(transform.position);
                         pool.RemoveAt(0);
                     }

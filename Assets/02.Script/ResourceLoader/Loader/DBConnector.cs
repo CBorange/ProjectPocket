@@ -97,22 +97,24 @@ public class DBConnector : MonoBehaviour
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
 
-        object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
-        UserInfoProvider.Instance.Initialize(dataArray[0].ToString(),
-                                     dataArray[1].ToString(),
-                                     dataArray[2].ToString(),
-                                     Convert.ToSingle(dataArray[3]),
-                                     Convert.ToSingle(dataArray[4]),
-                                     Convert.ToSingle(dataArray[5]),
-                                     Convert.ToSingle(dataArray[6]),
-                                     Convert.ToSingle(dataArray[7]),
-                                     Convert.ToSingle(dataArray[8]),
-                                     Convert.ToSingle(dataArray[9]),
-                                     (int)dataArray[10],
-                                     (int)dataArray[11],
-                                     (int)dataArray[12],
-                                     (int)dataArray[13],
-                                     (int)dataArray[14]);
+        DataRow row = dataSet.Tables[0].Rows[0];
+        UserInfoProvider.Instance.Initialize(row["UserAccount"].ToString(),
+                                     row["LastMap"].ToString(),
+                                     row["LastPos"].ToString(),
+                                     Convert.ToSingle(row["MoveSpeed"]),
+                                     Convert.ToSingle(row["JumpSpeed"]),
+                                     Convert.ToSingle(row["HealthPoint"]),
+                                     Convert.ToSingle(row["MaxHealthPoint"]),
+                                     Convert.ToSingle(row["SheildPoint"]),
+                                     Convert.ToSingle(row["AttackPoint"]),
+                                     Convert.ToSingle(row["AttackSpeed"]),
+                                     Convert.ToSingle(row["GatheringPower"]),
+                                     (int)row["LevelupExperience"],
+                                     (int)row["CurrentExperience"],
+                                     (int)row["Level"],
+                                     (int)row["WorkPoint"],
+                                     (int)row["MaxWorkPoint"],
+                                     (int)row["Gold"]);
         return "Success";
     }
 

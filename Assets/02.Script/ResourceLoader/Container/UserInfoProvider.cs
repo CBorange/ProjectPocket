@@ -53,6 +53,12 @@ public class UserInfoProvider
         get { return healthPoint; }
         set { healthPoint = value; }
     }
+    private float maxHealthPoint;
+    public float MaxHealthPoint
+    {
+        get { return maxHealthPoint; }
+        set { maxHealthPoint = value; }
+    }
     private float shieldPoint;
     public float ShieldPoint
     {
@@ -100,6 +106,12 @@ public class UserInfoProvider
         get { return workPoint; }
         set { workPoint = value; }
     }
+    private int maxWorkPoint;
+    public int MaxWorkPoint
+    {
+        get { return maxWorkPoint; }
+        set { maxWorkPoint = value; }
+    }
     private int gold;
     public int Gold
     {
@@ -108,8 +120,8 @@ public class UserInfoProvider
     }
 
     public void Initialize(string account, string lastMap, string lastPos, float moveSpeed, float jumpSpeed,
-        float healthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, int levelupExperience, int currentExperience, int level,
-        int workPoint, int gold)
+        float healthPoint, float maxHealthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, int levelupExperience, int currentExperience, int level,
+        int workPoint, int maxWorkPoint, int gold)
     {
         // Account
         userAccount = account;
@@ -122,6 +134,7 @@ public class UserInfoProvider
         this.moveSpeed = moveSpeed;
         this.jumpSpeed = jumpSpeed;
         this.healthPoint = healthPoint;
+        this.maxHealthPoint = maxHealthPoint;
         this.shieldPoint = shieldPoint;
         this.attackPoint = attackPoint;
         this.attackSpeed = attackSpeed;
@@ -130,6 +143,7 @@ public class UserInfoProvider
         this.currentExperience = currentExperience;
         this.level = level;
         this.workPoint = workPoint;
+        this.maxWorkPoint = maxWorkPoint;
         this.gold = gold;
     }
 }
