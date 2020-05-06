@@ -298,15 +298,53 @@ public class DBConnector : MonoBehaviour
     }
     public void Save_PlayerBuilding()
     {
+        BuildingJSON buildingJSON = new BuildingJSON();
+        buildingJSON.Statuses = UserBuildingProvider.Instance.BuildingStatus;
 
+        string jsonSTR = JsonUtility.ToJson(buildingJSON);
+        string sql = $"UPDATE dbo.PlayerBuilding SET BuildingStatusJSON='{jsonSTR}' WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'";
+
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
     }
     public void Save_PlayerInventory()
     {
+        InventoryItem[] userItems = UserInventoryProvider.Instance.InventoryItems;
+        InventoryJSON inventoryJSON = new InventoryJSON();
+        inventoryJSON.ItemUnits = new InventoryJSONUnit[userItems.Length];
+        for (int i = 0; i < userItems.Length; ++i)
+        {
+            inventoryJSON.ItemUnits[i] = new InventoryJSONUnit();
+            inventoryJSON.ItemUnits[i].ItemCode = userItems[i].OriginalItemData.ItemCode;
+            inventoryJSON.ItemUnits[i].ItemCount = userItems[i].ItemCount;
+        }
 
+        string jsonSTR = JsonUtility.ToJson(inventoryJSON);
+        string sql = $"UPDATE dbo.PlayerInventory SET InventoryJSON='{jsonSTR}' WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'";
+
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
     }
     public void Save_PlayerEquipment()
     {
+        StringBuilder builder = new StringBuilder();
+        builder.Append($"UPDATE dbo.PlayerEquipments SET ");
 
+        int weaponCode = 0;
+        if (UserEquipmentProvider.Instance.WeaponItem != null)
+            weaponCode = UserEquipmentProvider.Instance.WeaponItem.ItemCode;
+        int ringCode = 0;
+        if (UserEquipmentProvider.Instance.Accesorie_Ring != null)
+            ringCode = UserEquipmentProvider.Instance.Accesorie_Ring.ItemCode;
+        int necklaceCode = 0;
+        if (UserEquipmentProvider.Instance.Accesorie_Necklace != null)
+            necklaceCode = UserEquipmentProvider.Instance.Accesorie_Necklace.ItemCode;
+        builder.Append($"Weapon='{weaponCode}', ");
+        builder.Append($"Accesorie_Ring='{ringCode}', ");
+        builder.Append($"Accesorie_Necklace='{necklaceCode}' ");
+
+        builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
+
+        string sql = builder.ToString();
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
     }
     public void Save_PlayerQuest()
     {

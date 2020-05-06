@@ -38,4 +38,12 @@ public class UserEquipmentProvider
         accesorie_Ring = ringData;
         accesorie_Necklace = necklaceData;
     }
+    public void Save_PlayerEquipment_UpdateServerDB()
+    {
+        this.weaponItem = PlayerEquipment.Instance.EquipedWeapon;
+        this.accesorie_Ring = PlayerEquipment.Instance.EquipedRing;
+        this.accesorie_Necklace = PlayerEquipment.Instance.EquipedNecklace;
+
+        DBConnector.Instance.Save_PlayerEquipment();
+    }
 }

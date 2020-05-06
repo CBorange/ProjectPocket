@@ -26,4 +26,8 @@ public class UserBuildingProvider
     {
         buildingStatus = statuses;
     }
+    public void Save_PlayerBuilding_UpdateServerDB()
+    {
+        DBConnector.Instance.Save_PlayerBuilding();
+    }
 }
