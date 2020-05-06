@@ -103,6 +103,16 @@ public class QuestProgress_Discussion
         }
         totalProgressDic.Add(questCode, newProgress);
     }
+    public void SaveProgress()
+    {
+        TotalProgress = new TotalDiscussionProgress[totalProgressDic.Count];
+        int idx = 0;
+        foreach (var kvp in totalProgressDic)
+        {
+            TotalProgress[idx] = kvp.Value;
+            idx += 1;
+        }
+    }
 }
 // 퀘스트에 해당
 [System.Serializable]

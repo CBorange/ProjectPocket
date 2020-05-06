@@ -260,6 +260,11 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
         }
         NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
+    public void SaveQuestProgressData()
+    {
+        questProgress_Discussion.SaveProgress();
+        questProgress_KillMonster.SaveProgress();
+    }
 
     // 퀘스트 데이터 Getter
     public bool GetQuestIsInProgress(int questCode)

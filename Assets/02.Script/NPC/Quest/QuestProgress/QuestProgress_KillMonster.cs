@@ -81,7 +81,7 @@ public class QuestProgress_KillMonster
             int huntCompleteCount = 0;
             for (int i = 0; i < progressInfos.Length; ++i)
             {
-                if (progressInfos[i].CurrentKillCount >= progressInfos[i].CurrentKillCount)
+                if (progressInfos[i].CurrentKillCount >= progressInfos[i].GoalKillCount)
                     huntCompleteCount += 1;
             }
             if (huntCompleteCount == progressInfos.Length)
@@ -102,6 +102,16 @@ public class QuestProgress_KillMonster
                     UpdateProgress();
                 }
             }
+        }
+    }
+    public void SaveProgress()
+    {
+        TotalProgress = new TotalKillMonsterProgress[totalProgressDic.Count];
+        int idx = 0;
+        foreach (var kvp in totalProgressDic)
+        {
+            TotalProgress[idx] = kvp.Value;
+            idx += 1;
         }
     }
 }

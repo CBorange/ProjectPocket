@@ -221,38 +221,17 @@ public class DBConnector : MonoBehaviour
         string questInProgress_KillMonster_JSON = dataArray[3].ToString();
         string completedQuests = dataArray[4].ToString();
 
-        QuestProgress_Discussion progress_Discussion;
-        QuestProgress_KillMonster progress_KillMonster;
-        if (!questCodesInProgressSTR.Equals("None"))
-        {
-            int[] progressQuestCodes = CodesSTR_To_IntegerArray(questCodesInProgressSTR);
+        QuestProgress_Discussion progress_Discussion = JsonUtility.FromJson<QuestProgress_Discussion>(questInProgress_Discussion_JSON);
+        QuestProgress_KillMonster progress_KillMonster = JsonUtility.FromJson<QuestProgress_KillMonster>(questInProgress_KillMonster_JSON);
+        int[] progressQuestCodes = null;
+        int[] completedQuestCodes = null;
 
-            // Discussion
-            if (questInProgress_Discussion_JSON.Equals("None"))
-            {
-                progress_Discussion = new QuestProgress_Discussion();
-                progress_Discussion.Initiailize();
-            }
-            else
-                progress_Discussion = JsonUtility.FromJson<QuestProgress_Discussion>(questInProgress_Discussion_JSON);
-            // KillMonster
-            if (questInProgress_KillMonster_JSON.Equals("None"))
-            {
-                progress_KillMonster = new QuestProgress_KillMonster();
-                progress_KillMonster.Initialize();
-            }
-            else
-                progress_KillMonster = JsonUtility.FromJson<QuestProgress_KillMonster>(questInProgress_KillMonster_JSON);
+        if (!string.IsNullOrEmpty(questCodesInProgressSTR)) 
+            progressQuestCodes = CodesSTR_To_IntegerArray(questCodesInProgressSTR);
+        if (!string.IsNullOrEmpty(completedQuests)) 
+            completedQuestCodes = CodesSTR_To_IntegerArray(completedQuests);
 
-            UserQuestProvider.Instance.Initialize_ProgressQuest(progressQuestCodes, progress_Discussion, progress_KillMonster);
-        }
-        else
-            UserQuestProvider.Instance.Initialize();
-        if (!completedQuests.Equals("None"))
-        {
-            int[] completedQuestCodes = CodesSTR_To_IntegerArray(completedQuests);
-            UserQuestProvider.Instance.Initialize_CompletedQuest(completedQuestCodes);
-        }
+        UserQuestProvider.Instance.Initialize(progressQuestCodes, completedQuestCodes, progress_Discussion, progress_KillMonster);
         return "Success";
     }
     private int[] CodesSTR_To_IntegerArray(string originalSTR)
@@ -348,7 +327,36 @@ public class DBConnector : MonoBehaviour
     }
     public void Save_PlayerQuest()
     {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.Append($"UPDATE dbo.PlayerQuests SET ");
 
+        StringBuilder inProgressQuestsSTR_Builder = new StringBuilder();
+        for (int i = 0; i < UserQuestProvider.Instance.QuestDatasInProgress.Count; ++i)
+        {
+            inProgressQuestsSTR_Builder.Append($"{UserQuestProvider.Instance.QuestDatasInProgress[i].QuestCode}");
+            if (i < UserQuestProvider.Instance.QuestDatasInProgress.Count - 1)
+                inProgressQuestsSTR_Builder.Append(",");
+        }
+        sqlBuilder.Append($"QuestCodesInProgress='{inProgressQuestsSTR_Builder.ToString()}', ");
+
+        string inprogress_DiscussionJSON = JsonUtility.ToJson(UserQuestProvider.Instance.QuestProgress_Discussion);
+        sqlBuilder.Append($"QuestInProgress_Discussion_JSON='{inprogress_DiscussionJSON}', ");
+
+        string inprogress_KillMonsterJSON = JsonUtility.ToJson(UserQuestProvider.Instance.QuestProgress_KillMonster);
+        sqlBuilder.Append($"QuestInProgress_KillMonster_JSON='{inprogress_KillMonsterJSON}', ");
+
+        StringBuilder compltedQuestsSTR_Builder = new StringBuilder();
+        for (int i = 0; i < UserQuestProvider.Instance.CompletedQuests.Count; ++i)
+        {
+            compltedQuestsSTR_Builder.Append($"{UserQuestProvider.Instance.CompletedQuests[i].QuestCode}");
+            if (i < UserQuestProvider.Instance.CompletedQuests.Count - 1)
+                compltedQuestsSTR_Builder.Append(",");
+        }
+        sqlBuilder.Append($"CompletedQuests='{compltedQuestsSTR_Builder.ToString()}' ");
+        sqlBuilder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
+
+        string sql = sqlBuilder.ToString();
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
     }
     #endregion
 

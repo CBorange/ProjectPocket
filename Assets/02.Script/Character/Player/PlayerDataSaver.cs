@@ -10,5 +10,6 @@ public class PlayerDataSaver : MonoBehaviour
         UserBuildingProvider.Instance.Save_PlayerBuilding_UpdateServerDB();
         UserEquipmentProvider.Instance.Save_PlayerEquipment_UpdateServerDB();
         UserInventoryProvider.Instance.Save_PlayerInventory_UpdateServerDB();
+        UserQuestProvider.Instance.SavePlayerQuest_UpdateServerDB();
     }
 }
