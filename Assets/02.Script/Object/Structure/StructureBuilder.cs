@@ -16,6 +16,8 @@ public class StructureBuilder : MonoBehaviour
     }
     public void CreateNewBuilding(int buildingCode)
     {
+        PlayerBuilding.Instance.RemoveBuildingEffects();
+        PlayerBuilding.Instance.ApplyBuildingEffects();
         ConstructBuilding(buildingCode);
         PayCost();
     }
@@ -23,7 +25,6 @@ public class StructureBuilder : MonoBehaviour
     {
         if (currentBuilding != null)
         {
-            currentBuilding.RemoveEffect();
             Destroy(currentBuilding.gameObject);
         }
 

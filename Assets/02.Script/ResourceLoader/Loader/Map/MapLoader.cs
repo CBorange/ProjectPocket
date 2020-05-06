@@ -90,5 +90,7 @@ public class MapLoader : MonoBehaviour
         {
             PlayerCoordinator.Instance.SetPlayerPosition(loadedMap.PlayerStartPos.position);
         }
+
+        UserInfoProvider.Instance.LastMap = loadedMapName;
     }
 }

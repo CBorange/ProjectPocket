@@ -146,4 +146,37 @@ public class UserInfoProvider
         this.maxWorkPoint = maxWorkPoint;
         this.gold = gold;
     }
+    public void SavePlayerInfo_UpdateServerDB()
+    {
+        this.lastPos = PlayerActManager.Instance.transform.position;
+
+        this.moveSpeed = PlayerStat.Instance.Origin_MoveSpeed;
+        this.jumpSpeed = PlayerStat.Instance.Origin_JumpSpeed;
+
+        float saveHealthPoint = 0;
+        if (PlayerStat.Instance.HealthPoint >= PlayerStat.Instance.Origin_MaxHealthPoint)
+            saveHealthPoint = PlayerStat.Instance.Origin_MaxHealthPoint;
+        else
+            saveHealthPoint = PlayerStat.Instance.HealthPoint;
+        this.healthPoint = saveHealthPoint;
+        this.maxHealthPoint = PlayerStat.Instance.Origin_MaxHealthPoint;
+        this.shieldPoint = PlayerStat.Instance.Origin_MaxShieldPoint;
+        this.attackPoint = PlayerStat.Instance.Origin_AttackPoint;
+        this.attackSpeed = PlayerStat.Instance.Origin_AttackSpeed;
+        this.gatheringPower = PlayerStat.Instance.Origin_GatheringPower;
+        this.levelupExperience = PlayerStat.Instance.LevelupExperience;
+        this.currentExperience = PlayerStat.Instance.CurrentExperience;
+        this.level = PlayerStat.Instance.Level;
+
+        int saveWorkPoint = 0;
+        if (PlayerStat.Instance.WorkPoint >= PlayerStat.Instance.Origin_MaxWorkPoint)
+            saveWorkPoint = PlayerStat.Instance.Origin_MaxWorkPoint;
+        else
+            saveWorkPoint = PlayerStat.Instance.WorkPoint;
+        this.workPoint = saveWorkPoint;
+        this.maxWorkPoint = PlayerStat.Instance.Origin_MaxWorkPoint;
+        this.gold = PlayerStat.Instance.Gold;
+
+        DBConnector.Instance.Save_PlayerStat();
+    }
 }

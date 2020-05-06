@@ -62,7 +62,34 @@ public class PlayerBuilding : MonoBehaviour, PlayerRuntimeData
         {
             for (int i = 0; i < statuses.Length; ++i)
                 buildingStatuses.Add(statuses[i].BuildingCode, statuses[i]);
+            ApplyBuildingEffects();
             return;
+        }
+    }
+    public void RemoveBuildingEffects()
+    {
+        foreach (var kvp in buildingStatuses)
+        {
+            BuildingStatus playerBuilding = kvp.Value;
+            BuildingData currentData = BuildingDB.Instance.GetBuildingData(playerBuilding.BuildingCode);
+            StatAdditional[] buildingStats = currentData.StatsByGrade[playerBuilding.Grade].BuildingStats;
+            for (int i = 0; i < buildingStats.Length; ++i)
+            {
+                PlayerStat.Instance.RemoveChangeableStat(buildingStats[i].StatName, currentData.BuildingCode);
+            }
+        }
+    }
+    public void ApplyBuildingEffects()
+    {
+        foreach (var kvp in buildingStatuses)
+        {
+            BuildingStatus playerBuilding = kvp.Value;
+            BuildingData currentData = BuildingDB.Instance.GetBuildingData(playerBuilding.BuildingCode);
+            StatAdditional[] buildingStats = currentData.StatsByGrade[playerBuilding.Grade].BuildingStats;
+            for (int i = 0; i < buildingStats.Length; ++i)
+            {
+                PlayerStat.Instance.AddChangeableStat(buildingStats[i].StatName, currentData.BuildingCode, buildingStats[i].StatValue);
+            }
         }
     }
     public BuildingStatus GetBuildingStatus(int buildingCode)

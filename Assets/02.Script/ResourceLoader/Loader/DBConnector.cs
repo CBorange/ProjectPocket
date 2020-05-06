@@ -5,6 +5,7 @@ using System.Data;
 using System;
 using System.Data.SqlClient;
 using MonsterAttackBehaviour;
+using System.Text;
 
 public class DBConnector : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class DBConnector : MonoBehaviour
     private SqlCommand sqlCommand;
     private SqlConnection sqlConnection;
 
-    private DataSet ConnectToDB(string dbName, string sql)
+    private DataSet ConnectDB_GetDataSet(string dbName, string sql)
     {
         string conncStr = $"Server=192.168.0.5; Database={dbName}; uid=sa; pwd=4376";
 
@@ -68,12 +69,33 @@ public class DBConnector : MonoBehaviour
             return null;
         }
     }
+    private void ConnectDB_ExecuteNonQuery(string dbName, string sql)
+    {
+        string conncStr = $"Server=192.168.0.5; Database={dbName}; uid=sa; pwd=4376";
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(conncStr)) 
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand();
+                command.Connection = conn;
+                command.CommandText = sql;
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"ConnectDB : ExecuteNonQuery 실행 실패 = {e.Message}");
+            return;
+        }
+    }
 
     #region Load User DB Data
     public string ValiadeAccountOnDB(string id, string password)
     {
         string query = $"SELECT * FROM dbo.UserAccount WHERE Account_ID = '{id}' AND (Account_Password = '{password}')";
-        DataSet dataSet = ConnectToDB("Account_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Account_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
@@ -92,7 +114,7 @@ public class DBConnector : MonoBehaviour
     public string LoadUserInfo(string accountID)
     {
         string query = $"SELECT * FROM dbo.PlayerStatus WHERE UserAccount = '{accountID}'";
-        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
@@ -121,7 +143,7 @@ public class DBConnector : MonoBehaviour
     public string LoadUserInventory()
     {
         string query = $"SELECT * FROM dbo.PlayerInventory WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
-        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
@@ -148,7 +170,7 @@ public class DBConnector : MonoBehaviour
     public string LoadUserBuilding()
     {
         string query = $"SELECT * FROM dbo.PlayerBuilding WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
-        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
@@ -167,7 +189,7 @@ public class DBConnector : MonoBehaviour
     public string LoadUserEquipment()
     {
         string query = $"SELECT * FROM dbo.PlayerEquipments WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
-        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
 
         if (dataSet == null)
             return "서버에 연결할 수 없습니다.";
@@ -190,7 +212,7 @@ public class DBConnector : MonoBehaviour
     public string LoadUserQuests()
     {
         string query = $"SELECT * FROM dbo.PlayerQuests WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
-        DataSet dataSet = ConnectToDB("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
 
         object[] dataArray = dataSet.Tables[0].Rows[0].ItemArray;
 
@@ -243,11 +265,60 @@ public class DBConnector : MonoBehaviour
     }
     #endregion
 
+    #region Save User Data
+    public void Save_PlayerStat()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append($"UPDATE dbo.PlayerStatus SET ");
+
+        builder.Append($"LastMap='{UserInfoProvider.Instance.LastMap}', ");
+
+        Vector3 lastPosVec = UserInfoProvider.Instance.LastPos;
+        string lastPos = $"{lastPosVec.x},{lastPosVec.y},{lastPosVec.z}";
+        builder.Append($"LastPos='{lastPos}', ");
+        builder.Append($"MoveSpeed='{UserInfoProvider.Instance.MoveSpeed}', ");
+        builder.Append($"JumpSpeed='{UserInfoProvider.Instance.JumpSpeed}', ");
+        builder.Append($"HealthPoint='{UserInfoProvider.Instance.HealthPoint}', ");
+        builder.Append($"MaxHealthPoint='{UserInfoProvider.Instance.MaxHealthPoint}', ");
+        builder.Append($"SheildPoint='{UserInfoProvider.Instance.ShieldPoint}', ");
+        builder.Append($"AttackPoint='{UserInfoProvider.Instance.AttackPoint}', ");
+        builder.Append($"AttackSpeed='{UserInfoProvider.Instance.AttackSpeed}', ");
+        builder.Append($"GatheringPower='{UserInfoProvider.Instance.GatheringPower}', ");
+        builder.Append($"LevelupExperience='{UserInfoProvider.Instance.LevelupExperience}', ");
+        builder.Append($"CurrentExperience='{UserInfoProvider.Instance.CurrentExperience}', ");
+        builder.Append($"Level='{UserInfoProvider.Instance.Level}', ");
+        builder.Append($"Workpoint='{UserInfoProvider.Instance.WorkPoint}', ");
+        builder.Append($"MaxWorkPoint='{UserInfoProvider.Instance.MaxWorkPoint}', ");
+        builder.Append($"Gold='{UserInfoProvider.Instance.Gold}' ");
+
+        builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
+
+        string sql = builder.ToString();
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
+    }
+    public void Save_PlayerBuilding()
+    {
+
+    }
+    public void Save_PlayerInventory()
+    {
+
+    }
+    public void Save_PlayerEquipment()
+    {
+
+    }
+    public void Save_PlayerQuest()
+    {
+
+    }
+    #endregion
+
     #region Load Public DB Data
     public string LoadItemDB()
     {
         string weaponQuery = $"SELECT * FROM dbo.Weapon";
-        DataSet weaponDataset = ConnectToDB("Item_DB", weaponQuery);
+        DataSet weaponDataset = ConnectDB_GetDataSet("Item_DB", weaponQuery);
         if (weaponDataset == null)
             return "Fail";
         DataRowCollection weaponRow = weaponDataset.Tables[0].Rows;
@@ -260,7 +331,7 @@ public class DBConnector : MonoBehaviour
         }
 
         string expendableQuery = $"SELECT * FROM dbo.Expendable";
-        DataSet expendableDataset = ConnectToDB("Item_DB", expendableQuery);
+        DataSet expendableDataset = ConnectDB_GetDataSet("Item_DB", expendableQuery);
         if (expendableDataset == null)
             return "Fail";
         DataRowCollection expendableRow = expendableDataset.Tables[0].Rows;
@@ -273,7 +344,7 @@ public class DBConnector : MonoBehaviour
         }
 
         string accesorieQuery = $"SELECT * FROM dbo.Accesorie";
-        DataSet accesorieDataset = ConnectToDB("Item_DB", accesorieQuery);
+        DataSet accesorieDataset = ConnectDB_GetDataSet("Item_DB", accesorieQuery);
         if (accesorieDataset == null)
             return "Fail";
         DataRowCollection accesorieRow = accesorieDataset.Tables[0].Rows;
@@ -286,7 +357,7 @@ public class DBConnector : MonoBehaviour
         }
 
         string etcQuery = $"SELECT * FROM dbo.Etc";
-        DataSet etcDataset = ConnectToDB("Item_DB", etcQuery);
+        DataSet etcDataset = ConnectDB_GetDataSet("Item_DB", etcQuery);
         if (etcDataset == null)
             return "Fail";
         DataRowCollection etcRow = etcDataset.Tables[0].Rows;
@@ -303,7 +374,7 @@ public class DBConnector : MonoBehaviour
     public NPCData LoadNPCData(int npcCode)
     {
         string query = $"SELECT * FROM dbo.NPC WHERE NPCCode = '{npcCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
         NPCData npcData = JsonUtility.FromJson<NPCData>(jsonStr);
@@ -317,7 +388,7 @@ public class DBConnector : MonoBehaviour
     public ResourceData LoadResourceData(int resourceCode)
     {
         string query = $"SELECT * FROM dbo.Resource WHERE ResourceCode = '{resourceCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
         ResourceData resourceData = JsonUtility.FromJson<ResourceData>(jsonStr);
@@ -327,7 +398,7 @@ public class DBConnector : MonoBehaviour
     public BuildingData LoadBuildingData(int buildingCode)
     {
         string query = $"SELECT * FROM dbo.Building WHERE BuildingCode = '{buildingCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonStr = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
         BuildingData buildingData = JsonUtility.FromJson<BuildingData>(jsonStr);
@@ -342,7 +413,7 @@ public class DBConnector : MonoBehaviour
     public QuestData LoadQuestData(int questCode)
     {
         string query = $"SELECT * FROM dbo.Quest WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestData questData = null;
@@ -403,7 +474,7 @@ public class DBConnector : MonoBehaviour
     private QuestBehaviour_Discussion LoadQuestBehaviour_Discussion(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestBehaviour_Discussion WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestBehaviour_Discussion behaviour_Discussion = null;
@@ -429,7 +500,7 @@ public class DBConnector : MonoBehaviour
     private QuestBehaviour_Building LoadQuestBehaviour_Building(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestBehaviour_Building WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestBehaviour_Building behaviour_Building = null;
@@ -455,7 +526,7 @@ public class DBConnector : MonoBehaviour
     private QuestBehaviour_GetItem LoadQuestBehaviour_GetItem(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestBehaviour_GetItem WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestBehaviour_GetItem behaviour_GetItem = null;
@@ -481,7 +552,7 @@ public class DBConnector : MonoBehaviour
     private QuestBehaviour_KillMonster LoadQuestBehaviour_KillMonster(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestBehaviour_KillMonster WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestBehaviour_KillMonster behaviour_KillMonster = null;
@@ -508,7 +579,7 @@ public class DBConnector : MonoBehaviour
     private QuestReward_GetItem LoadQuestReward_GetItem(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestReward_GetItem WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestReward_GetItem reward_GetItem = null;
@@ -534,7 +605,7 @@ public class DBConnector : MonoBehaviour
     private QuestReward_GetStatus LoadQuestReward_GetStatus(int questCode)
     {
         string query = $"SELECT * FROM dbo.QuestReward_GetStatus WHERE QuestCode = '{questCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         QuestReward_GetStatus reward = null;
@@ -561,7 +632,7 @@ public class DBConnector : MonoBehaviour
     public MonsterData LoadMonsterData(int monsterCode)
     {
         string query = $"SELECT * FROM dbo.MonsterInfo WHERE MonsterCode = '{monsterCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         MonsterData monster = null;
@@ -587,7 +658,7 @@ public class DBConnector : MonoBehaviour
     public MonsterPatternJSON LoadMonsterAttackPattern(int monsterCode)
     {
         string query = $"SELECT * FROM dbo.MonsterPattern WHERE MonsterCode = '{monsterCode}'";
-        DataSet dataSet = ConnectToDB("Game_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Game_DB", query);
 
         string jsonSTR = string.Empty;
         MonsterPatternJSON pattern = null;

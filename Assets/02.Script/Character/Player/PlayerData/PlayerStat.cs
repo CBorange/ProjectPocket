@@ -78,17 +78,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_AttackSpeed; }
     }
 
-    private float origin_GatheringPower;
-    public float Origin_GatheringPower
-    {
-        get { return origin_GatheringPower; }
-    }
 
-    private float origin_MaxWorkPoint;
-    public float Origin_MaxWorkPoint
-    {
-        get { return origin_MaxWorkPoint; }
-    }
 
     // Character Current Stat
     private float moveSpeed;
@@ -154,6 +144,18 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     private Dictionary<string, Action<float>> addPermanence_StatDic;
 
     // Player Only Stat
+    private float origin_GatheringPower;
+    public float Origin_GatheringPower
+    {
+        get { return origin_GatheringPower; }
+    }
+
+    private int origin_MaxWorkPoint;
+    public int Origin_MaxWorkPoint
+    {
+        get { return origin_MaxWorkPoint; }
+    }
+
     private int levelupExperience;
     public int LevelupExperience
     {
