@@ -7,6 +7,5 @@ public interface InputSystem
 {
     void FreeFrame_Update();
     void FixedFrame_Update();
-    void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback, Action actionCallback);
-    void ChangeActionEvent(Action callback);
+    void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback);
 }

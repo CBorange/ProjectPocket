@@ -10,15 +10,13 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     private Action<float, float> moveCameraCallback;
     private Action<float, float> movePlayerCallback;
     private Action jumpCallback;
-    private Action actionCallback;
     private bool mouseClicked;
 
-    public void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback, Action actionCallback)
+    public void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback)
     {
         this.moveCameraCallback = moveCameraCallback;
         this.movePlayerCallback = movePlayerCallback;
         this.jumpCallback = jumpCallback;
-        this.actionCallback = actionCallback;
 
         mouseClicked = false;
     }
@@ -31,10 +29,6 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     {
         CameraInput();
         PlayerMoveInput();
-    }
-    public void ChangeActionEvent(Action callback)
-    {
-        actionCallback = callback;
     }
 
     private void CameraInput()
@@ -67,7 +61,7 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            actionCallback();
+            PlayerActManager.Instance.ExecuteAttack();
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -87,7 +81,7 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     {
         RaycastHit hit;
 
-        int layerMask = (1 << LayerMask.NameToLayer("Resource")) + (1 << LayerMask.NameToLayer("Building"));
+        int layerMask = (1 << LayerMask.NameToLayer("Resource")) + (1 << LayerMask.NameToLayer("Building")) + (1 << LayerMask.NameToLayer("NPC"));
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
         Debug.DrawRay(PlayerCamera.transform.position, mousePos * 100f, Color.blue, 1f);
         if (Physics.Raycast(PlayerCamera.transform.position, mousePos, out hit, 100f, layerMask)) 
@@ -100,6 +94,9 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
                     break;
                 case "Building":
                     hit.collider.GetComponent<BuildingController>().StartInteract();
+                    break;
+                case "NPC":
+                    hit.collider.GetComponent<NPC_Controller>().Interact();
                     break;
             }
         }

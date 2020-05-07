@@ -75,9 +75,9 @@ public class UIPanelTurner : MonoBehaviour
     {
         LoadingPanel.OpenPanel();
     }
-    public void Open_NPCDialogPanel(NPCData talkingNPC)
+    public void Open_NPCDialogPanel(NPCData talkingNPC, NPC_Controller controller)
     {
-        dialog_Panel.OpenPanel(talkingNPC);
+        dialog_Panel.OpenPanel(talkingNPC, controller);
     }
     public void Open_ShopPanel(NPCData currentNPC)
     {

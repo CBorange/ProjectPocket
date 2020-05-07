@@ -16,7 +16,9 @@ public class NPC_Controller : MonoBehaviour
 
     public void Interact()
     {
-        UIPanelTurner.Instance.Open_NPCDialogPanel(npcData);
+        Vector3 distance = PlayerActManager.Instance.transform.position - transform.position;
+        if (distance.magnitude < 2)
+            UIPanelTurner.Instance.Open_NPCDialogPanel(npcData, this);
     }
     public void Initialize()
     {

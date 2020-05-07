@@ -19,9 +19,16 @@ public class NPCDialog_Panel : MonoBehaviour
     private NPCData currentNPC;
     private Dictionary<string, Action> buttonActiveFunctions;
 
-    // Panels
+    // Controller
+    private NPC_Controller currentNPC_Controller;
     public NPCDialog_DiscussionController DiscussionController;
 
+    private void FixedUpdate()
+    {
+        Vector3 distance = PlayerActManager.Instance.transform.position - currentNPC_Controller.transform.position;
+        if (distance.magnitude > 2)
+            ClosePanel();
+    }
     public void Initialize()
     {
         buttonActiveFunctions = new Dictionary<string, Action>();
@@ -29,8 +36,9 @@ public class NPCDialog_Panel : MonoBehaviour
         buttonActiveFunctions.Add("Shop", ActiveShopBtn);
         buttonActiveFunctions.Add("Discussion", ActiveDisccusionBtn);
     }
-    public void OpenPanel(NPCData data)
+    public void OpenPanel(NPCData data, NPC_Controller controller)
     {
+        currentNPC_Controller = controller;
         currentNPC = data;
         gameObject.SetActive(true);
         RefreshPanel();

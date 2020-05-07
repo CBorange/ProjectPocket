@@ -9,15 +9,12 @@ public class PlayerInputController : MonoBehaviour
     public PlayerMovementController movementController;
     public FollowCamera followCamera;
     private InputSystem currentInputSystem;
-    // Data
-    private Action interactAction;
 
     private void Awake()
     {
-        interactAction = PlayerActManager.Instance.ExecuteAttack;
 #if UNITY_EDITOR
         currentInputSystem = GetComponent<InputSystem_PC>();
-        currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump, interactAction);
+        currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
 #endif
     }
     private void Update()
@@ -37,21 +34,5 @@ public class PlayerInputController : MonoBehaviour
 #if UNITY_ANDROID
 
 #endif
-    }
-
-    // InteractChange Callback
-    public void InteractCommand_ChangedToNPC(Action npcInteractAction)
-    {
-        interactAction = npcInteractAction;
-        currentInputSystem.ChangeActionEvent(interactAction);
-    }
-    public void InteractCommand_ChangedToResource(Action resourceInteractAction)
-    {
-
-    }
-    public void InteractCommand_ChangedToAttack()
-    {
-        interactAction = PlayerActManager.Instance.ExecuteAttack;
-        currentInputSystem.ChangeActionEvent(interactAction);
     }
 }
