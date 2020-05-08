@@ -10,10 +10,10 @@ public class PlayerInputController : MonoBehaviour
     public FollowCamera followCamera;
     private InputSystem currentInputSystem;
 
-    private void Awake()
+    private void Start()
     {
 #if UNITY_EDITOR
-        currentInputSystem = GetComponent<InputSystem_PC>();
+        currentInputSystem = GetComponent<InputSystem_Mobile>();
         currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
 #endif
     }
