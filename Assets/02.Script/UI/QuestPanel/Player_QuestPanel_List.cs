@@ -29,14 +29,11 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     public void OpenPanel()
     {
-        categoryToggleGroup.allowSwitchOff = true;
         categoryToggles[0].isOn = true;
+        ChangedCategory_To_InProgress(true);
     }
     public void ClosePanel()
     {
-        categoryToggleGroup.allowSwitchOff = true;
-        for (int i = 0; i < categoryToggles.Length; ++i)
-            categoryToggles[i].isOn = false;
     }
 
     private void CreateQuestSelectToggles(int createCount)
@@ -56,13 +53,8 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     private void RefreshListToProgress()
     {
-        QuestToggleGroup.allowSwitchOff = true;
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
-        {
-            questSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questSelectTogglePool[i].gameObject.SetActive(false);
-        }
-        QuestToggleGroup.allowSwitchOff = false;
 
         listTitleText.text = "진행 중 퀘스트 목록";
         questsInProgress.Clear();
@@ -71,14 +63,16 @@ public class Player_QuestPanel_List : MonoBehaviour
 
         for (int i = 0; i < questsInProgress.Count; ++i)
             questSelectTogglePool[i].Refresh(questsInProgress[i], QuestSelectToggleCategory.InProgress);
+        if (questsInProgress.Count > 0)
+        {
+            questSelectTogglePool[0].GetComponent<Toggle>().isOn = true;
+            questSelectTogglePool[0].QuestSelected(true);
+        }
     }
     private void RefreshListToCompleted()
     {
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
-        {
-            questSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             questSelectTogglePool[i].gameObject.SetActive(false);
-        }
 
         listTitleText.text = "완료 퀘스트 목록";
         questsCompleted.Clear();
@@ -87,6 +81,11 @@ public class Player_QuestPanel_List : MonoBehaviour
 
         for (int i = 0; i < questsCompleted.Count; ++i)
             questSelectTogglePool[i].Refresh(questsCompleted[i], QuestSelectToggleCategory.Complete);
+        if (questsCompleted.Count > 0)
+        {
+            questSelectTogglePool[0].GetComponent<Toggle>().isOn = true;
+            questSelectTogglePool[0].QuestSelected(true);
+        }
     }
 
     // ChangeListCategory Callback Method
@@ -94,14 +93,12 @@ public class Player_QuestPanel_List : MonoBehaviour
     {
         if (!selected)
             return;
-        categoryToggleGroup.allowSwitchOff = false;
         RefreshListToProgress();
     }
     public void ChangedCategory_To_Complete(bool selected)
     {
         if (!selected)
             return;
-        categoryToggleGroup.allowSwitchOff = false;
         RefreshListToCompleted();
     }
 
