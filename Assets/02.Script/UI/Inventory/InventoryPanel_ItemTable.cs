@@ -39,11 +39,6 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     public void RefreshInventoryPanel()
     {
-        if (!inventoryPanel.HasSelectedEquipment())
-        {
-            inventoryPanel.ResetItemInteractPanel();
-            DeselectAllToggle();
-        }
         for (int i = 0; i < selectTogglePool.Count; ++i)
         {
             selectTogglePool[i].gameObject.SetActive(false);
@@ -70,6 +65,15 @@ public class InventoryPanel_ItemTable : MonoBehaviour
                 break;
         }
         LoadItemToggle();
+        if (!inventoryPanel.HasSelectedEquipment())
+        {
+            inventoryPanel.ResetItemInteractPanel();
+            if (currentItems.Count > 0)
+            {
+                selectTogglePool[0].GetComponent<Toggle>().isOn = true;
+                selectTogglePool[0].ItemSelected(true);
+            }
+        }
     }
     public void AttachItemToQuickSlot()
     {
