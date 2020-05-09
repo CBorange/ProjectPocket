@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class BuildingInteractPanel : MonoBehaviour
 {
+    // UI
+    public Text BuildingNameText;
+
     // Data
     private BuildingData currentData;
     private BuildingController controller;
@@ -27,6 +30,7 @@ public class BuildingInteractPanel : MonoBehaviour
         this.controller = controller;
 
         transform.position = screenPos;
+        BuildingNameText.text = currentData.BuildingName;
         gameObject.SetActive(true);
     }
     public void ClosePanel()

@@ -61,8 +61,8 @@ public class SphericalCoordinate
 }
 public class FollowCamera : MonoBehaviour
 {
-    private readonly float horRotateSpped = 2f;
-    private readonly float verRotateSpped = 2f;
+    private readonly float horRotateSpped = 4f;
+    private readonly float verRotateSpped = 3f;
     public Transform targetToFollow;
     public SphericalCoordinate sphericalCoordinate;
 
