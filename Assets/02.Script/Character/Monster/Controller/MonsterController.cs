@@ -62,7 +62,7 @@ public class MonsterController : MonoBehaviour, IActController
     public void ExecuteAttack()
     {
         if (attackSystems.Length > 1)
-            Debug.Log("AttackSystem Instance가 1개 이상입니다 ExecuteAttack(int) 오버로드를 사용하세요");
+            Debug.Log("AttackSystem Instance(현재 몬스터의 공격 패턴 개수)가 1개 이상입니다 ExecuteAttack(int) 오버로드를 사용하세요");
         attackSystems[0].ExecuteAttack();
     }
     public void ExecuteAttack(int index)
@@ -73,7 +73,7 @@ public class MonsterController : MonoBehaviour, IActController
         }
         catch(Exception)
         {
-            Debug.Log($"ExecuteAttack 예외, index 유효하지 않습니다.");
+            Debug.Log($"ExecuteAttack 예외, index : {index}에 해당하는 AttackSystem이 존재하지 않습니다.");
         }
     }
     public void EndAttack()

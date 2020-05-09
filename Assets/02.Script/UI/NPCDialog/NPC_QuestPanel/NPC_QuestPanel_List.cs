@@ -49,15 +49,9 @@ public class NPC_QuestPanel_List : MonoBehaviour
     {
         // Deactive All Toggles
         for (int i = 0; i < acceptableSelectTogglePool.Count; ++i)
-        {
-            acceptableSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             acceptableSelectTogglePool[i].gameObject.SetActive(false);
-        }
         for (int i = 0; i < completeSelectTogglePool.Count; ++i)
-        {
-            completeSelectTogglePool[i].GetComponent<Toggle>().isOn = false;
             completeSelectTogglePool[i].gameObject.SetActive(false);
-        }
     }
     private void CreateQuestSelectToggles(int createCount, ToggleGroup parentGroup, List<QuestSelectToggle> togglePool, QuestSelectToggleCategory category)
     {

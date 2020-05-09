@@ -36,10 +36,6 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     public void RefreshPanel()
     {
         DeactiveAllButton();
-        ContentsText.text = "내용";
-        ImpliedObjectiveText.text = "퀘스트 목표";
-        DetailedObjectiveText.text = "내용";
-        RewardText.text = "내용";
     }
     public void RefreshToAcceptable(QuestData data)
     {
