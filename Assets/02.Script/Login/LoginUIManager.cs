@@ -31,10 +31,10 @@ public class LoginUIManager : MonoBehaviour
                 SceneManager.LoadScene("GameScene");
             }
             else
-                ShowPopup($"접속할 수 없습니다.\n\n{userResult}");
+                ShowPopup($"접속 실패\n\n{userResult}");
         }
         else
-            ShowPopup($"접속할 수 없습니다.\n\n{accountResult}");
+            ShowPopup($"접속 실패\n\n{accountResult}");
     }
 
     // 팝업

@@ -14,6 +14,8 @@ public class DB_Initializer : MonoBehaviour
         // Public Data
         if (!DBConnector.Instance.LoadItemDB().Equals("Success"))
             Debug.Log("아이템DB 로드 에러");
+        if (!DBConnector.Instance.LoadExperienceTable().Equals("Success"))
+            Debug.Log("경험치테이블 로드 에러");
 
         // UserData
         if (!DBConnector.Instance.LoadUserInventory().Equals("Success"))

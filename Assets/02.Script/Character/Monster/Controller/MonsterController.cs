@@ -91,6 +91,7 @@ public class MonsterController : MonoBehaviour, IActController
         PanelController.Death();
         Dropper.Death();
         currentAI.Death();
+        PlayerStat.Instance.GainExperience(Stat.CurrentData.Experience);
         Invoke("ExecuteDeathFunction", DeathAnimLength);
     }
     private void ExecuteDeathFunction()

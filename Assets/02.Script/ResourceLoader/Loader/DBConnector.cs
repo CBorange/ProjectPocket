@@ -48,6 +48,29 @@ public class DBConnector : MonoBehaviour
     private SqlCommand sqlCommand;
     private SqlConnection sqlConnection;
 
+    private DataSet ConnectDB_GetDataSet(string dbName, string sql, out string errorMSG)
+    {
+        string conncStr = $"Server=39.123.41.181, 1433; Database={dbName}; uid=sa; pwd=4376";
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(conncStr))
+            {
+                DataSet dataSet = new DataSet();
+                conn.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, conncStr);
+                adapter.Fill(dataSet);
+                errorMSG = string.Empty;
+                return dataSet;
+            }
+        }
+        catch(Exception e)
+        {
+            errorMSG = e.ToString();
+            return null;
+        }
+    }
     private DataSet ConnectDB_GetDataSet(string dbName, string sql)
     {
         string conncStr = $"Server=192.168.0.5; Database={dbName}; uid=sa; pwd=4376";
@@ -64,7 +87,7 @@ public class DBConnector : MonoBehaviour
                 return dataSet;
             }
         }
-        catch(Exception)
+        catch (Exception)
         {
             return null;
         }
@@ -94,13 +117,15 @@ public class DBConnector : MonoBehaviour
     #region Load User DB Data
     public string ValiadeAccountOnDB(string id, string password)
     {
+        string dbErrorMSG = string.Empty;
         string query = $"SELECT * FROM dbo.UserAccount WHERE Account_ID = '{id}' AND (Account_Password = '{password}')";
-        DataSet dataSet = ConnectDB_GetDataSet("Account_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("Account_DB", query,out dbErrorMSG);
 
         if (dataSet == null)
-            return "서버에 연결할 수 없습니다.";
+        {
+            return $"서버에 연결할 수 없습니다. : {dbErrorMSG}";
+        }
 
-        string result = string.Empty;
         if (dataSet.Tables.Count > 0)
         {
             if (dataSet.Tables[0].Rows.Count > 0)
@@ -109,15 +134,16 @@ public class DBConnector : MonoBehaviour
                 return "계정을 찾을 수 없습니다.";
         }
         else
-            return "서버에서 데이터를 찾을 수 없습니다.";
+            return $"서버에서 데이터를 찾을 수 없습니다 : {dbErrorMSG}";
     }
     public string LoadUserInfo(string accountID)
     {
+        string dbErrorMSG = string.Empty;
         string query = $"SELECT * FROM dbo.PlayerStatus WHERE UserAccount = '{accountID}'";
-        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query, out dbErrorMSG);
 
         if (dataSet == null)
-            return "서버에 연결할 수 없습니다.";
+            return $"서버에 연결할 수 없습니다 : {dbErrorMSG}";
 
         DataRow row = dataSet.Tables[0].Rows[0];
         UserInfoProvider.Instance.Initialize(row["UserAccount"].ToString(),
@@ -131,8 +157,8 @@ public class DBConnector : MonoBehaviour
                                      Convert.ToSingle(row["AttackPoint"]),
                                      Convert.ToSingle(row["AttackSpeed"]),
                                      Convert.ToSingle(row["GatheringPower"]),
-                                     (int)row["LevelupExperience"],
-                                     (int)row["CurrentExperience"],
+                                     Convert.ToSingle(row["LevelupExperience"]),
+                                     Convert.ToSingle(row["CurrentExperience"]),
                                      (int)row["Level"],
                                      (int)row["WorkPoint"],
                                      (int)row["MaxWorkPoint"],
@@ -415,6 +441,21 @@ public class DBConnector : MonoBehaviour
             ItemDB.Instance.ContainEtcData(newETC);
         }
 
+        return "Success";
+    }
+    public string LoadExperienceTable()
+    {
+        string query = $"SELECT * FROM dbo.ExperienceTable";
+        DataSet expDataSet = ConnectDB_GetDataSet("Game_DB", query);
+        if (expDataSet == null)
+            return "Fail";
+        DataRowCollection rows = expDataSet.Tables[0].Rows;
+        for (int i = 0; i < rows.Count; ++i)
+        {
+            int level = (int)rows[i]["Level"];
+            float exp = Convert.ToSingle(rows[i]["RequiredExperience"]);
+            ExperienceTable.Instance.ContainExperienceData(level, exp);
+        }
         return "Success";
     }
     public NPCData LoadNPCData(int npcCode)

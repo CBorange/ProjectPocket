@@ -11,5 +11,6 @@ public class ResourceData
     public string CanGatheringTool;
     public int HealthPoint;
     public int WorkPointUsage;
+    public float Experience;
     public DropItemData[] DropItemDatas;
 }

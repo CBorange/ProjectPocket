@@ -82,14 +82,14 @@ public class UserInfoProvider
     {
         get { return gatheringPower; }
     }
-    private int levelupExperience;
-    public int LevelupExperience
+    private float levelupExperience;
+    public float LevelupExperience
     {
         get { return levelupExperience; }
         set { levelupExperience = value; }
     }
-    private int currentExperience;
-    public int CurrentExperience
+    private float currentExperience;
+    public float CurrentExperience
     {
         get { return currentExperience; }
         set { currentExperience = value; }
@@ -120,7 +120,7 @@ public class UserInfoProvider
     }
 
     public void Initialize(string account, string lastMap, string lastPos, float moveSpeed, float jumpSpeed,
-        float healthPoint, float maxHealthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, int levelupExperience, int currentExperience, int level,
+        float healthPoint, float maxHealthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, float levelupExperience, float currentExperience, int level,
         int workPoint, int maxWorkPoint, int gold)
     {
         // Account

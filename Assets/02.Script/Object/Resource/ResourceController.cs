@@ -29,6 +29,7 @@ public class ResourceController : MonoBehaviour
     {
         PlayerStat.Instance.DoWork(currentData.WorkPointUsage);
         dropper.Death();
+        PlayerStat.Instance.GainExperience(currentData.Experience);
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
         isActivated = false;
         livingResource.SetActive(false);

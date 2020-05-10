@@ -17,6 +17,7 @@ public class MonsterData
     public float AttackRange;
     public float AttackSpread;
     public float AttackHeight;
+    public float Experience;
     public DropItemData[] DropItemDatas;
     public DropGoldData GoldData;
 }

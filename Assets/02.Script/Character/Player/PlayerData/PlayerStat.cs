@@ -156,13 +156,13 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_MaxWorkPoint; }
     }
 
-    private int levelupExperience;
-    public int LevelupExperience
+    private float levelupExperience;
+    public float LevelupExperience
     {
         get { return levelupExperience; }
     }
-    private int currentExperience;
-    public int CurrentExperience
+    private float currentExperience;
+    public float CurrentExperience
     {
         get { return currentExperience; }
     }
@@ -296,6 +296,18 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         else
             workPoint += amount;
 
+        changedStatusCallback();
+    }
+    public void GainExperience(float amount)
+    {
+        currentExperience += amount;
+        if (currentExperience >= levelupExperience)
+        {
+            currentExperience -= levelupExperience;
+            level += 1;
+            levelupExperience = ExperienceTable.Instance.GetNeedExperienceByLevel(level);
+            UIPanelTurner.Instance.Open_LevelupNoticePopup(level);
+        }
         changedStatusCallback();
     }
 
