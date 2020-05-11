@@ -40,6 +40,7 @@ public class GradeSelectToggle : MonoBehaviour
             if (i < stats.Length - 1)
                 builder.AppendLine();
         }
+        StatIntroduce.text = builder.ToString();
     }
     public void SelectToggle(bool select)
     {

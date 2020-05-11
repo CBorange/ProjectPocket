@@ -51,7 +51,8 @@ public class UIPanelTurner : MonoBehaviour
     public GatheringProgressPanel gatheringProgressPanel;
     public BuildingUpgradePanel buildingUpgradePanel;
     public BuildingInteractPanel buildingInteractPanel;
-    public LevelupNoticePopup levelupNoticePopup;
+    public UniversalNoticePanel universalNoticePanel;
+    public PlayerStatPanel playerStatPanel;
 
     public void Open_UIPanelTurnerBtns()
     {
@@ -108,8 +109,12 @@ public class UIPanelTurner : MonoBehaviour
     {
         buildingUpgradePanel.OpenPanel(data, builder);
     }
-    public void Open_LevelupNoticePopup(int level)
+    public void Open_UniveralNoticePanel(string title, string contents, float viewTime)
     {
-        levelupNoticePopup.OpenPanel(level);
+        universalNoticePanel.OpenPanel(title, contents, viewTime);
+    }
+    public void Open_PlayerStatPanel()
+    {
+        playerStatPanel.OpenPanel();
     }
 }

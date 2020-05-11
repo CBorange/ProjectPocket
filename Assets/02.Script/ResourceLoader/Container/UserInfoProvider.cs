@@ -100,14 +100,14 @@ public class UserInfoProvider
         get { return level; }
         set { level = value; }
     }
-    private int workPoint;
-    public int WorkPoint
+    private float workPoint;
+    public float WorkPoint
     {
         get { return workPoint; }
         set { workPoint = value; }
     }
-    private int maxWorkPoint;
-    public int MaxWorkPoint
+    private float maxWorkPoint;
+    public float MaxWorkPoint
     {
         get { return maxWorkPoint; }
         set { maxWorkPoint = value; }
@@ -118,10 +118,20 @@ public class UserInfoProvider
         get { return gold; }
         set { gold = value; }
     }
+    private int statPoint;
+    public int StatPoint
+    {
+        get { return statPoint; }
+    }
+    private PlayerStatUsage statUsage;
+    public PlayerStatUsage StatUsage
+    {
+        get { return statUsage; }
+    }
 
     public void Initialize(string account, string lastMap, string lastPos, float moveSpeed, float jumpSpeed,
         float healthPoint, float maxHealthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, float levelupExperience, float currentExperience, int level,
-        int workPoint, int maxWorkPoint, int gold)
+        float workPoint, float maxWorkPoint, int gold, int statPoint, PlayerStatUsage statUsage)
     {
         // Account
         userAccount = account;
@@ -145,6 +155,8 @@ public class UserInfoProvider
         this.workPoint = workPoint;
         this.maxWorkPoint = maxWorkPoint;
         this.gold = gold;
+        this.statPoint = statPoint;
+        this.statUsage = statUsage;
     }
     public void SavePlayerInfo_UpdateServerDB()
     {
@@ -154,13 +166,13 @@ public class UserInfoProvider
         this.jumpSpeed = PlayerStat.Instance.Origin_JumpSpeed;
 
         float saveHealthPoint = 0;
-        if (PlayerStat.Instance.HealthPoint >= PlayerStat.Instance.Origin_MaxHealthPoint)
-            saveHealthPoint = PlayerStat.Instance.Origin_MaxHealthPoint;
+        if (PlayerStat.Instance.HealthPoint >= PlayerStat.Instance.MaxHealthPoint)
+            saveHealthPoint = PlayerStat.Instance.MaxHealthPoint;
         else
             saveHealthPoint = PlayerStat.Instance.HealthPoint;
         this.healthPoint = saveHealthPoint;
         this.maxHealthPoint = PlayerStat.Instance.Origin_MaxHealthPoint;
-        this.shieldPoint = PlayerStat.Instance.Origin_MaxShieldPoint;
+        this.shieldPoint = PlayerStat.Instance.Origin_ShieldPoint;
         this.attackPoint = PlayerStat.Instance.Origin_AttackPoint;
         this.attackSpeed = PlayerStat.Instance.Origin_AttackSpeed;
         this.gatheringPower = PlayerStat.Instance.Origin_GatheringPower;
@@ -168,14 +180,17 @@ public class UserInfoProvider
         this.currentExperience = PlayerStat.Instance.CurrentExperience;
         this.level = PlayerStat.Instance.Level;
 
-        int saveWorkPoint = 0;
-        if (PlayerStat.Instance.WorkPoint >= PlayerStat.Instance.Origin_MaxWorkPoint)
-            saveWorkPoint = PlayerStat.Instance.Origin_MaxWorkPoint;
+        float saveWorkPoint = 0;
+        if (PlayerStat.Instance.WorkPoint >= PlayerStat.Instance.Max_WorkPoint)
+            saveWorkPoint = PlayerStat.Instance.Max_WorkPoint;
         else
             saveWorkPoint = PlayerStat.Instance.WorkPoint;
         this.workPoint = saveWorkPoint;
         this.maxWorkPoint = PlayerStat.Instance.Origin_MaxWorkPoint;
         this.gold = PlayerStat.Instance.Gold;
+        this.statPoint = PlayerStat.Instance.StatPoint;
+        this.statUsage = PlayerStat.Instance.StatUsage;
+        PlayerStat.Instance.StatUsage.SaveUsage();
 
         DBConnector.Instance.Save_PlayerStat();
     }

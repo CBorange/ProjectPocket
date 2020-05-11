@@ -146,6 +146,9 @@ public class DBConnector : MonoBehaviour
             return $"서버에 연결할 수 없습니다 : {dbErrorMSG}";
 
         DataRow row = dataSet.Tables[0].Rows[0];
+
+        string statUsageJSON = row["StatUsageJSON"].ToString();
+        PlayerStatUsage statUsage = JsonUtility.FromJson<PlayerStatUsage>(statUsageJSON);
         UserInfoProvider.Instance.Initialize(row["UserAccount"].ToString(),
                                      row["LastMap"].ToString(),
                                      row["LastPos"].ToString(),
@@ -153,16 +156,18 @@ public class DBConnector : MonoBehaviour
                                      Convert.ToSingle(row["JumpSpeed"]),
                                      Convert.ToSingle(row["HealthPoint"]),
                                      Convert.ToSingle(row["MaxHealthPoint"]),
-                                     Convert.ToSingle(row["SheildPoint"]),
+                                     Convert.ToSingle(row["ShieldPoint"]),
                                      Convert.ToSingle(row["AttackPoint"]),
                                      Convert.ToSingle(row["AttackSpeed"]),
                                      Convert.ToSingle(row["GatheringPower"]),
                                      Convert.ToSingle(row["LevelupExperience"]),
                                      Convert.ToSingle(row["CurrentExperience"]),
                                      (int)row["Level"],
-                                     (int)row["WorkPoint"],
-                                     (int)row["MaxWorkPoint"],
-                                     (int)row["Gold"]);
+                                     Convert.ToSingle(row["WorkPoint"]),
+                                     Convert.ToSingle(row["MaxWorkPoint"]),
+                                     (int)row["Gold"],
+                                     (int)row["StatPoint"],
+                                     statUsage);
         return "Success";
     }
 
@@ -285,7 +290,7 @@ public class DBConnector : MonoBehaviour
         builder.Append($"JumpSpeed='{UserInfoProvider.Instance.JumpSpeed}', ");
         builder.Append($"HealthPoint='{UserInfoProvider.Instance.HealthPoint}', ");
         builder.Append($"MaxHealthPoint='{UserInfoProvider.Instance.MaxHealthPoint}', ");
-        builder.Append($"SheildPoint='{UserInfoProvider.Instance.ShieldPoint}', ");
+        builder.Append($"ShieldPoint='{UserInfoProvider.Instance.ShieldPoint}', ");
         builder.Append($"AttackPoint='{UserInfoProvider.Instance.AttackPoint}', ");
         builder.Append($"AttackSpeed='{UserInfoProvider.Instance.AttackSpeed}', ");
         builder.Append($"GatheringPower='{UserInfoProvider.Instance.GatheringPower}', ");
@@ -294,7 +299,10 @@ public class DBConnector : MonoBehaviour
         builder.Append($"Level='{UserInfoProvider.Instance.Level}', ");
         builder.Append($"Workpoint='{UserInfoProvider.Instance.WorkPoint}', ");
         builder.Append($"MaxWorkPoint='{UserInfoProvider.Instance.MaxWorkPoint}', ");
-        builder.Append($"Gold='{UserInfoProvider.Instance.Gold}' ");
+        builder.Append($"Gold='{UserInfoProvider.Instance.Gold}', ");
+        builder.Append($"StatPoint='{UserInfoProvider.Instance.StatPoint}', ");
+        string statUsageJSON = JsonUtility.ToJson(UserInfoProvider.Instance.StatUsage);
+        builder.Append($"StatUsageJSON='{statUsageJSON}' ");
 
         builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
 

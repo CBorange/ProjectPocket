@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
+public class PlayerStat : MonoBehaviour, PlayerRuntimeData
 {
     #region Singleton
     private static PlayerStat instance;
@@ -60,10 +60,10 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_MaxHealthPoint; }
     }
 
-    private float origin_MaxShieldPoint;
-    public float Origin_MaxShieldPoint
+    private float origin_ShieldPoint;
+    public float Origin_ShieldPoint
     {
-        get { return origin_MaxShieldPoint; }
+        get { return origin_ShieldPoint; }
     }
 
     private float origin_AttackPoint;
@@ -131,8 +131,9 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
 
     // Character Change Status 
     private Dictionary<int, float> attackPoint_StatChange;
-    private Dictionary<int, float> sheildPoint_StatChange;
+    private Dictionary<int, float> shieldPoint_StatChange;
     private Dictionary<int, float> maxHealthPoint_StatChange;
+    private Dictionary<int, float> maxWorkPoint_StatChange;
     private Dictionary<int, float> moveSpeed_StatChange;
     private Dictionary<int, float> jumpSpeed_StatChange;
     private Dictionary<int, float> attackSpeed_StatChange;
@@ -150,8 +151,8 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         get { return origin_GatheringPower; }
     }
 
-    private int origin_MaxWorkPoint;
-    public int Origin_MaxWorkPoint
+    private float origin_MaxWorkPoint;
+    public float Origin_MaxWorkPoint
     {
         get { return origin_MaxWorkPoint; }
     }
@@ -171,13 +172,13 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     {
         get { return level; }
     }
-    private int max_workPoint;
-    public int Max_WorkPoint
+    private float max_workPoint;
+    public float Max_WorkPoint
     {
         get { return max_workPoint; }
     }
-    private int workPoint;
-    public int WorkPoint
+    private float workPoint;
+    public float WorkPoint
     {
         get { return workPoint; }
     }
@@ -185,6 +186,16 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
     public int Gold
     {
         get { return gold; }
+    }
+    private int statPoint;
+    public int StatPoint
+    {
+        get { return statPoint; }
+    }
+    private PlayerStatUsage statUsage;
+    public PlayerStatUsage StatUsage
+    {
+        get { return statUsage; }
     }
     #endregion Stat
 
@@ -201,7 +212,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         origin_MoveSpeed = userData.MoveSpeed;
         origin_JumpSpeed = userData.JumpSpeed;
         origin_MaxHealthPoint = userData.MaxHealthPoint;
-        origin_MaxShieldPoint = userData.ShieldPoint;
+        origin_ShieldPoint = userData.ShieldPoint;
         origin_AttackPoint = userData.AttackPoint;
         origin_AttackSpeed = userData.AttackSpeed;
         origin_GatheringPower = userData.GatheringPower;
@@ -211,7 +222,7 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         jumpSpeed = Origin_JumpSpeed;
         maxHealthPoint = origin_MaxHealthPoint;
         healthPoint = userData.HealthPoint;
-        shieldPoint = origin_MaxShieldPoint;
+        shieldPoint = origin_ShieldPoint;
         attackPoint = Origin_AttackPoint;
         attackSpeed = Origin_AttackSpeed;
         gatheringPower = origin_GatheringPower;
@@ -221,13 +232,17 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         max_workPoint = userData.MaxWorkPoint;
         workPoint = userData.WorkPoint;
         gold = userData.Gold;
+        statPoint = userData.StatPoint;
+        statUsage = userData.StatUsage;
+        statUsage.Initialize();
     }
     private void InitChangedStatDictionary()
     {
         attackPoint_StatChange = new Dictionary<int, float>();
-        sheildPoint_StatChange = new Dictionary<int, float>();
+        shieldPoint_StatChange = new Dictionary<int, float>();
         maxHealthPoint_StatChange = new Dictionary<int, float>();
         moveSpeed_StatChange = new Dictionary<int, float>();
+        maxWorkPoint_StatChange = new Dictionary<int, float>();
         jumpSpeed_StatChange = new Dictionary<int, float>();
         attackSpeed_StatChange = new Dictionary<int, float>();
         gatheringPower_StatChange = new Dictionary<int, float>();
@@ -237,18 +252,28 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         addChangeable_StatDic.Add("AttackSpeed", AddChangeableAttackSpeed);
         addChangeable_StatDic.Add("GatheringPower", AddChangeableGP);
         addChangeable_StatDic.Add("MaxHealthPoint", AddChangeableMaxHP);
+        addChangeable_StatDic.Add("MaxWorkPoint", AddChangeableMaxWorkPoint);
+        addChangeable_StatDic.Add("MoveSpeed", AddChangeableMoveSpeed);
+        addChangeable_StatDic.Add("ShieldPoint", AddChangeableShieldPoint);
+
 
         removeChangeable_StatDic = new Dictionary<string, Action<int>>();
         removeChangeable_StatDic.Add("AttackPoint", RemoveChangeableAP);
         removeChangeable_StatDic.Add("AttackSpeed", RemoveChangeableAttackSpeed);
         removeChangeable_StatDic.Add("GatheringPower", RemoveChangeableGP);
         removeChangeable_StatDic.Add("MaxHealthPoint", RemoveChangeableMaxHP);
+        removeChangeable_StatDic.Add("MaxWorkPoint", RemoveChangeableMaxWorkPoint);
+        removeChangeable_StatDic.Add("MoveSpeed", RemoveChangeableMoveSpeed);
+        removeChangeable_StatDic.Add("ShieldPoint", RemoveChangeableShieldPoint);
 
         addPermanence_StatDic = new Dictionary<string, Action<float>>();
         addPermanence_StatDic.Add("AttackPoint", AddPermanenceAP);
         addPermanence_StatDic.Add("AttackSpeed", AddPermanenceAttackSpeed);
         addPermanence_StatDic.Add("GatheringPower", AddPermanenceGP);
         addPermanence_StatDic.Add("MaxHealthPoint", AddPermanenceMaxHP);
+        addPermanence_StatDic.Add("MaxWorkPoint", AddPermanenceMaxWorkPoint);
+        addPermanence_StatDic.Add("MoveSpeed", AddPermanenceMoveSpeed);
+        addPermanence_StatDic.Add("ShieldPoint", AddPermanenceShieldPoint);
     }
     public void AttachUICallback(Action callback)
     {
@@ -298,6 +323,19 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
 
         changedStatusCallback();
     }
+    // Gold Change
+    public void AddGold(int amount)
+    {
+        gold += amount;
+        changedStatusCallback();
+    }
+    public void RemoveGold(int amount)
+    {
+        if (gold - amount < 0)
+            Debug.Log("소지금이 0원 보다 적음");
+        gold -= amount;
+        changedStatusCallback();
+    }
     public void GainExperience(float amount)
     {
         currentExperience += amount;
@@ -305,8 +343,9 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         {
             currentExperience -= levelupExperience;
             level += 1;
+            statPoint += 1;
             levelupExperience = ExperienceTable.Instance.GetNeedExperienceByLevel(level);
-            UIPanelTurner.Instance.Open_LevelupNoticePopup(level);
+            UIPanelTurner.Instance.Open_UniveralNoticePanel("레벨업!", $"<color=orange>{level}</color> 레벨을 달성하였습니다!", 2.0f);
         }
         changedStatusCallback();
     }
@@ -476,18 +515,87 @@ public class PlayerStat : MonoBehaviour, ICharacterStat, PlayerRuntimeData
         changedStatusCallback();
     }
 
-    // Gold Change
-    public void AddGold(int amount)
+    // MoveSpeed Change
+    private void AddPermanenceMoveSpeed(float moveSpeed)
     {
-        gold += amount;
+        origin_MoveSpeed += moveSpeed;
+        UpdateMoveSpeed();
+    }
+    private void AddChangeableMoveSpeed(int id, float moveSpeed)
+    {
+        moveSpeed_StatChange.Add(id, moveSpeed);
+        UpdateMoveSpeed();
+    }
+    private void RemoveChangeableMoveSpeed(int id)
+    {
+        moveSpeed_StatChange.Remove(id);
+        UpdateMoveSpeed();
+    }
+    private void UpdateMoveSpeed()
+    {
+        float changedValue = 0;
+        foreach (var kvp in moveSpeed_StatChange)
+        {
+            changedValue += kvp.Value;
+        }
+        moveSpeed = Origin_MoveSpeed + changedValue;
         changedStatusCallback();
     }
-    public void RemoveGold(int amount)
+
+    // SheildPoint Change
+    private void AddPermanenceShieldPoint(float sheildPoint)
     {
-        if (gold - amount < 0)
-            Debug.Log("소지금이 0원 보다 적음");
-        gold -= amount;
+        origin_ShieldPoint += sheildPoint;
+        UpdateShieldPoint();
+    }
+    private void AddChangeableShieldPoint(int id, float sheildPoint)
+    {
+        shieldPoint_StatChange.Add(id, sheildPoint);
+        UpdateShieldPoint();
+    }
+    private void RemoveChangeableShieldPoint(int id)
+    {
+        shieldPoint_StatChange.Remove(id);
+        UpdateShieldPoint();
+    }
+    private void UpdateShieldPoint()
+    {
+        float changedValue = 0;
+        foreach (var kvp in shieldPoint_StatChange)
+        {
+            changedValue += kvp.Value;
+        }
+        shieldPoint = origin_ShieldPoint + changedValue;
         changedStatusCallback();
     }
+
+    // MaxWorkPoint Change
+    private void AddPermanenceMaxWorkPoint(float maxWorkPoint)
+    {
+        origin_MaxWorkPoint += maxWorkPoint;
+        UpdateMaxWorkPoint();
+    }
+    private void AddChangeableMaxWorkPoint(int id, float maxWorkPoint)
+    {
+        maxWorkPoint_StatChange.Add(id, maxWorkPoint);
+        UpdateMaxWorkPoint();
+    }
+    private void RemoveChangeableMaxWorkPoint(int id)
+    {
+        maxWorkPoint_StatChange.Remove(id);
+        UpdateMaxWorkPoint();
+    }
+    private void UpdateMaxWorkPoint()
+    {
+        float changedValue = 0;
+        foreach (var kvp in maxWorkPoint_StatChange)
+        {
+            changedValue += kvp.Value;
+        }
+        max_workPoint = origin_MaxWorkPoint + changedValue;
+        changedStatusCallback();
+    }
+
+
     #endregion
 }

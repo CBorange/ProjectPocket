@@ -8,7 +8,7 @@ public interface ICharacterStat
     float Origin_MoveSpeed { get; }
     float Origin_JumpSpeed { get; }
     float Origin_MaxHealthPoint { get; }
-    float Origin_MaxShieldPoint { get; }
+    float Origin_ShieldPoint { get; }
     float Origin_AttackPoint { get; }
     float Origin_AttackSpeed { get; }
 

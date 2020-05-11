@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MonsterStat : MonoBehaviour, ICharacterStat
+public class MonsterStat : MonoBehaviour
 {
     #region Stat
     // Character Origin Stat
@@ -25,10 +25,10 @@ public class MonsterStat : MonoBehaviour, ICharacterStat
         get { return origin_MaxHealthPoint; }
     }
 
-    private float origin_MaxShieldPoint;
-    public float Origin_MaxShieldPoint
+    private float origin_ShieldPoint;
+    public float Origin_ShieldPoint
     {
-        get { return origin_MaxShieldPoint; }
+        get { return origin_ShieldPoint; }
     }
 
     private float origin_AttackPoint;
@@ -111,14 +111,14 @@ public class MonsterStat : MonoBehaviour, ICharacterStat
         origin_AttackSpeed = data.AttackSpeed;
         origin_AttackPoint = data.AttackPoint;
         origin_MaxHealthPoint = data.HealthPoint;
-        origin_MaxShieldPoint = data.ShieldPoint;
+        origin_ShieldPoint = data.ShieldPoint;
         origin_JumpSpeed = data.JumpSpeed;
 
         moveSpeed = origin_MoveSpeed;
         jumpSpeed = origin_JumpSpeed;
         maxHealthPoint = origin_MaxHealthPoint;
         healthPoint = maxHealthPoint;
-        shieldPoint = origin_MaxShieldPoint;
+        shieldPoint = origin_ShieldPoint;
         attackPoint = origin_AttackPoint;
         attackSpeed = origin_AttackSpeed;
     }
