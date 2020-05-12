@@ -42,7 +42,7 @@ public class PlayerAttack_Instant : MonoBehaviour
     {
         if (other.tag.Equals("Monster"))
         {
-            other.GetComponent<MonsterStat>().GetDamage(PlayerStat.Instance.GetFloatStat("AttackPoint"));
+            other.GetComponent<MonsterStat>().GetDamage(PlayerStat.Instance.GetStat("AttackPoint"));
             gameObject.SetActive(false);
         }
     }

@@ -17,7 +17,30 @@ public class PlayerStatUsage
         for (int i = 0; i < StatPointUsage.Length; ++i)
             statPointUsageDic.Add(StatPointUsage[i].StatName, StatPointUsage[i].UseAmount);
     }
-    public void SaveUsage()
+    public void AddStatUsage(string statName, int amount)
+    {
+        if (statPointUsageDic.ContainsKey(statName))
+        {
+            statPointUsageDic[statName] += amount;
+        }
+        else
+        {
+            Debug.Log($"{statName}에 해당하는 StatUsage Data가 없습니다.");
+            return;
+        }
+    }
+    public int GetStatUsage(string statName)
+    {
+        int usage = 0;
+        if (statPointUsageDic.TryGetValue(statName, out usage))
+            return usage;
+        else
+        {
+            Debug.Log($"{statName}에 해당하는 StatUsage Data가 없습니다.");
+            return 0;
+        }
+    }
+    public void SaveUsageForServerUpdate()
     {
         int idx = 0;
         foreach (var kvp in StatPointUsageDic)

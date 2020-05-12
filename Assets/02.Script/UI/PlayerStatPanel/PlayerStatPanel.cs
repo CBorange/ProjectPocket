@@ -15,10 +15,17 @@ public class PlayerStatPanel : MonoBehaviour
         StatInfoPanel.OpenPanel();
         UsePointPanel.OpenPanel();
     }
+    public void Refresh()
+    {
+        StatInfoPanel.Refresh();
+        UsePointPanel.Refresh();
+    }
     public void ClosePanel()
     {
         StatInfoPanel.ClosePanel();
         UsePointPanel.ClosePanel();
         gameObject.SetActive(false);
     }
+
+
 }

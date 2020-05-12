@@ -105,7 +105,7 @@ public class ShopPanel_InteractPanel : MonoBehaviour
                 break;
         }
         ItemPrice.text = $"{currentShopItemInfo.Price} 원";
-        PlayerGold.text = $"소지금 : {PlayerStat.Instance.GetIntegerStat("Gold")} 원";
+        PlayerGold.text = $"소지금 : {PlayerStat.Instance.GetStat("Gold")} 원";
     }
     // UI Event Callback
     public void ShopItemWasSelected(ShopItem item)
@@ -119,7 +119,7 @@ public class ShopPanel_InteractPanel : MonoBehaviour
     {
         AlertPopup.OpenPopup();
         int finalPrice = currentShopItemInfo.Price * count;
-        if (finalPrice <= PlayerStat.Instance.GetIntegerStat("Gold"))
+        if (finalPrice <= PlayerStat.Instance.GetStat("Gold"))
         {
             AlertPopup.RefreshToBuyItem(currentItemData.Name, count.ToString(), currentShopItemInfo.Price.ToString());
             PlayerInventory.Instance.AddItemToInventory(new InventoryItem(currentItemData, count));

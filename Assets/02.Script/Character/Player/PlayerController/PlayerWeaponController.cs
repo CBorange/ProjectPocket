@@ -62,8 +62,8 @@ public class PlayerWeaponController : MonoBehaviour
         if (equipedWeaponBehaviour == null)
             return;
         nowAttacking = true;
-        equipedWeaponBehaviour.PlayAttack();
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Attack;
+        equipedWeaponBehaviour.PlayAttack();
     }
     public void EndAttack()
     {

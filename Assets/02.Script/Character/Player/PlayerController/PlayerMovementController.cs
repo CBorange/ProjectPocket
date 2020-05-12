@@ -60,7 +60,8 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void HorizontalMovement(float moveVecX, float moveVecZ)
     {
-        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering)
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack) 
             return;
         if (moveVecX == 0 && moveVecZ == 0)
         {
@@ -86,9 +87,9 @@ public class PlayerMovementController : MonoBehaviour
 
         // 계산된 각도만큼 회전, 플레이어 이동
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
-        transform.Translate(transform.forward * PlayerStat.Instance.GetFloatStat("MoveSpeed") * Time.deltaTime, Space.World);
+        transform.Translate(transform.forward * PlayerStat.Instance.GetStat("MoveSpeed") * Time.deltaTime, Space.World);
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Move;
-        animator.speed = PlayerStat.Instance.GetFloatStat("MoveSpeed") / 2;
+        animator.speed = PlayerStat.Instance.GetStat("MoveSpeed") / 2;
         animator.SetBool("Walk", true);
     }
     public void Jump()
@@ -98,7 +99,7 @@ public class PlayerMovementController : MonoBehaviour
         if (NowJumping)
             return;
 
-        myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.GetFloatStat("JumpSpeed"), ForceMode.Impulse);
+        myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.GetStat("JumpSpeed"), ForceMode.Impulse);
         NowJumping = true;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
         animator.speed = 1;

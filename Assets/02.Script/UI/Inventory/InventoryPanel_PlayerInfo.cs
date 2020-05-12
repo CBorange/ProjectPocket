@@ -30,7 +30,7 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
     {
         // PlayerInfo Refresh
         AccountName.text = UserInfoProvider.Instance.UserAccount;
-        PlayerLevel.text = $"LV. <color=cyan>{PlayerStat.Instance.GetIntegerStat("Level").ToString()}</color>";
+        PlayerLevel.text = $"LV. <color=cyan>{PlayerStat.Instance.GetStat("Level").ToString()}</color>";
 
         //Apply Data To UI
         WeaponToggle.Refresh(PlayerEquipment.Instance.EquipedWeapon);

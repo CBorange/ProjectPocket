@@ -43,11 +43,24 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     #endregion
     // Controller
     #region Stat
+    // Special Stat
+    private string userAccount;
+    public string UserAccount
+    {
+        get { return userAccount; }
+    }
+    private string lastMap;
+    public string LastMap
+    {
+        get { return lastMap; }
+    }
     private PlayerStatUsage statUsage;
     public PlayerStatUsage StatUsage
     {
         get { return statUsage; }
     }
+
+    // Stat Dictionary
     private Dictionary<string, int> integerStatDic;
     private Dictionary<string, float> floatStatDic;
 
@@ -76,14 +89,14 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         floatStatDic.Add("Origin_GatheringPower", userData.GatheringPower);
         floatStatDic.Add("Origin_MaxWorkPoint", userData.MaxWorkPoint);
 
-        floatStatDic.Add("MoveSpeed", GetFloatStat("Origin_MoveSpeed"));
-        floatStatDic.Add("JumpSpeed", GetFloatStat("Origin_JumpSpeed"));
-        floatStatDic.Add("MaxHealthPoint", GetFloatStat("Origin_MaxHealthPoint"));
-        floatStatDic.Add("HealthPoint", GetFloatStat("MaxHealthPoint"));
-        floatStatDic.Add("ShieldPoint", GetFloatStat("Origin_ShieldPoint"));
-        floatStatDic.Add("AttackPoint", GetFloatStat("Origin_AttackPoint"));
-        floatStatDic.Add("AttackSpeed", GetFloatStat("Origin_AttackSpeed"));
-        floatStatDic.Add("GatheringPower", GetFloatStat("Origin_GatheringPower"));
+        floatStatDic.Add("MoveSpeed", GetStat("Origin_MoveSpeed"));
+        floatStatDic.Add("JumpSpeed", GetStat("Origin_JumpSpeed"));
+        floatStatDic.Add("MaxHealthPoint", GetStat("Origin_MaxHealthPoint"));
+        floatStatDic.Add("HealthPoint", GetStat("MaxHealthPoint"));
+        floatStatDic.Add("ShieldPoint", GetStat("Origin_ShieldPoint"));
+        floatStatDic.Add("AttackPoint", GetStat("Origin_AttackPoint"));
+        floatStatDic.Add("AttackSpeed", GetStat("Origin_AttackSpeed"));
+        floatStatDic.Add("GatheringPower", GetStat("Origin_GatheringPower"));
         floatStatDic.Add("LevelupExperience", userData.LevelupExperience);
         floatStatDic.Add("CurrentExperience", userData.CurrentExperience);
         floatStatDic.Add("WorkPoint", userData.WorkPoint);
@@ -93,6 +106,8 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         integerStatDic.Add("Level", userData.Level);
         integerStatDic.Add("StatPoint", userData.StatPoint);
 
+        userAccount = userData.UserAccount;
+        lastMap = userData.LastMap;
         statUsage = userData.StatUsage;
         statUsage.Initialize();
     }
@@ -115,32 +130,23 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         changedStatusCallback();
     }
 
-    public float GetFloatStat(string statName)
+    public float GetStat(string statName)
     {
-        float stat = 0;
-        if (floatStatDic.TryGetValue(statName,out stat))
-        {
-            return stat;
-        }
+        float foundFloat = 0;
+        if (floatStatDic.TryGetValue(statName,out foundFloat))
+            return foundFloat;
+        int foundInt;
+        if (integerStatDic.TryGetValue(statName, out foundInt))
+            return foundInt;
         Debug.Log($"PlayerStat Dictionary : {statName}에 해당하는 Value가 존재하지 않음");
         return 0;
-    }
-    public int GetIntegerStat(string statName)
-    {
-        int stat = 0;
-        if (integerStatDic.TryGetValue(statName, out stat))
-        {
-            return stat;
-        }
-        Debug.Log($"PlayerStat Dictionary : {statName}에 해당하는 Value가 존재하지 않음");
-        return stat;
     }
     #region Status Change Method
 
     // Special Stat Callback
     public void GetDamage(float ap)
     {
-        float damage = ap - GetFloatStat("ShieldPoint");
+        float damage = ap - GetStat("ShieldPoint");
         if (damage < 0)
             damage = 1;
         floatStatDic["HealthPoint"] -= damage;
@@ -204,6 +210,18 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         }
         changedStatusCallback();
     }
+    public void UseStatPoint(int amount)
+    {
+        if (integerStatDic["StatPoint"] - amount < 0)
+        {
+            Debug.Log($"현재 스텟포인트 : {integerStatDic["StatPoint"]}, 사용하려는 포인트 : {amount} 로 사용량이 보유중인 스텟포인트 보다 많음");
+            return;
+        }
+        if (integerStatDic["StatPoint"] > 0)
+        {
+            integerStatDic["StatPoint"] -= amount;
+        }
+    }
     #endregion
     // Getter For Change Method
     public void AddChangeableStat(string statName, int id, float amount)
@@ -238,7 +256,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     }
     public void AddPermanenceStat(string statName, float amount)
     {
-        floatStatDic[statName] = amount;
+        floatStatDic[$"Origin_{statName}"] += amount;
         UpdateStat(statName, $"Origin_{statName}");
     }
     private void UpdateStat(string statName, string originStatName)
@@ -251,7 +269,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
             {
                 changedValue += kvp.Value;
             }
-            floatStatDic[statName] = GetFloatStat(originStatName) + changedValue;
+            floatStatDic[statName] = GetStat(originStatName) + changedValue;
             changedStatusCallback?.Invoke();
         }
         else

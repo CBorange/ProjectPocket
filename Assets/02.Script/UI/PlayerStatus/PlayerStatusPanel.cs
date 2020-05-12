@@ -36,15 +36,15 @@ public class PlayerStatusPanel : MonoBehaviour
     {
         PlayerStat stat = PlayerStat.Instance;
 
-        float maxHealthPoint = stat.GetFloatStat("MaxHealthPoint");
-        float healthPoint = stat.GetFloatStat("HealthPoint");
-        float currentExperience = stat.GetFloatStat("CurrentExperience");
-        float levelupExperience = stat.GetFloatStat("LevelupExperience");
-        float maxWorkPoint = stat.GetFloatStat("MaxWorkPoint");
-        float workPoint = stat.GetFloatStat("WorkPoint");
-        float attackPoint = stat.GetFloatStat("AttackPoint");
-        float shieldPoint = stat.GetFloatStat("ShieldPoint");
-        int gold = stat.GetIntegerStat("Gold");
+        float maxHealthPoint = stat.GetStat("MaxHealthPoint");
+        float healthPoint = stat.GetStat("HealthPoint");
+        float currentExperience = stat.GetStat("CurrentExperience");
+        float levelupExperience = stat.GetStat("LevelupExperience");
+        float maxWorkPoint = stat.GetStat("MaxWorkPoint");
+        float workPoint = stat.GetStat("WorkPoint");
+        float attackPoint = stat.GetStat("AttackPoint");
+        float shieldPoint = stat.GetStat("ShieldPoint");
+        int gold = (int)stat.GetStat("Gold");
         // HP
         HP_Slider.maxValue = maxHealthPoint;
         HP_Slider.value = healthPoint;
