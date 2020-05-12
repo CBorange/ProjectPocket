@@ -70,7 +70,7 @@ public class GatheringProgressPanel : MonoBehaviour
             {
                 yield break;
             }
-            progressValue += PlayerStat.Instance.GatheringPower * Time.deltaTime;
+            progressValue += PlayerStat.Instance.GetFloatStat("GatheringPower") * Time.deltaTime;
             ProgressSlider.value = progressValue;
 
             if (progressValue >= currentData.HealthPoint)

@@ -41,7 +41,7 @@ public class ResourceInteractPanel : MonoBehaviour
     }
     public void StartGathering()
     {
-        if (PlayerStat.Instance.WorkPoint - currentData.WorkPointUsage < 0)
+        if (PlayerStat.Instance.GetFloatStat("WorkPoint") - currentData.WorkPointUsage < 0)
             return;
         if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
             return;

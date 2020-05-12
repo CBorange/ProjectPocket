@@ -162,33 +162,33 @@ public class UserInfoProvider
     {
         this.lastPos = PlayerActManager.Instance.transform.position;
 
-        this.moveSpeed = PlayerStat.Instance.Origin_MoveSpeed;
-        this.jumpSpeed = PlayerStat.Instance.Origin_JumpSpeed;
+        this.moveSpeed = PlayerStat.Instance.GetFloatStat("Origin_MoveSpeed");
+        this.jumpSpeed = PlayerStat.Instance.GetFloatStat("Origin_JumpSpeed");
 
         float saveHealthPoint = 0;
-        if (PlayerStat.Instance.HealthPoint >= PlayerStat.Instance.MaxHealthPoint)
-            saveHealthPoint = PlayerStat.Instance.MaxHealthPoint;
+        if (PlayerStat.Instance.GetFloatStat("HealthPoint") >= PlayerStat.Instance.GetFloatStat("MaxHealthPoint"))
+            saveHealthPoint = PlayerStat.Instance.GetFloatStat("MaxHealthPoint");
         else
-            saveHealthPoint = PlayerStat.Instance.HealthPoint;
+            saveHealthPoint = PlayerStat.Instance.GetFloatStat("HealthPoint");
         this.healthPoint = saveHealthPoint;
-        this.maxHealthPoint = PlayerStat.Instance.Origin_MaxHealthPoint;
-        this.shieldPoint = PlayerStat.Instance.Origin_ShieldPoint;
-        this.attackPoint = PlayerStat.Instance.Origin_AttackPoint;
-        this.attackSpeed = PlayerStat.Instance.Origin_AttackSpeed;
-        this.gatheringPower = PlayerStat.Instance.Origin_GatheringPower;
-        this.levelupExperience = PlayerStat.Instance.LevelupExperience;
-        this.currentExperience = PlayerStat.Instance.CurrentExperience;
-        this.level = PlayerStat.Instance.Level;
+        this.maxHealthPoint = PlayerStat.Instance.GetFloatStat("MaxHealthPoint");
+        this.shieldPoint = PlayerStat.Instance.GetFloatStat("Origin_ShieldPoint");
+        this.attackPoint = PlayerStat.Instance.GetFloatStat("Origin_AttackPoint");
+        this.attackSpeed = PlayerStat.Instance.GetFloatStat("Origin_AttackSpeed");
+        this.gatheringPower = PlayerStat.Instance.GetFloatStat("Origin_GatheringPower");
+        this.levelupExperience = PlayerStat.Instance.GetFloatStat("LevelupExperience");
+        this.currentExperience = PlayerStat.Instance.GetFloatStat("CurrentExperience");
+        this.level = PlayerStat.Instance.GetIntegerStat("Level");
 
         float saveWorkPoint = 0;
-        if (PlayerStat.Instance.WorkPoint >= PlayerStat.Instance.Max_WorkPoint)
-            saveWorkPoint = PlayerStat.Instance.Max_WorkPoint;
+        if (PlayerStat.Instance.GetFloatStat("WorkPoint") >= PlayerStat.Instance.GetFloatStat("MaxWorkPoint"))
+            saveWorkPoint = PlayerStat.Instance.GetFloatStat("MaxWorkPoint");
         else
-            saveWorkPoint = PlayerStat.Instance.WorkPoint;
+            saveWorkPoint = PlayerStat.Instance.GetFloatStat("WorkPoint");
         this.workPoint = saveWorkPoint;
-        this.maxWorkPoint = PlayerStat.Instance.Origin_MaxWorkPoint;
-        this.gold = PlayerStat.Instance.Gold;
-        this.statPoint = PlayerStat.Instance.StatPoint;
+        this.maxWorkPoint = PlayerStat.Instance.GetFloatStat("Origin_MaxWorkPoint");
+        this.gold = PlayerStat.Instance.GetIntegerStat("Gold");
+        this.statPoint = PlayerStat.Instance.GetIntegerStat("StatPoint");
         this.statUsage = PlayerStat.Instance.StatUsage;
         PlayerStat.Instance.StatUsage.SaveUsage();
 

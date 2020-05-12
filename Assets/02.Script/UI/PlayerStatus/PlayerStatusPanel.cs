@@ -36,22 +36,31 @@ public class PlayerStatusPanel : MonoBehaviour
     {
         PlayerStat stat = PlayerStat.Instance;
 
+        float maxHealthPoint = stat.GetFloatStat("MaxHealthPoint");
+        float healthPoint = stat.GetFloatStat("HealthPoint");
+        float currentExperience = stat.GetFloatStat("CurrentExperience");
+        float levelupExperience = stat.GetFloatStat("LevelupExperience");
+        float maxWorkPoint = stat.GetFloatStat("MaxWorkPoint");
+        float workPoint = stat.GetFloatStat("WorkPoint");
+        float attackPoint = stat.GetFloatStat("AttackPoint");
+        float shieldPoint = stat.GetFloatStat("ShieldPoint");
+        int gold = stat.GetIntegerStat("Gold");
         // HP
-        HP_Slider.maxValue = stat.MaxHealthPoint;
-        HP_Slider.value = stat.HealthPoint;
-        HP_Text.text = $"{stat.HealthPoint} / {stat.MaxHealthPoint}";
+        HP_Slider.maxValue = maxHealthPoint;
+        HP_Slider.value = healthPoint;
+        HP_Text.text = $"{healthPoint} / {maxHealthPoint}";
         // EXP
-        EXP_Slider.maxValue = stat.LevelupExperience;
-        EXP_Slider.value = stat.CurrentExperience;
-        EXP_Text.text = $"{stat.CurrentExperience} / {stat.LevelupExperience}";
+        EXP_Slider.maxValue = levelupExperience;
+        EXP_Slider.value = currentExperience;
+        EXP_Text.text = $"{currentExperience} / {levelupExperience}";
         // WP
-        WP_Slider.maxValue = stat.Max_WorkPoint;
-        WP_Slider.value = stat.WorkPoint;
-        WP_Text.text = $"{stat.WorkPoint} / {stat.Max_WorkPoint}";
+        WP_Slider.maxValue = maxWorkPoint;
+        WP_Slider.value = workPoint;
+        WP_Text.text = $"{workPoint} / {maxWorkPoint}";
         // Stat
-        AP_Text.text = stat.AttackPoint.ToString();
-        SP_Text.text = stat.ShieldPoint.ToString();
+        AP_Text.text = attackPoint.ToString();
+        SP_Text.text = shieldPoint.ToString();
         // Money
-        Gold_Text.text = stat.Gold.ToString();
+        Gold_Text.text = gold.ToString();
     }
 }

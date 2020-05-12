@@ -61,7 +61,7 @@ public class BuildingUpgrade_InteractPanel : MonoBehaviour
             SetConstructButtonActive("이전단계 건설 필요!", false);
             return;
         }
-        if (currentData.StatsByGrade[selectedGrade].RequiredGold > PlayerStat.Instance.Gold)
+        if (currentData.StatsByGrade[selectedGrade].RequiredGold > PlayerStat.Instance.GetIntegerStat("Gold"))
         {
             SetConstructButtonActive("골드 부족!", false);
             return;

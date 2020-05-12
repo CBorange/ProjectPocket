@@ -35,8 +35,8 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     }
     public void PlayAttack()
     {
-        playerAnimator.speed = PlayerStat.Instance.AttackSpeed;
-        animEndTime = ONEHANDATTACK_LENGTH / PlayerStat.Instance.AttackSpeed;
+        playerAnimator.speed = PlayerStat.Instance.GetFloatStat("AttackSpeed");
+        animEndTime = ONEHANDATTACK_LENGTH / PlayerStat.Instance.GetFloatStat("AttackSpeed");
         playerAnimator.SetTrigger("Attack");
 
         Invoke("CallEndCallback", animEndTime);

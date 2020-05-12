@@ -1,7 +1,9 @@
-Ôªøusing System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditorInternal;
+using UnityEditor;
 
 public class PlayerStat : MonoBehaviour, PlayerRuntimeData
 {
@@ -41,561 +43,221 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     #endregion
     // Controller
     #region Stat
-    // Character Origin Stat
-    private float origin_MoveSpeed;
-    public float Origin_MoveSpeed
-    {
-        get { return origin_MoveSpeed; }
-    }
-
-    private float origin_JumpSpeed;
-    public float Origin_JumpSpeed
-    {
-        get { return origin_JumpSpeed; }
-    }
-
-    private float origin_MaxHealthPoint;
-    public float Origin_MaxHealthPoint
-    {
-        get { return origin_MaxHealthPoint; }
-    }
-
-    private float origin_ShieldPoint;
-    public float Origin_ShieldPoint
-    {
-        get { return origin_ShieldPoint; }
-    }
-
-    private float origin_AttackPoint;
-    public float Origin_AttackPoint
-    {
-        get { return origin_AttackPoint; }
-    }
-
-    private float origin_AttackSpeed;
-    public float Origin_AttackSpeed
-    {
-        get { return origin_AttackSpeed; }
-    }
-
-
-
-    // Character Current Stat
-    private float moveSpeed;
-    public float MoveSpeed
-    {
-        get { return moveSpeed; }
-    }
-
-    private float jumpSpeed;
-    public float JumpSpeed
-    {
-        get { return jumpSpeed; }
-    }
-
-    private float maxHealthPoint;
-    public float MaxHealthPoint
-    {
-        get { return maxHealthPoint; }
-    }
-
-    private float healthPoint;
-    public float HealthPoint
-    {
-        get { return healthPoint; }
-    }
-
-    private float shieldPoint;
-    public float ShieldPoint
-    {
-        get { return shieldPoint; }
-    }
-
-    private float attackPoint;
-    public float AttackPoint
-    {
-        get { return attackPoint; }
-    }
-
-    private float attackSpeed;
-    public float AttackSpeed
-    {
-        get { return attackSpeed; }
-    }
-
-    private float gatheringPower;
-    public float GatheringPower
-    {
-        get { return gatheringPower; }
-    }
-
-    // Character Change Status 
-    private Dictionary<int, float> attackPoint_StatChange;
-    private Dictionary<int, float> shieldPoint_StatChange;
-    private Dictionary<int, float> maxHealthPoint_StatChange;
-    private Dictionary<int, float> maxWorkPoint_StatChange;
-    private Dictionary<int, float> moveSpeed_StatChange;
-    private Dictionary<int, float> jumpSpeed_StatChange;
-    private Dictionary<int, float> attackSpeed_StatChange;
-    private Dictionary<int, float> gatheringPower_StatChange;
-
-    // Character Stat Change Method
-    private Dictionary<string, Action<int, float>> addChangeable_StatDic;
-    private Dictionary<string, Action<int>> removeChangeable_StatDic;
-    private Dictionary<string, Action<float>> addPermanence_StatDic;
-
-    // Player Only Stat
-    private float origin_GatheringPower;
-    public float Origin_GatheringPower
-    {
-        get { return origin_GatheringPower; }
-    }
-
-    private float origin_MaxWorkPoint;
-    public float Origin_MaxWorkPoint
-    {
-        get { return origin_MaxWorkPoint; }
-    }
-
-    private float levelupExperience;
-    public float LevelupExperience
-    {
-        get { return levelupExperience; }
-    }
-    private float currentExperience;
-    public float CurrentExperience
-    {
-        get { return currentExperience; }
-    }
-    private int level;
-    public int Level
-    {
-        get { return level; }
-    }
-    private float max_workPoint;
-    public float Max_WorkPoint
-    {
-        get { return max_workPoint; }
-    }
-    private float workPoint;
-    public float WorkPoint
-    {
-        get { return workPoint; }
-    }
-    private int gold;
-    public int Gold
-    {
-        get { return gold; }
-    }
-    private int statPoint;
-    public int StatPoint
-    {
-        get { return statPoint; }
-    }
     private PlayerStatUsage statUsage;
     public PlayerStatUsage StatUsage
     {
         get { return statUsage; }
     }
+    private Dictionary<string, int> integerStatDic;
+    private Dictionary<string, float> floatStatDic;
+
+    // Character Change Status 
+    private Dictionary<string, Dictionary<int, float>> statChangeDics;
+
     #endregion Stat
 
     private Action changedStatusCallback;
     public void Initialize()
     {
+        integerStatDic = new Dictionary<string, int>();
+        floatStatDic = new Dictionary<string, float>();
         InitPlayerStat();
         InitChangedStatDictionary();
-        changedStatusCallback();
     }
     private void InitPlayerStat()
     {
         UserInfoProvider userData = UserInfoProvider.Instance;
-        origin_MoveSpeed = userData.MoveSpeed;
-        origin_JumpSpeed = userData.JumpSpeed;
-        origin_MaxHealthPoint = userData.MaxHealthPoint;
-        origin_ShieldPoint = userData.ShieldPoint;
-        origin_AttackPoint = userData.AttackPoint;
-        origin_AttackSpeed = userData.AttackSpeed;
-        origin_GatheringPower = userData.GatheringPower;
-        origin_MaxWorkPoint = userData.MaxWorkPoint;
+        floatStatDic.Add("Origin_MoveSpeed", userData.MoveSpeed);
+        floatStatDic.Add("Origin_JumpSpeed", userData.JumpSpeed);
+        floatStatDic.Add("Origin_MaxHealthPoint", userData.MaxHealthPoint);
+        floatStatDic.Add("Origin_ShieldPoint", userData.ShieldPoint);
+        floatStatDic.Add("Origin_AttackPoint", userData.AttackPoint);
+        floatStatDic.Add("Origin_AttackSpeed", userData.AttackSpeed);
+        floatStatDic.Add("Origin_GatheringPower", userData.GatheringPower);
+        floatStatDic.Add("Origin_MaxWorkPoint", userData.MaxWorkPoint);
 
-        moveSpeed = Origin_MoveSpeed;
-        jumpSpeed = Origin_JumpSpeed;
-        maxHealthPoint = origin_MaxHealthPoint;
-        healthPoint = userData.HealthPoint;
-        shieldPoint = origin_ShieldPoint;
-        attackPoint = Origin_AttackPoint;
-        attackSpeed = Origin_AttackSpeed;
-        gatheringPower = origin_GatheringPower;
-        levelupExperience = userData.LevelupExperience;
-        currentExperience = userData.CurrentExperience;
-        level = userData.Level;
-        max_workPoint = userData.MaxWorkPoint;
-        workPoint = userData.WorkPoint;
-        gold = userData.Gold;
-        statPoint = userData.StatPoint;
+        floatStatDic.Add("MoveSpeed", GetFloatStat("Origin_MoveSpeed"));
+        floatStatDic.Add("JumpSpeed", GetFloatStat("Origin_JumpSpeed"));
+        floatStatDic.Add("MaxHealthPoint", GetFloatStat("Origin_MaxHealthPoint"));
+        floatStatDic.Add("HealthPoint", GetFloatStat("MaxHealthPoint"));
+        floatStatDic.Add("ShieldPoint", GetFloatStat("Origin_ShieldPoint"));
+        floatStatDic.Add("AttackPoint", GetFloatStat("Origin_AttackPoint"));
+        floatStatDic.Add("AttackSpeed", GetFloatStat("Origin_AttackSpeed"));
+        floatStatDic.Add("GatheringPower", GetFloatStat("Origin_GatheringPower"));
+        floatStatDic.Add("LevelupExperience", userData.LevelupExperience);
+        floatStatDic.Add("CurrentExperience", userData.CurrentExperience);
+        floatStatDic.Add("WorkPoint", userData.WorkPoint);
+        floatStatDic.Add("MaxWorkPoint", userData.MaxWorkPoint);
+
+        integerStatDic.Add("Gold", userData.Gold);
+        integerStatDic.Add("Level", userData.Level);
+        integerStatDic.Add("StatPoint", userData.StatPoint);
+
         statUsage = userData.StatUsage;
         statUsage.Initialize();
     }
     private void InitChangedStatDictionary()
     {
-        attackPoint_StatChange = new Dictionary<int, float>();
-        shieldPoint_StatChange = new Dictionary<int, float>();
-        maxHealthPoint_StatChange = new Dictionary<int, float>();
-        moveSpeed_StatChange = new Dictionary<int, float>();
-        maxWorkPoint_StatChange = new Dictionary<int, float>();
-        jumpSpeed_StatChange = new Dictionary<int, float>();
-        attackSpeed_StatChange = new Dictionary<int, float>();
-        gatheringPower_StatChange = new Dictionary<int, float>();
+        statChangeDics = new Dictionary<string, Dictionary<int, float>>();
+        statChangeDics.Add("AttackPoint", new Dictionary<int, float>());
+        statChangeDics.Add("AttackSpeed", new Dictionary<int, float>());
+        statChangeDics.Add("GatheringPower", new Dictionary<int, float>());
+        statChangeDics.Add("MaxHealthPoint", new Dictionary<int, float>());
+        statChangeDics.Add("MaxWorkPoint", new Dictionary<int, float>());
+        statChangeDics.Add("MoveSpeed", new Dictionary<int, float>());
+        statChangeDics.Add("JumpSpeed", new Dictionary<int, float>());
+        statChangeDics.Add("ShieldPoint", new Dictionary<int, float>());
 
-        addChangeable_StatDic = new Dictionary<string, Action<int, float>>();
-        addChangeable_StatDic.Add("AttackPoint", AddChangeableAP);
-        addChangeable_StatDic.Add("AttackSpeed", AddChangeableAttackSpeed);
-        addChangeable_StatDic.Add("GatheringPower", AddChangeableGP);
-        addChangeable_StatDic.Add("MaxHealthPoint", AddChangeableMaxHP);
-        addChangeable_StatDic.Add("MaxWorkPoint", AddChangeableMaxWorkPoint);
-        addChangeable_StatDic.Add("MoveSpeed", AddChangeableMoveSpeed);
-        addChangeable_StatDic.Add("ShieldPoint", AddChangeableShieldPoint);
-
-
-        removeChangeable_StatDic = new Dictionary<string, Action<int>>();
-        removeChangeable_StatDic.Add("AttackPoint", RemoveChangeableAP);
-        removeChangeable_StatDic.Add("AttackSpeed", RemoveChangeableAttackSpeed);
-        removeChangeable_StatDic.Add("GatheringPower", RemoveChangeableGP);
-        removeChangeable_StatDic.Add("MaxHealthPoint", RemoveChangeableMaxHP);
-        removeChangeable_StatDic.Add("MaxWorkPoint", RemoveChangeableMaxWorkPoint);
-        removeChangeable_StatDic.Add("MoveSpeed", RemoveChangeableMoveSpeed);
-        removeChangeable_StatDic.Add("ShieldPoint", RemoveChangeableShieldPoint);
-
-        addPermanence_StatDic = new Dictionary<string, Action<float>>();
-        addPermanence_StatDic.Add("AttackPoint", AddPermanenceAP);
-        addPermanence_StatDic.Add("AttackSpeed", AddPermanenceAttackSpeed);
-        addPermanence_StatDic.Add("GatheringPower", AddPermanenceGP);
-        addPermanence_StatDic.Add("MaxHealthPoint", AddPermanenceMaxHP);
-        addPermanence_StatDic.Add("MaxWorkPoint", AddPermanenceMaxWorkPoint);
-        addPermanence_StatDic.Add("MoveSpeed", AddPermanenceMoveSpeed);
-        addPermanence_StatDic.Add("ShieldPoint", AddPermanenceShieldPoint);
     }
     public void AttachUICallback(Action callback)
     {
         changedStatusCallback = callback;
+        changedStatusCallback();
     }
 
+    public float GetFloatStat(string statName)
+    {
+        float stat = 0;
+        if (floatStatDic.TryGetValue(statName,out stat))
+        {
+            return stat;
+        }
+        Debug.Log($"PlayerStat Dictionary : {statName}ø° «ÿ¥Á«œ¥¬ Value∞° ¡∏¿Á«œ¡ˆ æ ¿Ω");
+        return 0;
+    }
+    public int GetIntegerStat(string statName)
+    {
+        int stat = 0;
+        if (integerStatDic.TryGetValue(statName, out stat))
+        {
+            return stat;
+        }
+        Debug.Log($"PlayerStat Dictionary : {statName}ø° «ÿ¥Á«œ¥¬ Value∞° ¡∏¿Á«œ¡ˆ æ ¿Ω");
+        return stat;
+    }
     #region Status Change Method
 
     // Special Stat Callback
     public void GetDamage(float ap)
     {
-        float damage = ap - shieldPoint;
+        float damage = ap - GetFloatStat("ShieldPoint");
         if (damage < 0)
             damage = 1;
-        healthPoint -= damage;
+        floatStatDic["HealthPoint"] -= damage;
 
-        if (healthPoint <= 0)
+        if (floatStatDic["HealthPoint"] <= 0)
         {
-            healthPoint = 0;
+            floatStatDic["HealthPoint"] = 0;
             PlayerActManager.Instance.CharacterDeath();
         }
         changedStatusCallback();
     }
     public void Heal(float amount)
     {
-        if (amount + healthPoint > maxHealthPoint)
-            healthPoint = maxHealthPoint;
+        if (amount + floatStatDic["HealthPoint"] > floatStatDic["MaxHealthPoint"])
+            floatStatDic["HealthPoint"] = floatStatDic["MaxHealthPoint"];
         else
-            healthPoint += amount;
+            floatStatDic["HealthPoint"] += amount;
 
         changedStatusCallback();
     }
     public void DoWork(int pointUsage)
     {
-        if (workPoint - pointUsage < 0)
-            Debug.Log("ÎÇ®ÏùÄ ÎÖ∏ÎèôÎ†•ÏùÑ Ï¥àÍ≥ºÌïòÏó¨ ÏÇ¨Ïö©ÌïòÏó¨ ÏãúÎèÑÌï® : PlayerStat");
-        workPoint -= pointUsage;
+        if (floatStatDic["WorkPoint"] - pointUsage < 0)
+            Debug.Log("≥≤¿∫ ≥Îµø∑¬¿ª √ ∞˙«œø© ªÁøÎ«œø© Ω√µµ«‘ : PlayerStat");
+        floatStatDic["WorkPoint"] -= pointUsage;
 
         changedStatusCallback();
     }
     public void RecoverWorkPoint(int amount)
     {
-        if (amount + workPoint > max_workPoint)
-            workPoint = max_workPoint;
+        if (amount + floatStatDic["WorkPoint"] > floatStatDic["MaxWorkPoint"])
+            floatStatDic["WorkPoint"] = floatStatDic["MaxWorkPoint"];
         else
-            workPoint += amount;
+            floatStatDic["WorkPoint"] += amount;
 
         changedStatusCallback();
     }
     // Gold Change
     public void AddGold(int amount)
     {
-        gold += amount;
+        integerStatDic["Gold"] += amount;
         changedStatusCallback();
     }
     public void RemoveGold(int amount)
     {
-        if (gold - amount < 0)
-            Debug.Log("ÏÜåÏßÄÍ∏àÏù¥ 0Ïõê Î≥¥Îã§ Ï†ÅÏùå");
-        gold -= amount;
+        if (integerStatDic["Gold"] - amount < 0)
+            Debug.Log("º“¡ˆ±›¿Ã 0ø¯ ∫∏¥Ÿ ¿˚¿Ω");
+        integerStatDic["Gold"] -= amount;
         changedStatusCallback();
     }
     public void GainExperience(float amount)
     {
-        currentExperience += amount;
-        if (currentExperience >= levelupExperience)
+        floatStatDic["CurrentExperience"] += amount;
+        if (floatStatDic["CurrentExperience"] >= floatStatDic["LevelupExperience"])
         {
-            currentExperience -= levelupExperience;
-            level += 1;
-            statPoint += 1;
-            levelupExperience = ExperienceTable.Instance.GetNeedExperienceByLevel(level);
-            UIPanelTurner.Instance.Open_UniveralNoticePanel("Î†àÎ≤®ÏóÖ!", $"<color=orange>{level}</color> Î†àÎ≤®ÏùÑ Îã¨ÏÑ±ÌïòÏòÄÏäµÎãàÎã§!", 2.0f);
+            floatStatDic["CurrentExperience"] -= floatStatDic["LevelupExperience"];
+            integerStatDic["Level"] += 1;
+            integerStatDic["StatPoint"] += 1;
+            floatStatDic["LevelupExperience"] = ExperienceTable.Instance.GetNeedExperienceByLevel(integerStatDic["Level"]);
+            UIPanelTurner.Instance.Open_UniveralNoticePanel("∑π∫ßæ˜!", $"<color=orange>{integerStatDic["Level"]}</color> ∑π∫ß¿ª ¥ﬁº∫«œø¥Ω¿¥œ¥Ÿ!", 2.0f);
         }
         changedStatusCallback();
     }
-
+    #endregion
     // Getter For Change Method
     public void AddChangeableStat(string statName, int id, float amount)
     {
-        Action<int, float> foundMethod = null;
-        if (!addChangeable_StatDic.TryGetValue(statName, out foundMethod))
+        Dictionary<int, float> foundChangeableStatDic;
+        if (statChangeDics.TryGetValue(statName, out foundChangeableStatDic))
         {
-            Debug.Log($"{statName} : Ïä§ÌÖü Î≥ÄÌôîÎüâ Ï∂îÍ∞Ä MethodÍ∞Ä Ï°¥Ïû¨ÌïòÏßÄ ÏïäÏäµÎãàÎã§.");
+            foundChangeableStatDic.Add(id, amount);
+            UpdateStat(statName, $"Origin_{statName}");
+        }
+        else
+        {
+            Debug.Log($"ChangeableStat Dicø° {statName}ø° «ÿ¥Á«œ¥¬ Key ∞° æ¯Ω¿¥œ¥Ÿ.");
             return;
         }
-        foundMethod(id, amount);
 
     }
-    public bool GetExistChangeableStatInDic(string statName, int id)
-    {
-        switch(statName)
-        {
-            case "AttackPoint":
-                if (attackPoint_StatChange.ContainsKey(id))
-                    return true;
-                return false;
-            case "AttackSpeed":
-                if (attackSpeed_StatChange.ContainsKey(id))
-                    return true;
-                return false;
-            case "GatheringPower":
-                if (gatheringPower_StatChange.ContainsKey(id))
-                    return true;
-                return false;
-            case "MaxHealthPoint":
-                if (maxHealthPoint_StatChange.ContainsKey(id))
-                    return true;
-                return false;
-            default:
-                Debug.Log($"{statName} Ïóê Ìï¥ÎãπÌïòÎäî ChangeableStat Ïù¥ ÏóÜÏäµÎãàÎã§.");
-                return false;
-        }
-    }
+   
     public void RemoveChangeableStat(string statName, int id)
     {
-        Action<int> foundMethod = null;
-        if (!removeChangeable_StatDic.TryGetValue(statName, out foundMethod))
+        Dictionary<int, float> foundChangeableStatDic;
+        if (statChangeDics.TryGetValue(statName, out foundChangeableStatDic))
         {
-            Debug.Log($"{statName} : Ïä§ÌÖü Î≥ÄÌôîÎüâ Ï†úÍ±∞ MethodÍ∞Ä Ï°¥Ïû¨ÌïòÏßÄ ÏïäÏäµÎãàÎã§.");
+            foundChangeableStatDic.Remove(id);
+            UpdateStat(statName, $"Origin_{statName}");
+        }
+        else
+        {
+            Debug.Log($"ChangeableStat Dicø° {statName}ø° «ÿ¥Á«œ¥¬ Key ∞° æ¯Ω¿¥œ¥Ÿ.");
             return;
         }
-        foundMethod(id);
     }
     public void AddPermanenceStat(string statName, float amount)
     {
-        Action<float> foundMethod = null;
-        if (!addPermanence_StatDic.TryGetValue(statName, out foundMethod))
+        floatStatDic[statName] = amount;
+        UpdateStat(statName, $"Origin_{statName}");
+    }
+    private void UpdateStat(string statName, string originStatName)
+    {
+        Dictionary<int, float> foundChangeableStatDic;
+        if (statChangeDics.TryGetValue(statName, out foundChangeableStatDic))
         {
-            Debug.Log($"{statName} : Ïä§ÌÖü ÏòÅÍµ¨ Ï∂îÍ∞Ä MethodÍ∞Ä Ï°¥Ïû¨ÌïòÏßÄ ÏïäÏäµÎãàÎã§.");
+            float changedValue = 0;
+            foreach (var kvp in foundChangeableStatDic)
+            {
+                changedValue += kvp.Value;
+            }
+            floatStatDic[statName] = GetFloatStat(originStatName) + changedValue;
+            changedStatusCallback?.Invoke();
+        }
+        else
+        {
+            Debug.Log($"ChangeableStat Dicø° {statName}ø° «ÿ¥Á«œ¥¬ Key ∞° æ¯Ω¿¥œ¥Ÿ.");
             return;
         }
-        foundMethod(amount);
     }
-
-
-    // MaxHP Change
-    private void AddPermanenceMaxHP(float gp)
-    {
-        origin_MaxHealthPoint += gp;
-        UpdateMaxHealthPoint();
-    }
-    private void AddChangeableMaxHP(int id, float gp)
-    {
-        maxHealthPoint_StatChange.Add(id, gp);
-        UpdateMaxHealthPoint();
-    }
-    private void RemoveChangeableMaxHP(int id)
-    {
-        maxHealthPoint_StatChange.Remove(id);
-        UpdateMaxHealthPoint();
-    }
-    private void UpdateMaxHealthPoint()
-    {
-        float changedValue = 0;
-        foreach (var kvp in maxHealthPoint_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        maxHealthPoint = origin_MaxHealthPoint + changedValue;
-        changedStatusCallback();
-    }
-    // GP Change
-    private void AddPermanenceGP(float gp)
-    {
-        origin_GatheringPower += gp;
-        UpdateGatheringPower();
-    }
-    private void AddChangeableGP(int id, float gp)
-    {
-        gatheringPower_StatChange.Add(id, gp);
-        UpdateGatheringPower();
-    }
-    private void RemoveChangeableGP(int id)
-    {
-        gatheringPower_StatChange.Remove(id);
-        UpdateGatheringPower();
-    }
-    private void UpdateGatheringPower()
-    {
-        float changedValue = 0;
-        foreach (var kvp in gatheringPower_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        gatheringPower = origin_GatheringPower + changedValue;
-        changedStatusCallback();
-    }
-    // AP Change
-    private void AddPermanenceAP(float ap)
-    {
-        origin_AttackPoint += ap;
-        UpdateAttackPoint();
-    }
-    private void AddChangeableAP(int id, float ap)
-    {
-        attackPoint_StatChange.Add(id, ap);
-        UpdateAttackPoint();
-    }
-    private void RemoveChangeableAP(int id)
-    {
-        attackPoint_StatChange.Remove(id);
-        UpdateAttackPoint();
-    }
-    private void UpdateAttackPoint()
-    {
-        float changedValue = 0;
-        foreach (var kvp in attackPoint_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        attackPoint = origin_AttackPoint + changedValue;
-        changedStatusCallback();
-    }
-
-    // AttackSpeed Change
-    private void AddPermanenceAttackSpeed(float attackSpeed)
-    {
-        origin_AttackSpeed += attackSpeed;
-        UpdateAttackSpeed();
-    }
-    private void AddChangeableAttackSpeed(int id, float attackSpeed)
-    {
-        attackSpeed_StatChange.Add(id, attackSpeed);
-        UpdateAttackSpeed();
-    }
-    private void RemoveChangeableAttackSpeed(int id)
-    {
-        attackSpeed_StatChange.Remove(id);
-        UpdateAttackSpeed();
-    }
-    private void UpdateAttackSpeed()
-    {
-        float changedValue = 0;
-        foreach (var kvp in attackSpeed_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        attackSpeed = origin_AttackSpeed + changedValue;
-        changedStatusCallback();
-    }
-
-    // MoveSpeed Change
-    private void AddPermanenceMoveSpeed(float moveSpeed)
-    {
-        origin_MoveSpeed += moveSpeed;
-        UpdateMoveSpeed();
-    }
-    private void AddChangeableMoveSpeed(int id, float moveSpeed)
-    {
-        moveSpeed_StatChange.Add(id, moveSpeed);
-        UpdateMoveSpeed();
-    }
-    private void RemoveChangeableMoveSpeed(int id)
-    {
-        moveSpeed_StatChange.Remove(id);
-        UpdateMoveSpeed();
-    }
-    private void UpdateMoveSpeed()
-    {
-        float changedValue = 0;
-        foreach (var kvp in moveSpeed_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        moveSpeed = Origin_MoveSpeed + changedValue;
-        changedStatusCallback();
-    }
-
-    // SheildPoint Change
-    private void AddPermanenceShieldPoint(float sheildPoint)
-    {
-        origin_ShieldPoint += sheildPoint;
-        UpdateShieldPoint();
-    }
-    private void AddChangeableShieldPoint(int id, float sheildPoint)
-    {
-        shieldPoint_StatChange.Add(id, sheildPoint);
-        UpdateShieldPoint();
-    }
-    private void RemoveChangeableShieldPoint(int id)
-    {
-        shieldPoint_StatChange.Remove(id);
-        UpdateShieldPoint();
-    }
-    private void UpdateShieldPoint()
-    {
-        float changedValue = 0;
-        foreach (var kvp in shieldPoint_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        shieldPoint = origin_ShieldPoint + changedValue;
-        changedStatusCallback();
-    }
-
-    // MaxWorkPoint Change
-    private void AddPermanenceMaxWorkPoint(float maxWorkPoint)
-    {
-        origin_MaxWorkPoint += maxWorkPoint;
-        UpdateMaxWorkPoint();
-    }
-    private void AddChangeableMaxWorkPoint(int id, float maxWorkPoint)
-    {
-        maxWorkPoint_StatChange.Add(id, maxWorkPoint);
-        UpdateMaxWorkPoint();
-    }
-    private void RemoveChangeableMaxWorkPoint(int id)
-    {
-        maxWorkPoint_StatChange.Remove(id);
-        UpdateMaxWorkPoint();
-    }
-    private void UpdateMaxWorkPoint()
-    {
-        float changedValue = 0;
-        foreach (var kvp in maxWorkPoint_StatChange)
-        {
-            changedValue += kvp.Value;
-        }
-        max_workPoint = origin_MaxWorkPoint + changedValue;
-        changedStatusCallback();
-    }
-
-
-    #endregion
 }
