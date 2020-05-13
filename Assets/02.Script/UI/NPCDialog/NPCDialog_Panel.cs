@@ -21,6 +21,7 @@ public class NPCDialog_Panel : MonoBehaviour
 
     // Controller
     private NPC_Controller currentNPC_Controller;
+    public PortraitCamera NpcPortraitCam;
     public NPCDialog_DiscussionController DiscussionController;
 
     private void FixedUpdate()
@@ -41,6 +42,8 @@ public class NPCDialog_Panel : MonoBehaviour
         currentNPC_Controller = controller;
         currentNPC = data;
         gameObject.SetActive(true);
+
+        NpcPortraitCam.LookTarget(currentNPC_Controller.PortraitCenter);
         RefreshPanel();
     }
     public void ClosePanel()

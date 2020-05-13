@@ -9,6 +9,7 @@ public class NPC_Controller : MonoBehaviour
     public int NPCCode;
 
     // UI
+    public Transform PortraitCenter;
     public NPC_QuestMark QuestMark;
 
     // Data

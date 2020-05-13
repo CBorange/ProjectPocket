@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9059811460661704473}
   - component: {fileID: 9069844614317705923}
   - component: {fileID: 9077313786373688593}
-  m_Layer: 0
-  m_Name: "\uB300\uAC70"
+  m_Layer: 14
+  m_Name: "\uB2E8\uAC80"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,8 +8,12 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
     // UI
     public Text AccountName;
     public Text PlayerLevel;
+    public RawImage PlayerViewImg;
     public ToggleGroup EquipmentPanel;
     public InventoryPanel inventoryPanel;
+
+    // Controller
+    public RenderTexture PortraitRenderTexture;
 
     // Toggle
     public EquipmentSelectToggle WeaponToggle;
@@ -31,6 +35,7 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
         // PlayerInfo Refresh
         AccountName.text = UserInfoProvider.Instance.UserAccount;
         PlayerLevel.text = $"LV. <color=cyan>{PlayerStat.Instance.GetStat("Level").ToString()}</color>";
+
 
         //Apply Data To UI
         WeaponToggle.Refresh(PlayerEquipment.Instance.EquipedWeapon);
