@@ -11,8 +11,8 @@ public class MonsterSpawner : MonoBehaviour
     public float SpawnDelay;
     public int MaxSpawnCount;
 
-    private List<GameObject> deactiveMobPool;
-    private List<GameObject> activeMobPool;
+    public List<GameObject> deactiveMobPool;
+    public List<GameObject> activeMobPool;
 
     public void Initialize()
     {

@@ -33,8 +33,8 @@ public class MonsterStatusPanel : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        transform.LookAt(Camera.main.transform);
         transform.position = MonsterObject.transform.position + new Vector3(0, 2, 0);
-        transform.rotation = MonsterObject.transform.rotation;
     }
     private void ChangedStatus()
     {

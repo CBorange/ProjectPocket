@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Data;
 
 public class PlayerAttack_Instant : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerAttack_Instant : MonoBehaviour
     {
         Refresh();
         gameObject.SetActive(true);
-        Invoke("TriggerOver", data.TriggerHold);
+        Invoke("TriggerOver", data.TriggerHold / PlayerStat.Instance.GetStat("AttackSpeed"));
     }
     public void Initialize(Transform playerTrans, Vector3 colPos, WeaponData data)
     {
