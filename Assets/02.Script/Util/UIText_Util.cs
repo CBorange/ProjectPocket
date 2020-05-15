@@ -31,10 +31,11 @@ public class UIText_Util
         engItemStatToKor.Add("AttackPoint", "공격력");
         engItemStatToKor.Add("AttackSpeed", "공격속도");
         engItemStatToKor.Add("MoveSpeed","이동속도");
-        engItemStatToKor.Add("MaxHealthPoint", "최대체력");
+        engItemStatToKor.Add("MaxHealthPoint", "최대 체력");
         engItemStatToKor.Add("MaxWorkPoint", "최대 노동력");
         engItemStatToKor.Add("HealthPoint", "체력 회복");
         engItemStatToKor.Add("ShieldPoint", "방어력");
+        engItemStatToKor.Add("GatheringPower", "채집 능력");
     }
     private static UIText_Util instance;
     public static UIText_Util Instance

@@ -21,6 +21,10 @@ public class InventoryPanel : MonoBehaviour
     public Toggle[] itemCategoryToggles;
 
     // UI : ItemIntroduce
+    public Transform ItemStatPanelGroup;
+    public GameObject InventoryItemStatPrefab;
+    private InventoryItemStat[] ItemStatPanels;
+
     public Text selectedItemName;
     public Text selectedItemIntroduce;
     public Button attachToQuickSlot_Btn;
@@ -31,6 +35,7 @@ public class InventoryPanel : MonoBehaviour
     private int beforeCategoryType = -1;
     public void Initialize()
     {
+        CreateItemStatPanelPool();
         itemTable.Initialize();
         playerInfo.Initialize();
     }
@@ -50,7 +55,8 @@ public class InventoryPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // Public Method
+
+    // Methods For Transmit Between ItemTable <-> EquipmentPanel
     public void RefreshPlayerInfoPanel()
     {
         playerInfo.RefreshPlayerInfoPanel();
@@ -71,21 +77,56 @@ public class InventoryPanel : MonoBehaviour
     {
         playerInfo.DeselectAllToggle();
     }
+
+    // Item Interact Panel Config
+    private void CreateItemStatPanelPool()
+    {
+        ItemStatPanels = new InventoryItemStat[12];
+        for (int i = 0; i < 12; ++i)
+        {
+            GameObject newPanel = Instantiate(InventoryItemStatPrefab);
+            newPanel.transform.parent = ItemStatPanelGroup;
+            ItemStatPanels[i] = newPanel.GetComponent<InventoryItemStat>();
+            newPanel.gameObject.SetActive(false);
+        }
+    }
     public void ResetItemInteractPanel()
     {
-        selectedItemName.text = "아이템 이름";
-        selectedItemIntroduce.text = "아이템 설명";
+        for (int i = 0; i < 12; ++i)
+            ItemStatPanels[i].gameObject.SetActive(false);
+        selectedItemName.text = "";
+        selectedItemIntroduce.text = "";
 
         attachToQuickSlot_Btn.gameObject.SetActive(false);
         useItem_Btn.gameObject.SetActive(false);
         unequip_Btn.gameObject.SetActive(false);
     }
-    public void RefreshItemIntroduce(string itemName, string itemIntroduce)
+    private void RefreshDefaultItemInfo(string itemName, string itemIntroduce)
     {
+        for (int i = 0; i < 12; ++i)
+            ItemStatPanels[i].gameObject.SetActive(false);
         selectedItemName.text = itemName;
         string linebreakText = itemIntroduce.Replace(';', '\n');
         selectedItemIntroduce.text = linebreakText;
     }
+    public void RefreshItemIntroduce(string itemName, string itemIntroduce)
+    {
+        RefreshDefaultItemInfo(itemName, itemIntroduce);
+    }
+    public void RefreshItemIntroduce(string itemName, string itemIntroduce, StatAdditional[] itemStats) 
+    {
+        RefreshDefaultItemInfo(itemName, itemIntroduce);
+        for (int i = 0; i < itemStats.Length; ++i)
+            ItemStatPanels[i].Refresh(UIText_Util.Instance.GetKorStatByEng(itemStats[i].StatName), itemStats[i].StatValue.ToString());
+    }
+    public void RefreshItemIntroduce(string itemName, string itemIntroduce, ExpendableEffect[] effects)
+    {
+        RefreshDefaultItemInfo(itemName, itemIntroduce);
+        for (int i = 0; i < effects.Length; ++i)
+            ItemStatPanels[i].Refresh(UIText_Util.Instance.GetKorStatByEng(effects[i].StatName), effects[i].StatAmount.ToString());
+    }
+
+    // Active Button Method
     public void ActiveQuickSlotBtn()
     {
         attachToQuickSlot_Btn.gameObject.SetActive(true);

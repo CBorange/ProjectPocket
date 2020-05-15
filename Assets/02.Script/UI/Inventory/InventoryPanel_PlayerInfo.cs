@@ -87,7 +87,26 @@ public class InventoryPanel_PlayerInfo : MonoBehaviour
         currentToggle = selectToggle;
         inventoryPanel.DeselectAllItemTableToggles();
         inventoryPanel.ResetItemInteractPanel();
-        inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
+
+        string itemType = selectToggle.CurrentItem.ItemType;
+        switch(itemType)
+        {
+            case "Weapon":
+                WeaponData weapon = ItemDB.Instance.GetWeaponData(selectToggle.CurrentItem.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce, weapon.WeaponStat);
+                break;
+            case "Accesorie":
+                AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(selectToggle.CurrentItem.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce, accesorie.AccesorieStat);
+                break;
+            case "Expendable":
+                ExpendableData expendable = ItemDB.Instance.GetExpendableData(selectToggle.CurrentItem.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce, expendable.Effects);
+                break;
+            case "Etc":
+                inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.Name, selectToggle.CurrentItem.Introduce);
+                break;
+        }
 
         inventoryPanel.ActiveUnEquipBtn();
     }

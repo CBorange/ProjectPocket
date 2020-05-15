@@ -168,15 +168,29 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         inventoryPanel.ResetItemInteractPanel();
         selectedItemToggle = selectToggle;
 
-        if (itemType.Equals("Weapon") || itemType.Equals("Expendable"))
+        ItemData item = selectToggle.CurrentItem.OriginalItemData;
+        switch (itemType)
         {
-            inventoryPanel.ActiveQuickSlotBtn();
-            inventoryPanel.ActiveUseItemBtn();
+            case "Weapon":
+                WeaponData weapon = ItemDB.Instance.GetWeaponData(item.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, weapon.WeaponStat);
+                inventoryPanel.ActiveQuickSlotBtn();
+                inventoryPanel.ActiveUseItemBtn();
+                break;
+            case "Accesorie":
+                AccesorieData accesorie = ItemDB.Instance.GetAccesorieData(item.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, accesorie.AccesorieStat);
+                inventoryPanel.ActiveUseItemBtn();
+                break;
+            case "Expendable":
+                ExpendableData expendable = ItemDB.Instance.GetExpendableData(item.ItemCode);
+                inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, expendable.Effects);
+                inventoryPanel.ActiveQuickSlotBtn();
+                inventoryPanel.ActiveUseItemBtn();
+                break;
+            case "Etc":
+                inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce);
+                break;
         }
-        else if (itemType.Equals("Accesorie"))
-            inventoryPanel.ActiveUseItemBtn();
-
-        inventoryPanel.RefreshItemIntroduce(selectToggle.CurrentItem.OriginalItemData.Name,
-            selectToggle.CurrentItem.OriginalItemData.Introduce);
     }
 }
