@@ -6,6 +6,7 @@ public class MapController : MonoBehaviour
 {
     public float FallingLimit;
     public Transform PlayerStartPos;
+    public Vector3[] SpecificPos;
     public MonsterSpawner[] Spawners;
 
     private void Start()

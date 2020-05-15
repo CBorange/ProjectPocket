@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConnectMapName: FirstVillage
+  ConnectNextMapLoadPosIndex: 0
 --- !u!1 &2065002791297265910
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +995,8 @@ MonoBehaviour:
   SpawnHeight: 2
   SpawnDelay: 5
   MaxSpawnCount: 5
+  deactiveMobPool: []
+  activeMobPool: []
 --- !u!1 &5248498850080566768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FallingLimit: -5
   PlayerStartPos: {fileID: 4803235878109139946}
+  SpecificPos:
+  - {x: -0.7, y: -1.35, z: -24}
   Spawners:
   - {fileID: 7107346165418239245}
 --- !u!114 &6603267791242887528

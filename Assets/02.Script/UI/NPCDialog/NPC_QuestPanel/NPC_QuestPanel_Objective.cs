@@ -36,6 +36,10 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     public void RefreshPanel()
     {
         DeactiveAllButton();
+        ContentsText.text = string.Empty;
+        ImpliedObjectiveText.text = string.Empty;
+        DetailedObjectiveText.text = string.Empty;
+        RewardText.text = string.Empty;
     }
     public void RefreshToAcceptable(QuestData data)
     {

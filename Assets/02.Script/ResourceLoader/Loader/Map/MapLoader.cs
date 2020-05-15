@@ -45,12 +45,13 @@ public class MapLoader : MonoBehaviour
     private GameObject loadedMapPrefab;
     private MapController loadedMap;
     private string loadedMapName;
+    private int specificLoadPosIndex = -1;
 
     private void Start()
     {
-        LoadMap(UserInfoProvider.Instance.LastMap);
+        LoadMap(UserInfoProvider.Instance.LastMap, -1);
     }
-    public void LoadMap(string mapName)
+    public void LoadMap(string mapName, int loadPosIdx)
     {
         if (loadedMap != null)
             Destroy(loadedMap.gameObject);
@@ -59,11 +60,12 @@ public class MapLoader : MonoBehaviour
         loadingPanel.SetLoadingText($"맵 : {mapName}");
 
         loadedMapName = mapName;
-        StartCoroutine(IE_AsyncLoadMap(loadedMapName));
+        specificLoadPosIndex = loadPosIdx;
+        StartCoroutine(IE_AsyncLoadMap());
     }
-    private IEnumerator IE_AsyncLoadMap(string mapName)
+    private IEnumerator IE_AsyncLoadMap()
     {
-        var request = Resources.LoadAsync<GameObject>($"Map/Map_{mapName}");
+        var request = Resources.LoadAsync<GameObject>($"Map/Map_{loadedMapName}");
         while (!request.isDone)
         {
             yield return request;
@@ -73,22 +75,26 @@ public class MapLoader : MonoBehaviour
     }
     private void InstantiateMap()
     {
+        loadingPanel.ClosePanel();
         try
         {
             loadedMap = Instantiate(loadedMapPrefab).GetComponent<MapController>();
         }
         catch(Exception)
         {
+            Debug.Log($"{loadedMapName} 맵 Instantiate 실패");
             GameObject firstVillage = Resources.Load<GameObject>($"Map/Map_FirstVillage");
             loadedMap = Instantiate(firstVillage).GetComponent<MapController>();
         }
-        loadingPanel.ClosePanel();
 
         if (UserInfoProvider.Instance.LastMap.Equals(loadedMapName))
             PlayerCoordinator.Instance.SetPlayerPosition(UserInfoProvider.Instance.LastPos);
         else
         {
-            PlayerCoordinator.Instance.SetPlayerPosition(loadedMap.PlayerStartPos.position);
+            if (specificLoadPosIndex == -1)
+                PlayerCoordinator.Instance.SetPlayerPosition(loadedMap.PlayerStartPos.position);
+            else
+                PlayerCoordinator.Instance.SetPlayerPosition(loadedMap.SpecificPos[specificLoadPosIndex]);
         }
 
         UserInfoProvider.Instance.LastMap = loadedMapName;

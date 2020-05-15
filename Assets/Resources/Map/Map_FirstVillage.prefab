@@ -802,6 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConnectMapName: Grassland_1
+  ConnectNextMapLoadPosIndex: 0
 --- !u!1 &1167096214181686253
 GameObject:
   m_ObjectHideFlags: 0
@@ -18656,7 +18657,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8522419038019630831}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.78, y: 0.51, z: 3.29}
+  m_LocalPosition: {x: -5.29, y: 0.51, z: 4.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7829647767848608529}
@@ -18910,6 +18911,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FallingLimit: -4.5
   PlayerStartPos: {fileID: 153029074068305224}
+  SpecificPos:
+  - {x: 0, y: 0.47, z: 11}
   Spawners: []
 --- !u!1 &8623024092499582777
 GameObject:
