@@ -33,6 +33,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
         newColiderBox.transform.parent = PlayerActManager.Instance.transform;
         playerAttackBox = newColiderBox.AddComponent<PlayerAttack_Instant>();
+        playerAttackBox.tag = "Player_WeaponColBox";
         playerAttackBox.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, 0.5f), weaponData);
         playerAttackBox.gameObject.SetActive(false);
     }

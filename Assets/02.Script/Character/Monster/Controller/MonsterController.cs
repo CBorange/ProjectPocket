@@ -16,6 +16,7 @@ public class MonsterController : MonoBehaviour, IActController
     // Controller
     public MonsterStat Stat;
     public MonsterPanelController PanelController;
+    public Collider MyCollider;
     public Animator MobAnimator;
     public ItemDropper Dropper;
     private MonsterAttackSystem[] attackSystems;
@@ -34,6 +35,7 @@ public class MonsterController : MonoBehaviour, IActController
     }
     public void Respawn()
     {
+        MyCollider.enabled = true; 
         PanelController.Respawn();
         currentAI.Respawn();
     }
@@ -87,6 +89,7 @@ public class MonsterController : MonoBehaviour, IActController
     }
     public void CharacterDeath()
     {
+        MyCollider.enabled = false;
         MobAnimator.SetTrigger("Death");
         PanelController.Death();
         Dropper.Death();

@@ -34,7 +34,6 @@ public class DroppedCoin : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.collider.tag);
         if (collision.collider.tag.Equals("PLAYER"))
         {
             PlayerStat.Instance.AddGold(coinAmount);

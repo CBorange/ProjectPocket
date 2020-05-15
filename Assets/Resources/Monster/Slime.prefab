@@ -333,6 +333,7 @@ MonoBehaviour:
   SpawnCoord: {x: 0, y: 0, z: 0}
   Stat: {fileID: 3857998600224539579}
   PanelController: {fileID: 1518240192738254624}
+  MyCollider: {fileID: 7968963757917875350}
   MobAnimator: {fileID: 7137104848642341761}
   Dropper: {fileID: 4975563337031941532}
 --- !u!114 &3857998600224539579

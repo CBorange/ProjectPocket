@@ -85,7 +85,7 @@ public class InventoryPanel : MonoBehaviour
         for (int i = 0; i < 12; ++i)
         {
             GameObject newPanel = Instantiate(InventoryItemStatPrefab);
-            newPanel.transform.parent = ItemStatPanelGroup;
+            newPanel.transform.SetParent(ItemStatPanelGroup);
             ItemStatPanels[i] = newPanel.GetComponent<InventoryItemStat>();
             newPanel.gameObject.SetActive(false);
         }
