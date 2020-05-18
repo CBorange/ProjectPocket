@@ -7,50 +7,29 @@ using System.Data.SqlClient;
 using MonsterAttackBehaviour;
 using System.Text;
 
-public class DBConnector : MonoBehaviour
+public class DBConnector
 {
-    #region Singleton
+    // Singleton
+    private DBConnector()
+    {
+    }
     private static DBConnector instance;
     public static DBConnector Instance
     {
         get
         {
             if (instance == null)
-            {
-                var obj = FindObjectOfType<DBConnector>();
-                if (obj != null)
-                    instance = obj;
-                else
-                {
-                    var newSingleton = new GameObject("DBConnector").AddComponent<DBConnector>();
-                    instance = newSingleton;
-                }
-            }
+                instance = new DBConnector();
             return instance;
         }
-        private set
-        {
-            instance = value;
-        }
     }
-    private void Awake()
-    {
-        var objs = FindObjectsOfType<DBConnector>();
-        if (objs.Length != 1)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(this);
-    }
-    #endregion
 
     private SqlCommand sqlCommand;
     private SqlConnection sqlConnection;
 
     private DataSet ConnectDB_GetDataSet(string dbName, string sql, out string errorMSG)
     {
-        string conncStr = $"Server=39.123.41.181, 1433; Database={dbName}; uid=sa; pwd=4376";
+        string conncStr = $"data source=39.123.41.181, 1433; initial catalog={dbName}; user id=sa; password=4376; Connect Timeout=10";
 
         try
         {
@@ -73,7 +52,7 @@ public class DBConnector : MonoBehaviour
     }
     private DataSet ConnectDB_GetDataSet(string dbName, string sql)
     {
-        string conncStr = $"Server=192.168.0.5; Database={dbName}; uid=sa; pwd=4376";
+        string conncStr = $"Server=39.123.41.181; Database={dbName}; uid=sa; pwd=4376";
 
         try
         {
@@ -94,7 +73,7 @@ public class DBConnector : MonoBehaviour
     }
     private void ConnectDB_ExecuteNonQuery(string dbName, string sql)
     {
-        string conncStr = $"Server=192.168.0.5; Database={dbName}; uid=sa; pwd=4376";
+        string conncStr = $"Server=39.123.41.181; Database={dbName}; uid=sa; pwd=4376";
 
         try
         {

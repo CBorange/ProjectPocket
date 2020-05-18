@@ -32,7 +32,7 @@ public class DB_Initializer : MonoBehaviour
         PlayerStat.Instance.Initialize();
         PlayerEquipment.Instance.Initialize();
         PlayerBuilding.Instance.Initialize();
-        PlayerQuest.Instance.Initialize();
         PlayerInventory.Instance.Initialize();
+        PlayerQuest.Instance.Initialize();
     }
 }

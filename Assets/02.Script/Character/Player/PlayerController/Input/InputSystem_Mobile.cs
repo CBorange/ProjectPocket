@@ -30,6 +30,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
+            if (UIPanelTurner.Instance.UIPanelCurrentOpen)
+                return;
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
@@ -61,6 +63,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
+            if (UIPanelTurner.Instance.UIPanelCurrentOpen)
+                return;
             moveCameraCallback(0, 0);
             for (int i = 0; i < Input.touches.Length; ++i)
             {

@@ -68,8 +68,6 @@ public class FollowCamera : MonoBehaviour
 
     private void Start()
     {
-        Screen.SetResolution(1920, 1080, true);
-
         sphericalCoordinate = new SphericalCoordinate(transform.position);
         transform.position = sphericalCoordinate.GetCartesianCoord() + targetToFollow.position;
     }

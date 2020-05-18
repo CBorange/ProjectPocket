@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditorInternal;
-using UnityEditor;
 
 public class PlayerStat : MonoBehaviour, PlayerRuntimeData
 {

@@ -136,8 +136,8 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack1
-  m_Speed: 1
+  m_Name: MeleeAttack
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1333293077087621740}
@@ -441,7 +441,7 @@ AnimatorStateMachine:
     m_Position: {x: 930, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4958304913957448823}
-    m_Position: {x: 930, y: 450, z: 0}
+    m_Position: {x: 580, y: 630, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4051778619523475802}
     m_Position: {x: 250, y: 140, z: 0}

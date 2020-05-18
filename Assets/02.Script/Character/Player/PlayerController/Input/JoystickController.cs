@@ -14,9 +14,9 @@ public class JoystickController : MonoBehaviour
     private bool joystickIsActive;
     private Action<float, float> moveExecuteCallback;
 
-    private readonly float JOYSTICK_RADIUS = 125f;
-    public readonly float JOYSTICK_HALF_WIDTH = 125f;
-    public readonly float JOYSTICK_HALF_HEIGHT = 125f;
+    private readonly float JOYSTICK_RADIUS = 175f;
+    public readonly float JOYSTICK_HALF_WIDTH = 175f;
+    public readonly float JOYSTICK_HALF_HEIGHT = 175f;
 
     public void Initialize(Action<float, float> moveCallback)
     {
@@ -24,8 +24,8 @@ public class JoystickController : MonoBehaviour
     }
     private Vector2 ScreenToCanvasPos(Vector2 touchPos)
     {
-        touchPos.x -= 960;
-        touchPos.y -= 540;
+        touchPos.x -= Screen.width / 2;
+        touchPos.y -= Screen.height / 2;
         return touchPos;
     }
     public void StartMove(Vector2 touchPos)

@@ -32,7 +32,6 @@ public class InventoryPanel : MonoBehaviour
     public Button unequip_Btn;
 
     // Data
-    private int beforeCategoryType = -1;
     public void Initialize()
     {
         CreateItemStatPanelPool();
@@ -48,6 +47,7 @@ public class InventoryPanel : MonoBehaviour
         gameObject.SetActive(true);
 
         itemCategoryToggles[0].isOn = true;
+        ChangeCategory(0);
         RefreshPlayerInfoPanel();
     }
     public void ClosePanel()
@@ -86,6 +86,7 @@ public class InventoryPanel : MonoBehaviour
         {
             GameObject newPanel = Instantiate(InventoryItemStatPrefab);
             newPanel.transform.SetParent(ItemStatPanelGroup);
+            newPanel.transform.localScale = Vector3.one;
             ItemStatPanels[i] = newPanel.GetComponent<InventoryItemStat>();
             newPanel.gameObject.SetActive(false);
         }
@@ -143,9 +144,6 @@ public class InventoryPanel : MonoBehaviour
     // 인벤토리 카테고리 변경 토글 Property Changed Callback
     public void ChangeCategory(int type)
     {
-        if (beforeCategoryType == type)
-            return;
-        beforeCategoryType = type;
         itemTable.Change_ItemCategory((InventoryCategory)type);
     }
 }
