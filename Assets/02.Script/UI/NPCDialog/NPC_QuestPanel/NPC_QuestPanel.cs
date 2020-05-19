@@ -26,8 +26,8 @@ public class NPC_QuestPanel : MonoBehaviour
     }
     public void RefreshPanel()
     {
-        listPanel.RefrehPanel();
         objectivePanel.RefreshPanel();
+        listPanel.RefrehPanel();
     }
     public void ClosePanel()
     {

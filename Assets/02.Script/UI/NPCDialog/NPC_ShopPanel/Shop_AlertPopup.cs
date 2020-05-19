@@ -6,11 +6,18 @@ using UnityEngine.UI;
 
 public class Shop_AlertPopup : MonoBehaviour
 {
+    private float elapsedTimeSinceOpen;
+    private float popupHoldTime;
     public Text AlertText;
-    public void OpenPopup()
+    public void OpenPopup(float time)
     {
-        gameObject.SetActive(true);
-        Invoke("TurnOffPopup", 1f);
+        elapsedTimeSinceOpen = 0f;
+        popupHoldTime = time;
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+            StartCoroutine(IE_WaitTurnOff());
+        }
     }
     public void ClosePopup()
     {
@@ -19,17 +26,26 @@ public class Shop_AlertPopup : MonoBehaviour
     public void RefreshToBuyItem(string itemName, string amount, string price)
     {
         StringBuilder builder = new StringBuilder();
-        builder.Append($"{itemName} x {amount}개");
+        builder.Append($"<color=green>{itemName}</color> x <color=orange>{amount}</color>개");
         builder.AppendLine();
-        builder.Append($"<color=#FFCC00>{price}</color> 원 으로 구입하였습니다!");
+        builder.Append($"<color=#FFCC00>{(float.Parse(price) * float.Parse(amount))}</color> 원 으로 구입하였습니다!");
         AlertText.text = builder.ToString();
     }
     public void RefreshToAlert(string alert)
     {
         AlertText.text = alert;
     }
-    private void TurnOffPopup()
+    private IEnumerator IE_WaitTurnOff()
     {
-        gameObject.SetActive(false);
+        while (true)
+        {
+            elapsedTimeSinceOpen += Time.deltaTime;
+            yield return null;
+            if (elapsedTimeSinceOpen > popupHoldTime)
+            {
+                gameObject.SetActive(false);
+                yield break;
+            }
+        }
     }
 }

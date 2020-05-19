@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,9 @@ public class ShopPanel : MonoBehaviour
     public ShopPanel_InteractPanel interactPanel;
 
     // UI
-    public Toggle[] ItemCategoryToggles;
+    public ShopCategoryToggle[] CategoryToggles;
 
     // Data
-    private string beforeItemCategoryType;
     private NPCData currentNPC;
     public NPCData CurrentNPC
     {
@@ -22,34 +22,30 @@ public class ShopPanel : MonoBehaviour
 
     public void Initialize()
     {
-        beforeItemCategoryType = string.Empty;
+        for (int i = 0; i < CategoryToggles.Length; ++i)
+            CategoryToggles[i].Initialize(SelectCategoryToggle);
+
         itemTable.Initialize();
         interactPanel.Initialize();
     }
     public void OpenPanel(NPCData currentNPC)
     {
-        for (int i = 0; i < currentNPC.ShopData.SalesItemTypes.Length; ++i)
-        {
-            switch(currentNPC.ShopData.SalesItemTypes[i])
-            {
-                case "Weapon":
-                    ItemCategoryToggles[0].gameObject.SetActive(true);
-                    break;
-                case "Accesorie":
-                    ItemCategoryToggles[1].gameObject.SetActive(true);
-                    break;
-                case "Expendable":
-                    ItemCategoryToggles[2].gameObject.SetActive(true);
-                    break;
-                case "Etc":
-                    ItemCategoryToggles[3].gameObject.SetActive(true);
-                    break;
-            }
-        }
-
         this.currentNPC = currentNPC;
         itemTable.OpenPanel(currentNPC.ShopData);
         interactPanel.OpenPanel();
+
+        for (int i = 0; i < CategoryToggles.Length; ++i)
+            CategoryToggles[i].gameObject.SetActive(false);
+
+        for (int i = 0; i < currentNPC.ShopData.SalesItemTypes.Length; ++i)
+        {
+            CategoryToggles[i].Refresh(currentNPC.ShopData.SalesItemTypes[i]);
+        }
+        if (currentNPC.ShopData.SalesItemTypes.Length > 0)
+        {
+            CategoryToggles[0].GetComponent<Toggle>().isOn = true;
+            SelectCategoryToggle(currentNPC.ShopData.SalesItemTypes[0]);
+        }
 
         gameObject.SetActive(true);
     }
@@ -67,9 +63,6 @@ public class ShopPanel : MonoBehaviour
     // Item CategoryToggle Callbacks
     public void SelectCategoryToggle(string type)
     {
-        if (beforeItemCategoryType.Equals(type)) 
-            return;
-        beforeItemCategoryType = type;
         itemTable.ChangeItemCategory(type);
     }
 }

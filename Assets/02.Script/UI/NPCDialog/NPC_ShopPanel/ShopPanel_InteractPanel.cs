@@ -9,6 +9,7 @@ public class ShopPanel_InteractPanel : MonoBehaviour
 {
     // Controller
     public Shop_AlertPopup AlertPopup;
+    public Shop_MultipleBuyPopup MultipleBuyPopup;
 
     // UI
     public Image ItemImage;
@@ -117,11 +118,11 @@ public class ShopPanel_InteractPanel : MonoBehaviour
     }
     public void BuyCurrentItem(int count)
     {
-        AlertPopup.OpenPopup();
         int finalPrice = currentShopItemInfo.Price * count;
         if (finalPrice <= PlayerStat.Instance.GetStat("Gold"))
         {
             AlertPopup.RefreshToBuyItem(currentItemData.Name, count.ToString(), currentShopItemInfo.Price.ToString());
+            AlertPopup.OpenPopup(2.0f);
             PlayerInventory.Instance.AddItemToInventory(new InventoryItem(currentItemData, count));
             PlayerStat.Instance.RemoveGold(finalPrice);
             RefreshPanel();
@@ -129,10 +130,11 @@ public class ShopPanel_InteractPanel : MonoBehaviour
         else
         {
             AlertPopup.RefreshToAlert("소지금이 부족합니다!");
+            AlertPopup.OpenPopup(1.0f);
         }
     }
     public void OpenBuyMultitpleItemPanel()
     {
-
+        MultipleBuyPopup.OpenPopup(currentShopItemInfo, currentItemData);
     }
 }
