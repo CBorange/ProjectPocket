@@ -8,6 +8,10 @@ public class NPC_QuestMark : MonoBehaviour
     public SpriteRenderer questionMark;
     public SpriteRenderer exclamationMark;
 
+    private void FixedUpdate()
+    {
+        
+    }
     private void DeactiveAllMarker()
     {
         questionMark.gameObject.SetActive(false);
