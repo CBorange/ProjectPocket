@@ -63,7 +63,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         Invoke("ExecuteAttack", weaponData.TriggerDelay / attackSpeed);
         Invoke("SendEndAttack", animEndTime);
 
-        if (elapsedTimeSinceAttack < 0.5f)
+        if (elapsedTimeSinceAttack < 0.8f)
         {
             checkElapsedTime = false;
             attackAnimIndex += 1;
@@ -78,7 +78,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         {
             yield return null;
             elapsedTimeSinceAttack += Time.deltaTime;
-            if (elapsedTimeSinceAttack > 0.5f)
+            if (elapsedTimeSinceAttack > 0.8f)
             {
                 attackAnimIndex = 0;
                 checkElapsedTime = false;

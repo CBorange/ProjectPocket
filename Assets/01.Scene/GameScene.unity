@@ -4664,7 +4664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTest: 1
-  TestAccount: admin
+  TestAccount: test
 --- !u!1 &258021766
 GameObject:
   m_ObjectHideFlags: 0

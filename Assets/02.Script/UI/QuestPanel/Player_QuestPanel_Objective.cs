@@ -17,11 +17,18 @@ public class Player_QuestPanel_Objective : MonoBehaviour
     }
     public void OpenPanel()
     {
-
+        RefreshObjectiveToDefault();   
     }
     public void ClosePanel()
     {
 
+    }
+    public void RefreshObjectiveToDefault()
+    {
+        ContentsText.text = string.Empty;
+        ObjectiveTitleText.text = "퀘스트 진행도";
+        ObjectiveContentsText.text = string.Empty;
+        RewardContentsText.text = string.Empty;
     }
     public void RefreshToInProgress(int questCode)
     {
@@ -123,7 +130,7 @@ public class Player_QuestPanel_Objective : MonoBehaviour
         ContentsText.text = builder.ToString();
 
         // QuestObjective
-        ObjectiveTitleText.text = "퀘스트 진행도";
+        ObjectiveTitleText.text = "퀘스트 목표";
         builder = new StringBuilder();
         for (int categoryIdx = 0; categoryIdx < data.QuestCategorys.Length; ++categoryIdx)
         {

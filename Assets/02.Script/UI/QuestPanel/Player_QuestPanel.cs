@@ -16,8 +16,8 @@ public class Player_QuestPanel : MonoBehaviour
     public void OpenPanel()
     {
         gameObject.SetActive(true);
-        listPanel.OpenPanel();
         objectivePanel.OpenPanel();
+        listPanel.OpenPanel();
     }
     public void ClosePanel()
     {
@@ -27,6 +27,10 @@ public class Player_QuestPanel : MonoBehaviour
     }
 
     // List <-> Objective 패널 상호작용 Method
+    public void Refresh_ObjectiveToDefault()
+    {
+        objectivePanel.RefreshObjectiveToDefault();
+    }
     public void Refresh_ObjectiveToInProgress(int questCode)
     {
         objectivePanel.RefreshToInProgress(questCode);

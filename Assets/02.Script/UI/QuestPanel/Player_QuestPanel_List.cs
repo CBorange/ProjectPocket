@@ -53,6 +53,8 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     private void RefreshListToProgress()
     {
+        QuestPanel.Refresh_ObjectiveToDefault();
+
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
             questSelectTogglePool[i].gameObject.SetActive(false);
 
@@ -71,6 +73,8 @@ public class Player_QuestPanel_List : MonoBehaviour
     }
     private void RefreshListToCompleted()
     {
+        QuestPanel.Refresh_ObjectiveToDefault();
+
         for (int i = 0; i < questSelectTogglePool.Count; ++i)
             questSelectTogglePool[i].gameObject.SetActive(false);
 
