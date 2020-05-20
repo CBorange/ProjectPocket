@@ -7,7 +7,7 @@ using System;
 public class Shop_MultipleBuyPopup : MonoBehaviour
 {
     // Controller
-    public Shop_AlertPopup AlertPopup;
+    public AlertPopup AlertPopup;
     public ShopPanel_InteractPanel InteractPanel;
 
     //UI

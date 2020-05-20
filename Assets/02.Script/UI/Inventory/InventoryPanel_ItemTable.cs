@@ -6,12 +6,16 @@ using UnityEngine.UI;
 public class InventoryPanel_ItemTable : MonoBehaviour
 {
     // Controller
+    public InventoryPanel_SellItem sellItemPanel;
     public InventoryPanel inventoryPanel;
 
     // UI : ItemToggle
     public ToggleGroup contentsView;
     public GameObject selectTogglePrefab;
     private List<InventoryItemSelectToggle> selectTogglePool;
+
+    // UI : ItemPrice
+    public Text ItemSellPrice;
 
     // Data
     private InventoryCategory inventoryCategory;
@@ -39,6 +43,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     public void RefreshInventoryPanel()
     {
+        ItemSellPrice.text = string.Empty;
         for (int i = 0; i < selectTogglePool.Count; ++i)
         {
             selectTogglePool[i].gameObject.SetActive(false);
@@ -75,9 +80,9 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             }
         }
     }
-    public void AttachItemToQuickSlot()
+    public void SellItem()
     {
-
+        sellItemPanel.OpenPanel(selectedItemToggle.CurrentItem.OriginalItemData);
     }
     public void UseItem()
     {
@@ -169,12 +174,14 @@ public class InventoryPanel_ItemTable : MonoBehaviour
         selectedItemToggle = selectToggle;
 
         ItemData item = selectToggle.CurrentItem.OriginalItemData;
+        inventoryPanel.ActiveSellItemBtn();
+        ItemSellPrice.text = $"판매 가격 : 개당 <color=yellow>{item.SellPrice}</color> 원";
         switch (itemType)
         {
             case "Weapon":
                 WeaponData weapon = ItemDB.Instance.GetWeaponData(item.ItemCode);
                 inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, weapon.WeaponStat);
-                inventoryPanel.ActiveQuickSlotBtn();
+                //inventoryPanel.ActiveQuickSlotBtn();
                 inventoryPanel.ActiveUseItemBtn();
                 break;
             case "Accesorie":
@@ -185,7 +192,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             case "Expendable":
                 ExpendableData expendable = ItemDB.Instance.GetExpendableData(item.ItemCode);
                 inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, expendable.Effects);
-                inventoryPanel.ActiveQuickSlotBtn();
+                //inventoryPanel.ActiveQuickSlotBtn();
                 inventoryPanel.ActiveUseItemBtn();
                 break;
             case "Etc":

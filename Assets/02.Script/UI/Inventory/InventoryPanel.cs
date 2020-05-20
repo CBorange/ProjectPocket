@@ -27,6 +27,7 @@ public class InventoryPanel : MonoBehaviour
 
     public Text selectedItemName;
     public Text selectedItemIntroduce;
+    public Button sellItem_Btn;
     public Button attachToQuickSlot_Btn;
     public Button useItem_Btn;
     public Button unequip_Btn;
@@ -98,6 +99,7 @@ public class InventoryPanel : MonoBehaviour
         selectedItemName.text = "";
         selectedItemIntroduce.text = "";
 
+        sellItem_Btn.gameObject.SetActive(false);
         attachToQuickSlot_Btn.gameObject.SetActive(false);
         useItem_Btn.gameObject.SetActive(false);
         unequip_Btn.gameObject.SetActive(false);
@@ -134,11 +136,15 @@ public class InventoryPanel : MonoBehaviour
     }
     public void ActiveUseItemBtn()
     {
-        useItem_Btn.gameObject.gameObject.SetActive(true);
+        useItem_Btn.gameObject.SetActive(true);
     }
     public void ActiveUnEquipBtn()
     {
         unequip_Btn.gameObject.SetActive(true);
+    }
+    public void ActiveSellItemBtn()
+    {
+        sellItem_Btn.gameObject.SetActive(true);
     }
 
     // 인벤토리 카테고리 변경 토글 Property Changed Callback

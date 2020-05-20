@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Shop_AlertPopup : MonoBehaviour
+public class AlertPopup : MonoBehaviour
 {
     private float elapsedTimeSinceOpen;
     private float popupHoldTime;

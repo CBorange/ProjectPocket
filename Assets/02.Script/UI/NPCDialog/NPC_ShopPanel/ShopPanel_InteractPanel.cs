@@ -8,7 +8,7 @@ using System.Text;
 public class ShopPanel_InteractPanel : MonoBehaviour
 {
     // Controller
-    public Shop_AlertPopup AlertPopup;
+    public AlertPopup AlertPopup;
     public Shop_MultipleBuyPopup MultipleBuyPopup;
 
     // UI
