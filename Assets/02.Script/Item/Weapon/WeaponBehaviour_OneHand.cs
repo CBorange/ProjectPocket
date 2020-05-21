@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
 {
     // Attack Animations
+    private const float CAN_LINKAGE_ATTACK_TIME = 1f;
     private float elapsedTimeSinceAttack = 0f;
     private int attackAnimIndex = 0;
     private bool checkElapsedTime = false;
@@ -63,7 +64,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         Invoke("ExecuteAttack", weaponData.TriggerDelay / attackSpeed);
         Invoke("SendEndAttack", animEndTime);
 
-        if (elapsedTimeSinceAttack < 0.8f)
+        if (elapsedTimeSinceAttack < CAN_LINKAGE_ATTACK_TIME)
         {
             checkElapsedTime = false;
             attackAnimIndex += 1;
@@ -76,14 +77,14 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         elapsedTimeSinceAttack = 0f;
         while (checkElapsedTime)
         {
-            yield return null;
             elapsedTimeSinceAttack += Time.deltaTime;
-            if (elapsedTimeSinceAttack > 0.8f)
+            if (elapsedTimeSinceAttack > CAN_LINKAGE_ATTACK_TIME)
             {
                 attackAnimIndex = 0;
                 checkElapsedTime = false;
                 yield break;
             }
+            yield return null;
         }
     }
     private void ChangeAttackAnimByIndex()

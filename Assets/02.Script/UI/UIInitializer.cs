@@ -27,5 +27,7 @@ public class UIInitializer : MonoBehaviour
         gatheringProgressPanel.Initiaialize();
         buildingInteractPanel.Initialize();
         buildingUpgradePanel.Initialize();
+
+        UIPanelTurner.Instance.Open_TutorialGuidePanel();
     }
 }

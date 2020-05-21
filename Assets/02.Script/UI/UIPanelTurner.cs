@@ -55,6 +55,7 @@ public class UIPanelTurner : MonoBehaviour
     public BuildingInteractPanel buildingInteractPanel;
     public UniversalNoticePanel universalNoticePanel;
     public PlayerStatPanel playerStatPanel;
+    public TutorialGuidePanel tutorialGuidePanel;
 
     // Data
     private bool uiPanelCurrentOpen;
@@ -129,6 +130,11 @@ public class UIPanelTurner : MonoBehaviour
         buildingUpgradePanel.OpenPanel(data, builder);
         StartCoroutine(IE_WaitPanelClose(buildingUpgradePanel.gameObject));
     }
+    public void Open_TutorialGuidePanel()
+    {
+        tutorialGuidePanel.OpenPanel();
+        StartCoroutine(IE_WaitPanelClose(tutorialGuidePanel.gameObject));
+    }
 
     // Semi Screen Use Panel
     public void Open_ResourceInteractPanel(ResourceController controller, Vector3 resourceScreenPos)
@@ -147,5 +153,6 @@ public class UIPanelTurner : MonoBehaviour
     {
         universalNoticePanel.OpenPanel(title, contents, viewTime);
     }
+    
     
 }
