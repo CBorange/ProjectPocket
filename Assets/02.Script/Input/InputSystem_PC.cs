@@ -22,11 +22,15 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
     }
     public void FreeFrame_Update()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            return;
         PlayerActionInput();
         PlayerJumpInput();
     }
     public void FixedFrame_Update()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            return;
         CameraInput();
         PlayerMoveInput();
     }
@@ -67,7 +71,6 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
         {
             if (mouseClicked)
             {
-                
                 RaycastToObject();
             }
             else

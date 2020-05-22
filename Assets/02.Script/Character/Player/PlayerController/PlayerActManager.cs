@@ -49,6 +49,7 @@ public class PlayerActManager : MonoBehaviour, IActController
         set { currentBehaviour = value; }
     }
     // Controller
+    public Animator MyAnimator;
     public PlayerWeaponController WeaponController;
 
     // Weapon, Attack Method
@@ -62,6 +63,8 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void ExecuteAttack()
     {
+        if (currentBehaviour == CharacterBehaviour.Death)
+            return;
         if (currentBehaviour == CharacterBehaviour.Gathering)
             return;
         WeaponController.ExecuteAttack();
@@ -79,7 +82,20 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void CharacterDeath()
     {
+        StartCoroutine(IE_DeathProgress());
+    }
+    private IEnumerator IE_DeathProgress()
+    {
         CurrentBehaviour = CharacterBehaviour.Death;
-        // 사망 모션, 처리
+        MyAnimator.SetTrigger("Death");
+
+        yield return new WaitForSeconds(1.1f);
+
+        int gold = (int)PlayerStat.Instance.GetStat("Gold");
+        int loss = gold / 10;
+        UIPanelTurner.Instance.Open_PlayerDeathPanel(PlayerStat.Instance.GetStat("CurrentExperience"), loss);
+
+        PlayerStat.Instance.RemoveGold(loss);
+        PlayerStat.Instance.ResetExperience();
     }
 }

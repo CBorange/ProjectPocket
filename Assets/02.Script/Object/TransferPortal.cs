@@ -10,6 +10,6 @@ public class TransferPortal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("PLAYER"))
-            MapLoader.Instance.LoadMap(ConnectMapName, ConnectNextMapLoadPosIndex);
+            MapLoader.Instance.LoadMap(ConnectMapName, ConnectNextMapLoadPosIndex, false);
     }
 }

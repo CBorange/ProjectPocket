@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
 
 public class InputSystem_Mobile : MonoBehaviour, InputSystem
 {
@@ -30,6 +31,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+                return;
             if (UIPanelTurner.Instance.UIPanelCurrentOpen)
                 return;
             for (int i = 0; i < Input.touches.Length; ++i)
@@ -47,12 +50,11 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                     else
                     {
                         touchedBefore = true;
-                        Invoke("ReleaseDobbleTouch", 0.2f);
+                        Invoke("ReleaseDobbleTouch", 0.25f);
                     }
                 }
                 else if (touch.phase == TouchPhase.Ended)
                 {
-                    Debug.Log(Input.touchCount);
                     if (Input.touchCount == 1)
                         joystickController.EndMove();
                 }
@@ -63,6 +65,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+                return;
             if (UIPanelTurner.Instance.UIPanelCurrentOpen)
                 return;
             moveCameraCallback(0, 0);
@@ -74,7 +78,10 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                     touch.phase == TouchPhase.Stationary)
                 {
                     if (touch.position.x >= halfWidth)
-                        CameraInput(touch);
+                    {
+                        if (UITouchStateContainer.Instance.PossibleToControll)
+                            CameraInput(touch);
+                    }
                     else if (touch.position.x < halfWidth)
                     {
                         joystickController.MoveJoystick(touch.position);

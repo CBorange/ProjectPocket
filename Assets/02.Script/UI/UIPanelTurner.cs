@@ -56,6 +56,7 @@ public class UIPanelTurner : MonoBehaviour
     public UniversalNoticePanel universalNoticePanel;
     public PlayerStatPanel playerStatPanel;
     public TutorialGuidePanel tutorialGuidePanel;
+    public PlayerDeathPanel playerDeathPanel;
 
     // Data
     private bool uiPanelCurrentOpen;
@@ -134,6 +135,11 @@ public class UIPanelTurner : MonoBehaviour
     {
         tutorialGuidePanel.OpenPanel();
         StartCoroutine(IE_WaitPanelClose(tutorialGuidePanel.gameObject));
+    }
+    public void Open_PlayerDeathPanel(float beforeExp, float lossGold)
+    {
+        playerDeathPanel.OpenPanel(beforeExp, lossGold);
+        StartCoroutine(IE_WaitPanelClose(playerDeathPanel.gameObject));
     }
 
     // Semi Screen Use Panel

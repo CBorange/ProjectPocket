@@ -49,6 +49,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            return;
         Vector3 point = collision.contacts[0].point;
         if (point.y < transform.position.y + 0.5f) 
         {
@@ -61,7 +63,8 @@ public class PlayerMovementController : MonoBehaviour
     public void HorizontalMovement(float moveVecX, float moveVecZ)
     {
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
-            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack) 
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)  
             return;
         if (moveVecX == 0 && moveVecZ == 0)
         {
@@ -94,7 +97,8 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void Jump()
     {
-        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering)
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
             return;
         if (NowJumping)
             return;

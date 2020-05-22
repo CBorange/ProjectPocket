@@ -44,14 +44,15 @@ public class MapLoader : MonoBehaviour
     public LoadingPanel loadingPanel;
     private GameObject loadedMapPrefab;
     private MapController loadedMap;
+    private bool recoveryStatAfterLoad;
     private string loadedMapName;
     private int specificLoadPosIndex = -1;
 
     private void Start()
     {
-        LoadMap(UserInfoProvider.Instance.LastMap, -1);
+        LoadMap(UserInfoProvider.Instance.LastMap, -1, false);
     }
-    public void LoadMap(string mapName, int loadPosIdx)
+    public void LoadMap(string mapName, int loadPosIdx, bool recoveryStat)
     {
         if (loadedMap != null)
             Destroy(loadedMap.gameObject);
@@ -61,6 +62,7 @@ public class MapLoader : MonoBehaviour
 
         loadedMapName = mapName;
         specificLoadPosIndex = loadPosIdx;
+        recoveryStatAfterLoad = recoveryStat;
         StartCoroutine(IE_AsyncLoadMap());
     }
     private IEnumerator IE_AsyncLoadMap()
@@ -97,6 +99,10 @@ public class MapLoader : MonoBehaviour
                 PlayerCoordinator.Instance.SetPlayerPosition(loadedMap.SpecificPos[specificLoadPosIndex]);
         }
 
+        if (recoveryStatAfterLoad)
+        {
+            PlayerStat.Instance.Heal(99999);
+        }
         UserInfoProvider.Instance.LastMap = loadedMapName;
     }
 }

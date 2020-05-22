@@ -13,6 +13,7 @@ public class MonsterStatusPanel : MonoBehaviour
 
     // UI
     public Slider HPSlider;
+    public Text HPText;
 
     public void Initialize(MonsterStat stat, GameObject monsterObj)
     {
@@ -42,5 +43,6 @@ public class MonsterStatusPanel : MonoBehaviour
             return;
         HPSlider.maxValue = monsterStat.MaxHealthPoint;
         HPSlider.value = monsterStat.HealthPoint;
+        HPText.text = $"{monsterStat.HealthPoint} / {monsterStat.MaxHealthPoint}";
     }
 }

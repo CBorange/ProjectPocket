@@ -144,6 +144,8 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     // Special Stat Callback
     public void GetDamage(float ap)
     {
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            return;
         float damage = ap - GetStat("ShieldPoint");
         if (damage < 0)
             damage = 1;
@@ -191,8 +193,12 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     public void RemoveGold(int amount)
     {
         if (integerStatDic["Gold"] - amount < 0)
+        {
             Debug.Log("소지금이 0원 보다 적음");
-        integerStatDic["Gold"] -= amount;
+            integerStatDic["Gold"] = 0;
+        }
+        else
+            integerStatDic["Gold"] -= amount;
         changedStatusCallback();
     }
     public void GainExperience(float amount)
@@ -206,6 +212,11 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
             floatStatDic["LevelupExperience"] = ExperienceTable.Instance.GetNeedExperienceByLevel(integerStatDic["Level"]);
             UIPanelTurner.Instance.Open_UniveralNoticePanel("레벨업!", $"<color=orange>{integerStatDic["Level"]}</color> 레벨을 달성하였습니다!", 2.0f);
         }
+        changedStatusCallback();
+    }
+    public void ResetExperience()
+    {
+        floatStatDic["CurrentExperience"] = 0;
         changedStatusCallback();
     }
     public void UseStatPoint(int amount)
