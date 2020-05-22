@@ -5,26 +5,31 @@ using System;
 
 public class NPC_Controller : MonoBehaviour
 {
-    // Initialize On Editor Data
-    public int NPCCode;
+    // Controller
+    private BoxCollider myCollider;
 
     // UI
     public Transform PortraitCenter;
     public NPC_QuestMark QuestMark;
 
     // Data
+    public int NPCCode;
+    private float myColliderSize;
     private NPCData npcData;
 
     public void Interact()
     {
-        Vector3 distance = PlayerActManager.Instance.transform.position - transform.position;
-        if (distance.magnitude < 2)
+        Debug.Log($"{npcData.Name} : {myColliderSize}");
+        if (IsPossibleToInteract())
             UIPanelTurner.Instance.Open_NPCDialogPanel(npcData, this);
     }
     public void Initialize()
     {
         LoadNPCData();
         QuestMarkerChangeAccordingToState();
+
+        myCollider = GetComponent<BoxCollider>();
+        myColliderSize = ((myCollider.bounds.size.x + myCollider.bounds.size.z) / 2);
     }
     public void SperateQuestsAccordingToState()
     {
@@ -34,7 +39,13 @@ public class NPC_Controller : MonoBehaviour
     {
         npcData = NpcDB.Instance.GetNPCData(NPCCode);
     }
-
+    public bool IsPossibleToInteract()
+    {
+        Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
+        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
+            return false;
+        return true;
+    }
     public void QuestMarkerChangeAccordingToState()
     {
         SperateQuestsAccordingToState();

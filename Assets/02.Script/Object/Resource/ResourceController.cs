@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResourceController : MonoBehaviour
 {
     // Controller
+    private BoxCollider myCollider;
     public ItemDropper dropper;
 
     // Data
@@ -12,6 +13,7 @@ public class ResourceController : MonoBehaviour
     public GameObject livingResource;
     public GameObject deathResource;
     private bool isActivated;
+    private float myColliderSize;
     private ResourceData currentData;
     public ResourceData CurrentData
     {
@@ -23,7 +25,9 @@ public class ResourceController : MonoBehaviour
         isActivated = true;
         currentData = ResourceDB.Instance.GetResourceData(ResourceCode);
         dropper.Initialize(transform, currentData.DropItemDatas, null);
-        return;
+
+        myCollider = livingResource.GetComponent<BoxCollider>();
+        myColliderSize = ((myCollider.bounds.size.x + myCollider.bounds.size.z) / 2);
     }
     public void EndGathering()
     {
@@ -53,7 +57,7 @@ public class ResourceController : MonoBehaviour
         if (!isActivated)
             return false;
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
-        if (distanceBetweenPlayer.magnitude > 1.5f)
+        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
             return false;
         return true;
     }

@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class BuildingController : MonoBehaviour
 {
+    // Controller
+    private BoxCollider myCollider;
+
     // Data
     private BuildingData currentData;
     private StatAdditional[] buildingStat;
+    private float myColliderSize;
     private int currentGrade;
 
     public void Initialize(BuildingData data)
     {
         currentData = data;
+        myCollider = GetComponent<BoxCollider>();
+        myColliderSize = ((myCollider.bounds.size.x + myCollider.bounds.size.z) / 2);
     }
     public void StartInteract()
     {
@@ -23,7 +29,7 @@ public class BuildingController : MonoBehaviour
     public bool IsPossibleToInteract()
     {
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
-        if (distanceBetweenPlayer.magnitude > 3f)
+        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
             return false;
         return true;
     }

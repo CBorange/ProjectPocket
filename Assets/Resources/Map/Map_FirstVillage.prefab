@@ -1242,9 +1242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50002
+  MyCollider: {fileID: 2318988282830871322}
   PortraitCenter: {fileID: 7060401872805787599}
   QuestMark: {fileID: 2973911674217455440}
+  NPCCode: 50002
 --- !u!114 &2973911674217455440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1351,9 +1352,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50005
+  MyCollider: {fileID: 8248278715776927442}
   PortraitCenter: {fileID: 6609320161516269673}
   QuestMark: {fileID: 5509045846131635528}
+  NPCCode: 50005
 --- !u!114 &5509045846131635528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10128,9 +10130,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50006
+  MyCollider: {fileID: 960136014405616479}
   PortraitCenter: {fileID: 5316167714649570105}
   QuestMark: {fileID: 8658017331708806957}
+  NPCCode: 50006
 --- !u!114 &8658017331708806957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12596,9 +12599,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50003
+  MyCollider: {fileID: 5013328547942685409}
   PortraitCenter: {fileID: 8086462675548591879}
   QuestMark: {fileID: 7425564196801491652}
+  NPCCode: 50003
 --- !u!114 &7425564196801491652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17161,9 +17165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50004
+  MyCollider: {fileID: 1868245649471181017}
   PortraitCenter: {fileID: 1727279626708577550}
   QuestMark: {fileID: 4164452790146086023}
+  NPCCode: 50004
 --- !u!114 &4164452790146086023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17619,9 +17624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa06129cb7975d40bf8bbce26288f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCode: 50001
+  MyCollider: {fileID: 5235900348125610310}
   PortraitCenter: {fileID: 2701509416863428131}
   QuestMark: {fileID: 4838462985620139616}
+  NPCCode: 50001
 --- !u!114 &4838462985620139616
 MonoBehaviour:
   m_ObjectHideFlags: 0

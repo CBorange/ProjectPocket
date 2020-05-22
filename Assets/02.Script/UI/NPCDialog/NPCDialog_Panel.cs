@@ -26,8 +26,7 @@ public class NPCDialog_Panel : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 distance = PlayerActManager.Instance.transform.position - currentNPC_Controller.transform.position;
-        if (distance.magnitude > 2)
+        if (!currentNPC_Controller.IsPossibleToInteract())
             ClosePanel();
     }
     public void Initialize()
