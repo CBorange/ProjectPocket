@@ -851,6 +851,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6609930139623825441}
+  - {fileID: 5301177642817110870}
   m_Father: {fileID: 6376225634186498242}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1024,6 +1025,7 @@ GameObject:
   - component: {fileID: 6376225634186498242}
   - component: {fileID: 8158247604245774289}
   - component: {fileID: 6603267791242887528}
+  - component: {fileID: 4489759116207586228}
   m_Layer: 0
   m_Name: Map_Grassland_1
   m_TagString: Untagged
@@ -1068,6 +1070,7 @@ MonoBehaviour:
   - {x: 1.68, y: -1.3316, z: -15.53}
   Spawners:
   - {fileID: 7107346165418239245}
+  - {fileID: 5810571419797662985}
 --- !u!114 &6603267791242887528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,6 +1098,35 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 8414fd04a71aa38419e08735689afa39, type: 2}
+--- !u!114 &4489759116207586228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5821891752615105802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -334000983
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.33333334
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: c7f11557e7dc5a3438e7448948a08ce2, type: 2}
 --- !u!1 &6022357716215232320
@@ -1318,6 +1350,57 @@ Transform:
   m_Father: {fileID: 2494728899058540935}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7742001480272789441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5301177642817110870}
+  - component: {fileID: 5810571419797662985}
+  m_Layer: 0
+  m_Name: TurtleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5301177642817110870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7742001480272789441}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 51.57, y: 1.13, z: -0.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6432302020501548122}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5810571419797662985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7742001480272789441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aeb71fda81ba8a4f94c543d5e62f7cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnMobPrefab: {fileID: 3999012203685473428, guid: a7eaa9fb84237b74d89288d3985fa62e,
+    type: 3}
+  SpawnArea: 3
+  SpawnHeight: 2
+  SpawnDelay: 5
+  MaxSpawnCount: 4
+  deactiveMobPool: []
+  activeMobPool: []
 --- !u!1 &8218002834738302780
 GameObject:
   m_ObjectHideFlags: 0

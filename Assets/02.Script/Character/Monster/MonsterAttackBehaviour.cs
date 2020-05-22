@@ -14,6 +14,7 @@ namespace MonsterAttackBehaviour
     public class MonsterAttackPattern // 패턴 하나에 해당
     {
         public string[] PatternProgressOrders;
+        public string MonsterRotation;
         // Instant
         public int InstantAttackCount;
         public InstantAttackData[] InstantAttackDatas;

@@ -101,12 +101,13 @@ public class MonsterAttackSystem : MonoBehaviour    // 패턴 한개 구현
         {
             ExecuteInfo newOrder = new ExecuteInfo();
             string[] splitedInfo = orders[i].Split(',');
+            string patternType = splitedInfo[0];
             int patternIndex = int.Parse(splitedInfo[1]);
             float executeDelay = float.Parse(splitedInfo[2]);
 
-            if (splitedInfo[0].Equals("Instant"))
+            if (patternType.Equals("Instant"))
                 newOrder.StartAction = instantAttacks[patternIndex].Execute;
-            else if (splitedInfo[0].Equals("Projectile"))
+            else if (patternType.Equals("Projectile"))
                 newOrder.StartAction = projectileAttacks[patternIndex].Execute;
             newOrder.ExecuteDelay = executeDelay;
 
@@ -120,6 +121,19 @@ public class MonsterAttackSystem : MonoBehaviour    // 패턴 한개 구현
     }
     private IEnumerator IE_ExecutePatternByOrder()
     {
+        Transform monsterRoot = transform.parent.parent;
+        switch (attackPattern.MonsterRotation)
+        {
+            case "LookPlayer":
+                monsterRoot.LookAt(PlayerActManager.Instance.transform.position);
+                monsterRoot.transform.rotation = Quaternion.Euler(0, monsterRoot.transform.rotation.eulerAngles.y, 0);
+                break;
+            default:
+                string[] splitedRot = attackPattern.MonsterRotation.Split(',');
+                Vector3 newRot = new Vector3(float.Parse(splitedRot[0]), float.Parse(splitedRot[1]), float.Parse(splitedRot[2]));
+                monsterRoot.transform.rotation = Quaternion.Euler(newRot);
+                break;
+        }
         for (int i = 0; i < executeSequence.Count; ++i)
         {
             yield return new WaitForSeconds(executeSequence[i].ExecuteDelay);

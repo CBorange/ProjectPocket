@@ -136,6 +136,9 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
         attackingPlayer = true;
         while (attackingPlayer)
         {
+            NavAgent.isStopped = true;
+            NavAgent.ResetPath();
+            NavAgent.velocity = Vector3.zero;
             MobAnimator.SetBool("Move", false);
             MobAnimator.SetBool("Attack", true);
             Controller.ExecuteAttack();
@@ -145,6 +148,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
                 MobAnimator.SetBool("Attack", false);
             }
         }
+        NavAgent.isStopped = false;
     }
     private bool AgentIsArrivedOnTarget()
     {

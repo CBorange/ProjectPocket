@@ -19,7 +19,6 @@ public class NPC_Controller : MonoBehaviour
 
     public void Interact()
     {
-        Debug.Log($"{npcData.Name} : {myColliderSize}");
         if (IsPossibleToInteract())
             UIPanelTurner.Instance.Open_NPCDialogPanel(npcData, this);
     }
