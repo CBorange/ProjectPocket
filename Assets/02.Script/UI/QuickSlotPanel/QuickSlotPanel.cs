@@ -23,6 +23,18 @@ public class QuickSlotPanel : MonoBehaviour
         for (int i = 0; i < SlotButtons.Length; ++i)
             SlotButtons[i].Refresh();
     }
+    public void FoundSameItemAndEmpty(int itemCode)
+    {
+        for (int i = 0; i < SlotButtons.Length; ++i)
+        {
+            if (SlotButtons[i].SlotItem != null &&
+                SlotButtons[i].SlotItem.OriginalItemData.ItemCode == itemCode)
+            {
+                PlayerQuickSlot.Instance.ItemsInSlot[i] = 0;
+                SlotButtons[i].Refresh();
+            }
+        }
+    }
     public void OpenPanel_ModeAttach(InventoryItem attachItem)
     {
         waitToAttachItem = attachItem;

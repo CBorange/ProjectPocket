@@ -28,6 +28,11 @@ public class QuickSlotButton : MonoBehaviour
     public int SlotIndex;
     private QuickSlotMode currentMode;
     private InventoryItem slotItem;
+    public InventoryItem SlotItem
+    {
+        get { return slotItem; }
+        set { slotItem = value; }
+    }
     private InventoryItem waitAttachItem;
 
 
@@ -102,6 +107,7 @@ public class QuickSlotButton : MonoBehaviour
         switch(currentMode)
         {
             case QuickSlotMode.AttachItem:
+                SlotPanel.FoundSameItemAndEmpty(waitAttachItem.OriginalItemData.ItemCode);
                 slotItem = waitAttachItem;
                 PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex] = slotItem.OriginalItemData.ItemCode;
                 SlotPanel.CancelAttachItem();
