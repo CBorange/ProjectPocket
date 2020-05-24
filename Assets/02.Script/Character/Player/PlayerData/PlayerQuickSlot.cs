@@ -40,23 +40,14 @@ public class PlayerQuickSlot : MonoBehaviour
     #endregion
 
     // Data
-    private InventoryItem[] itemsInSlot;
-    public InventoryItem[] ItemsInSlot
+    private int[] itemsInSlot;
+    public int[] ItemsInSlot
     {
         get { return itemsInSlot; }
     }
 
     public void Initialize()
     {
-        int[] itemCodes = UserQuickSlotProvider.Instance.ItemsInSlot;
-
-        itemsInSlot = new InventoryItem[5];
-        for (int i = 0; i < 5; ++i)
-        {
-            if (itemCodes[i] == 0)
-                itemsInSlot[i] = null;
-            else
-                itemsInSlot[i] = PlayerInventory.Instance.GetItem(itemCodes[i]);
-        }
+        itemsInSlot = UserQuickSlotProvider.Instance.ItemsInSlot;
     }
 }

@@ -50,7 +50,7 @@ public class QuickSlotButton : MonoBehaviour
     }
     public void Refresh()
     {
-        slotItem = PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex];
+        slotItem = PlayerInventory.Instance.GetItem(PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex]);
         if (slotItem == null)
         {
             myButton.targetGraphic = SlotBG;
@@ -103,11 +103,13 @@ public class QuickSlotButton : MonoBehaviour
         {
             case QuickSlotMode.AttachItem:
                 slotItem = waitAttachItem;
-                PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex] = slotItem;
+                PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex] = slotItem.OriginalItemData.ItemCode;
                 SlotPanel.CancelAttachItem();
                 Refresh();
                 break;
             case QuickSlotMode.UseItem:
+                if (slotItem == null)
+                    return;
                 ItemData data = slotItem.OriginalItemData;
                 switch (data.ItemType)
                 {

@@ -37,12 +37,7 @@ public class UserQuickSlotProvider
     public void Save_PlayerQuickSlot_UpdateServerDB()
     {
         for (int i = 0; i < 5; ++i)
-        {
-            if (PlayerQuickSlot.Instance.ItemsInSlot[i] == null)
-                ItemsInSlot[i] = 0;
-            else
-                itemsInSlot[i] = PlayerQuickSlot.Instance.ItemsInSlot[i].OriginalItemData.ItemCode;
-        }    
+            itemsInSlot[i] = PlayerQuickSlot.Instance.ItemsInSlot[i];
         DBConnector.Instance.Save_PlayerQuickSlot();
     }
 }
