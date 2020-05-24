@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InventoryPanel_ItemTable : MonoBehaviour
 {
     // Controller
+    public QuickSlotPanel quickSlotPanel;
     public InventoryPanel_SellItem sellItemPanel;
     public InventoryPanel inventoryPanel;
 
@@ -104,10 +105,15 @@ public class InventoryPanel_ItemTable : MonoBehaviour
                 ExpendableData expendableData = ItemDB.Instance.GetExpendableData(data.ItemCode);
                 PlayerBuffer.Instance.ApplyStatEffectByExpendable(expendableData);
                 PlayerInventory.Instance.RemoveItemFromInventory(expendableData.ItemCode, 1);
+                quickSlotPanel.Refresh();
                 break;
         }
         inventoryPanel.RefreshPlayerInfoPanel();
         RefreshInventoryPanel();
+    }
+    public void AttachItemToQuickSlot()
+    {
+        quickSlotPanel.OpenPanel_ModeAttach(selectedItemToggle.CurrentItem);
     }
 
     // 내부 Method
@@ -181,7 +187,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             case "Weapon":
                 WeaponData weapon = ItemDB.Instance.GetWeaponData(item.ItemCode);
                 inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, weapon.WeaponStat);
-                //inventoryPanel.ActiveQuickSlotBtn();
+                inventoryPanel.ActiveQuickSlotBtn();
                 inventoryPanel.ActiveUseItemBtn();
                 break;
             case "Accesorie":
@@ -192,7 +198,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
             case "Expendable":
                 ExpendableData expendable = ItemDB.Instance.GetExpendableData(item.ItemCode);
                 inventoryPanel.RefreshItemIntroduce(item.Name, item.Introduce, expendable.Effects);
-                //inventoryPanel.ActiveQuickSlotBtn();
+                inventoryPanel.ActiveQuickSlotBtn();
                 inventoryPanel.ActiveUseItemBtn();
                 break;
             case "Etc":

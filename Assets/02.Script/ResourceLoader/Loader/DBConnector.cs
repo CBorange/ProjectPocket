@@ -196,6 +196,19 @@ public class DBConnector
             UserBuildingProvider.Instance.Initialize(statuses);
         return "Success";
     }
+    public string LoadUserQuickSlot()
+    {
+        string query = $"SELECT * FROM dbo.PlayerQuickSlot WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
+        DataSet dataSet = ConnectDB_GetDataSet("PlayerInfo_DB", query);
+
+        if (dataSet == null)
+            return "서버에 연결할 수 없습니다.";
+
+        DataRow row = dataSet.Tables[0].Rows[0];
+        UserQuickSlotProvider.Instance.Initialize((int)row["Slot_0"], (int)row["Slot_1"], (int)row["Slot_2"], (int)row["Slot_3"],
+            (int)row["Slot_4"]);
+        return "Success";
+    }
     public string LoadUserEquipment()
     {
         string query = $"SELECT * FROM dbo.PlayerEquipments WHERE UserAccount = '{UserInfoProvider.Instance.UserAccount}'";
@@ -335,6 +348,22 @@ public class DBConnector
 
         builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
 
+        string sql = builder.ToString();
+        ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
+    }
+    public void Save_PlayerQuickSlot()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        int[] itemsInSlot = UserQuickSlotProvider.Instance.ItemsInSlot;
+        builder.Append($"UPDATE dbo.PlayerQuickSlot SET ");
+        builder.Append($"Slot_0='{itemsInSlot[0]}', ");
+        builder.Append($"Slot_1='{itemsInSlot[1]}', ");
+        builder.Append($"Slot_2='{itemsInSlot[2]}', ");
+        builder.Append($"Slot_3='{itemsInSlot[3]}', ");
+        builder.Append($"Slot_4='{itemsInSlot[4]}' ");
+
+        builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
         string sql = builder.ToString();
         ConnectDB_ExecuteNonQuery("PlayerInfo_DB", sql);
     }

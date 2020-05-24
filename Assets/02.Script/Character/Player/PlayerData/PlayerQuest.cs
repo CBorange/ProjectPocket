@@ -234,7 +234,7 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             }
         }
 
-        // 퀘스트 종류별로 퀘스트 완료 처리
+        // 퀘스트 종류별로 퀘스트 완료시에 필요한 처리 실행
         for (int i = 0; i < data.QuestCategorys.Length; ++i)
         {
             switch (data.QuestCategorys[i])

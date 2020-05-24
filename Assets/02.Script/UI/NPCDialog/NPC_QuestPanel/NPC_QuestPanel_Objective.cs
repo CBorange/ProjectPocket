@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class NPC_QuestPanel_Objective : MonoBehaviour
 {
-    // Quest Objective UI
+    // UI
     public Text ContentsText;
     public Text ImpliedObjectiveText;
     public Text DetailedObjectiveText;
@@ -17,6 +17,7 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     public Button Complete_Btn;
 
     // Panel
+    public AlertPopup AlertPopup;
     public NPC_QuestPanel QuestPanel;
 
     // Data
@@ -186,5 +187,11 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     {
         PlayerQuest.Instance.CompleteQuest(npcCode, currnetData);
         QuestPanel.RefreshPanel();
+
+        StringBuilder builder = new StringBuilder();
+        builder.AppendLine($"[<color=orange>{currnetData.QuestName}</color>]");
+        builder.AppendLine("퀘스트를 완료하였습니다!");
+        AlertPopup.RefreshToAlert(builder.ToString());
+        AlertPopup.OpenPopup(1.5f);
     }
 }

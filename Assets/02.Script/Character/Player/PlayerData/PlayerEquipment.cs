@@ -64,6 +64,16 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         if (UserEquipmentProvider.Instance.Accesorie_Necklace != null)
             EquipAccesorie_Necklace(ItemDB.Instance.GetAccesorieData(UserEquipmentProvider.Instance.Accesorie_Necklace.ItemCode));
     }
+    public bool HasEquipedItem(int itemCode)
+    {
+        if (equipedWeapon != null && equipedWeapon.ItemCode == itemCode) 
+            return true;
+        if (equipedRing != null && equipedRing.ItemCode == itemCode)
+            return true;
+        if (equipedNecklace != null && equipedNecklace.ItemCode == itemCode)
+            return true;
+        return false;
+    }
 
     // UnEquip
     public void UnequipWeapon()

@@ -22,6 +22,8 @@ public class DB_Initializer : MonoBehaviour
             Debug.Log("유저 인벤토리 로드 에러");
         if (!DBConnector.Instance.LoadUserEquipment().Equals("Success"))
             Debug.Log("유저 장비 로드 에러");
+        if (!DBConnector.Instance.LoadUserQuickSlot().Equals("Success"))
+            Debug.Log("유저 퀵슬롯 로드 에러");
         if (!DBConnector.Instance.LoadUserQuests().Equals("Success"))
             Debug.Log("유저 퀘스트 로드 에러");
         if (!DBConnector.Instance.LoadUserBuilding().Equals("Success"))
@@ -33,6 +35,7 @@ public class DB_Initializer : MonoBehaviour
         PlayerEquipment.Instance.Initialize();
         PlayerBuilding.Instance.Initialize();
         PlayerInventory.Instance.Initialize();
+        PlayerQuickSlot.Instance.Initialize();
         PlayerQuest.Instance.Initialize();
     }
 }

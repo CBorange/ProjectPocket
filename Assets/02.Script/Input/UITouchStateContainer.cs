@@ -40,7 +40,7 @@ public class UITouchStateContainer : MonoBehaviour
     #endregion
 
     // Data
-    private bool possibleToControll;
+    private bool possibleToControll = true;
     public bool PossibleToControll
     {
         get { return possibleToControll; }

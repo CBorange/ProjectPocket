@@ -32,7 +32,7 @@ public class MonsterStatusPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-    private void FixedUpdate()
+    private void Update()
     {
         transform.LookAt(Camera.main.transform);
         transform.position = MonsterObject.transform.position + new Vector3(0, 2, 0);

@@ -14,6 +14,7 @@ public class UIInitializer : MonoBehaviour
     public GatheringProgressPanel gatheringProgressPanel;
     public BuildingInteractPanel buildingInteractPanel;
     public BuildingUpgradePanel buildingUpgradePanel;
+    public QuickSlotPanel quickSlotPanel;
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class UIInitializer : MonoBehaviour
         gatheringProgressPanel.Initiaialize();
         buildingInteractPanel.Initialize();
         buildingUpgradePanel.Initialize();
+        quickSlotPanel.Initialize();
 
         UIPanelTurner.Instance.Open_TutorialGuidePanel();
     }

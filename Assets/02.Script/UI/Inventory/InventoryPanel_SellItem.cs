@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InventoryPanel_SellItem : MonoBehaviour
 {
     // Controller
+    public QuickSlotPanel QuickSlot_Panel;
     public InventoryPanel_ItemTable Inventory_ItemTable;
     public AlertPopup AlertPopup;
 
@@ -80,6 +81,7 @@ public class InventoryPanel_SellItem : MonoBehaviour
         gameObject.SetActive(false);
 
         Inventory_ItemTable.RefreshInventoryPanel();
+        QuickSlot_Panel.Refresh();
         AlertPopup.RefreshToAlert("판매가 완료되었습니다!");
         AlertPopup.OpenPopup(1.0f);
     }
