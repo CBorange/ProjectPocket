@@ -44,8 +44,15 @@ public class PlayerBuffer : MonoBehaviour
         ExpendableEffect[] effects = data.Effects;
         for (int i = 0; i < effects.Length; ++i)
         {
-            if (effects[i].StatName.Equals("HealthPoint"))
-                PlayerStat.Instance.Heal(effects[i].StatAmount);
+            switch(effects[i].StatName)
+            {
+                case "HealthPoint":
+                    PlayerStat.Instance.Heal(effects[i].StatAmount);
+                    break;
+                case "WorkPoint":
+                    PlayerStat.Instance.RecoverWorkPoint(effects[i].StatAmount);
+                    break;
+            }
         }
     }
 }

@@ -50,6 +50,7 @@ public class UIText_Util
         engItemStatToKor.Add("MaxHealthPoint", "최대 체력");
         engItemStatToKor.Add("MaxWorkPoint", "최대 노동력");
         engItemStatToKor.Add("HealthPoint", "체력 회복");
+        engItemStatToKor.Add("WorkPoint", "노동력 회복");
         engItemStatToKor.Add("ShieldPoint", "방어력");
         engItemStatToKor.Add("GatheringPower", "채집 능력");
     }
