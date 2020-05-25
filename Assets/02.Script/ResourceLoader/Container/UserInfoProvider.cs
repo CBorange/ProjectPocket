@@ -171,7 +171,7 @@ public class UserInfoProvider
         else
             saveHealthPoint = PlayerStat.Instance.GetStat("HealthPoint");
         this.healthPoint = saveHealthPoint;
-        this.maxHealthPoint = PlayerStat.Instance.GetStat("MaxHealthPoint");
+        this.maxHealthPoint = PlayerStat.Instance.GetStat("Origin_MaxHealthPoint");
         this.shieldPoint = PlayerStat.Instance.GetStat("Origin_ShieldPoint");
         this.attackPoint = PlayerStat.Instance.GetStat("Origin_AttackPoint");
         this.attackSpeed = PlayerStat.Instance.GetStat("Origin_AttackSpeed");

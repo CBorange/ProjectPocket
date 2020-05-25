@@ -53,14 +53,17 @@ public class PlayerWeaponController : MonoBehaviour
     public void ExecuteAttack()
     {
         if (nowAttacking)
+        {
             return;
+        }
         if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
         {
-            Debug.Log("플레이어 상태가 Idle이 아님.");
             return;
         }
         if (equipedWeaponBehaviour == null)
+        {
             return;
+        }
         nowAttacking = true;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Attack;
         equipedWeaponBehaviour.PlayAttack();

@@ -104,6 +104,8 @@ public class QuickSlotButton : MonoBehaviour
 
     public void SelectSlot()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
+            return;
         switch(currentMode)
         {
             case QuickSlotMode.AttachItem:

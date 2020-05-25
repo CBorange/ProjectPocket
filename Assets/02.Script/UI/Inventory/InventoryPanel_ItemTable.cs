@@ -83,10 +83,14 @@ public class InventoryPanel_ItemTable : MonoBehaviour
     }
     public void SellItem()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
+            return;
         sellItemPanel.OpenPanel(selectedItemToggle.CurrentItem.OriginalItemData);
     }
     public void UseItem()
     {
+        if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
+            return;
         ItemData data = selectedItemToggle.CurrentItem.OriginalItemData;
         switch (data.ItemType)
         {
@@ -108,6 +112,7 @@ public class InventoryPanel_ItemTable : MonoBehaviour
                 quickSlotPanel.Refresh();
                 break;
         }
+        quickSlotPanel.Refresh();
         inventoryPanel.RefreshPlayerInfoPanel();
         RefreshInventoryPanel();
     }

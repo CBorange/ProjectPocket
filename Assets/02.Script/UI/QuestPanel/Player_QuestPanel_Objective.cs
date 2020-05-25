@@ -58,9 +58,7 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     {
                         string npcName = NpcDB.Instance.GetNPCData(discussions[i].TargetNPC).Name;
                         string talkDone = UIText_Util.Instance.BooleanToQuestIsDoneSTR(discussions[i].TalkCompleted);
-                        builder.Append($"[{npcName} : {talkDone}]");
-                        if (i < discussions.Length - 1)
-                            builder.Append(", ");
+                        builder.AppendLine($"[{npcName} : {talkDone}]");
                     }
                     break;
                 case "KillMonster":
@@ -70,9 +68,7 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     for (int i = 0; i < killMonsters.Length; ++i)
                     {
                         string mobName = MonsterDB.Instance.GetMonsterData(killMonsters[i].TargetMonster).MonsterKorName;
-                        builder.Append($"[{mobName} : {killMonsters[i].CurrentKillCount} / {killMonsters[i].GoalKillCount}]");
-                        if (i < killMonsters.Length - 1)
-                            builder.Append(",");
+                        builder.AppendLine($"[{mobName} : {killMonsters[i].CurrentKillCount} / {killMonsters[i].GoalKillCount}]");
                     }
                     break;
                 case "Building":
@@ -82,9 +78,7 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     for (int i = 0; i < targetBuildings.Length; ++i)
                     {
                         int currentGrade = PlayerBuilding.Instance.GetBuildingStatus(targetBuildings[i].BuildingCode).Grade;
-                        builder.Append($"[{targetBuildings[i].BuildingName} : {currentGrade + 1}/{targetBuildings[i].BuildingGrade + 1} 단계]");
-                        if (i < targetBuildings.Length - 1)
-                            builder.Append(",");
+                        builder.AppendLine($"[{targetBuildings[i].BuildingName} : {currentGrade + 1}/{targetBuildings[i].BuildingGrade + 1} 단계]");
                     }
                     break;
                 case "GetItem":
@@ -94,9 +88,12 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     for (int i = 0; i < targetItems.Length; ++i)
                     {
                         InventoryItem itemInInventory = PlayerInventory.Instance.GetItem(targetItems[i].ItemCode);
-                        builder.Append($"[{itemInInventory.OriginalItemData.Name} : {itemInInventory.ItemCount} / {targetItems[i].ItemCount}]");
-                        if (i < targetItems.Length - 1)
-                            builder.AppendLine();
+                        int haveItemCount = 0;
+                        if (itemInInventory == null)
+                            haveItemCount = 0;
+                        else
+                            haveItemCount = itemInInventory.ItemCount;
+                        builder.AppendLine($"[{targetItems[i].ItemName} : {haveItemCount} / {targetItems[i].ItemCount}]");
                     }
                     break;
             }
@@ -143,9 +140,7 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     TargetNPCData[] npcs = data.Behaviour_Discussion.TargetNPC;
                     for (int i = 0; i < npcs.Length; ++i)
                     {
-                        builder.Append($"[{npcs[i].NPCName}]");
-                        if (i < npcs.Length - 1)
-                            builder.Append(", ");
+                        builder.AppendLine($"[{npcs[i].NPCName}]");
                     }
                     break;
                 case "KillMonster":
@@ -154,14 +149,26 @@ public class Player_QuestPanel_Objective : MonoBehaviour
                     TargetMonsterData[] monsters = data.Behaviour_KillMonster.TargetMonster;
                     for (int i = 0; i < monsters.Length; ++i)
                     {
-                        builder.Append($"[{monsters[i].MonsterName} : {monsters[i].KillCount}마리]");
-                        if (i < monsters.Length - 1)
-                            builder.Append(", ");
+                        builder.AppendLine($"[{monsters[i].MonsterName} : {monsters[i].KillCount}마리]");
                     }
                     break;
                 case "Building":
+                    builder.Append("건물 증축 : ");
+                    builder.AppendLine();
+                    TargetBuildingData[] targetBuildings = data.Behaviour_Building.TargetBuilding;
+                    for (int i = 0; i < targetBuildings.Length; ++i)
+                    {
+                        builder.AppendLine($"[{targetBuildings[i].BuildingName} : {targetBuildings[i].BuildingGrade + 1} 단계]");
+                    }
                     break;
-                case "ItemGet":
+                case "GetItem":
+                    builder.Append("아이템 획득 : ");
+                    builder.AppendLine();
+                    TargetItemData[] targetItems = data.Behaviour_GetItem.TargetItem;
+                    for (int i = 0; i < targetItems.Length; ++i)
+                    {
+                        builder.AppendLine($"[{targetItems[i].ItemName} : {targetItems[i].ItemCount} 개]");
+                    }
                     break;
             }
         }

@@ -64,9 +64,13 @@ public class PlayerActManager : MonoBehaviour, IActController
     public void ExecuteAttack()
     {
         if (currentBehaviour == CharacterBehaviour.Death)
+        {
             return;
+        }
         if (currentBehaviour == CharacterBehaviour.Gathering)
+        {
             return;
+        }
         WeaponController.ExecuteAttack();
     }
     public void EndAttack()
