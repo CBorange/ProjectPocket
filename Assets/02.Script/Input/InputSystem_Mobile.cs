@@ -17,6 +17,10 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     private Action jumpCallback;
     private bool touchedBefore = false;
 
+    private List<Touch> currentTouchList;
+    private Touch joystickTouch;
+    private Touch cameraTouch;
+
     public void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback)
     {
         MobileInputInterfaceObj.gameObject.SetActive(true);
@@ -25,23 +29,23 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
         this.movePlayerCallback = movePlayerCallback;
         this.jumpCallback = jumpCallback;
 
+        currentTouchList = new List<Touch>();
         joystickController.Initialize(movePlayerCallback);
     }
     public void FreeFrame_Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > currentTouchList.Count)
         {
-            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            if (!PossibleToControll())
                 return;
-            if (UIPanelTurner.Instance.UIPanelCurrentOpen)
-                return;
+            //Touch newTouch = Input.touches[Input.touches.Length];
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
                 float halfWidth = Screen.width * 0.5f;
-                if (touch.phase == TouchPhase.Began) 
+                if (touch.phase == TouchPhase.Began)
                 {
-                    if (touch.position.x < halfWidth && IsPossibleToMoveJoystick(touch))
+                    if (touch.position.x < halfWidth && joystickController.IsPossibleToMoveJoystick(touch.position))
                     {
                         joystickController.StartMove(touch.position);
                     }
@@ -65,9 +69,7 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
-            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
-                return;
-            if (UIPanelTurner.Instance.UIPanelCurrentOpen)
+            if (!PossibleToControll())
                 return;
             moveCameraCallback(0, 0);
             for (int i = 0; i < Input.touches.Length; ++i)
@@ -96,17 +98,14 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
             movePlayerCallback(0, 0);
         }
     }
-    private bool IsPossibleToMoveJoystick(Touch touch)
+    private bool PossibleToControll()
     {
-        if (touch.position.x > joystickController.JOYSTICK_HALF_WIDTH &&
-                    (touch.position.y < (Screen.height - joystickController.JOYSTICK_HALF_HEIGHT)) &&
-                    touch.position.y > joystickController.JOYSTICK_HALF_HEIGHT)
-        {
-            return true;
-        }
-        else
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
+            UIPanelTurner.Instance.UIPanelCurrentOpen)
             return false;
+        return true;
     }
+    
     private void CameraInput(Touch touch)
     {
         Vector2 deltaMove = touch.deltaPosition * touch.deltaTime;
