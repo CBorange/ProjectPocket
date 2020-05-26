@@ -8,37 +8,32 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
 {
     // Controller
     public FollowCamera PlayerCamera;
-    public GameObject MobileInputInterfaceObj;
+    public PlayerMovementController MovementController;
+    public MobileInputInterface InputInterface;
     public JoystickController joystickController;
 
     // Data
-    private Action<float, float> moveCameraCallback;
-    private Action<float, float> movePlayerCallback;
-    private Action jumpCallback;
-    private bool touchedBefore = false;
-
-    private List<Touch> currentTouchList;
-    private Touch joystickTouch;
-    private Touch cameraTouch;
-
-    public void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback)
+    private Action interactAction;
+    public Action InteractAction
     {
-        MobileInputInterfaceObj.gameObject.SetActive(true);
+        get { return interactAction; }
+        set { interactAction = value; }
+    }
 
-        this.moveCameraCallback = moveCameraCallback;
-        this.movePlayerCallback = movePlayerCallback;
-        this.jumpCallback = jumpCallback;
+    private int joystickTouchID = 0;
 
-        currentTouchList = new List<Touch>();
-        joystickController.Initialize(movePlayerCallback);
+    public void Initialize()
+    {
+        InputInterface.Initialize();
+        InputInterface.gameObject.SetActive(true);
+        joystickController.Initialize();
     }
     public void FreeFrame_Update()
     {
-        if (Input.touchCount > currentTouchList.Count)
+        if (Input.touchCount > 0)
         {
             if (!PossibleToControll())
                 return;
-            //Touch newTouch = Input.touches[Input.touches.Length];
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
@@ -48,18 +43,13 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                     if (touch.position.x < halfWidth && joystickController.IsPossibleToMoveJoystick(touch.position))
                     {
                         joystickController.StartMove(touch.position);
-                    }
-                    if (touchedBefore)
-                        RaycastObject(touch.position);
-                    else
-                    {
-                        touchedBefore = true;
-                        Invoke("ReleaseDobbleTouch", 0.25f);
+                        joystickTouchID = touch.fingerId;
                     }
                 }
                 else if (touch.phase == TouchPhase.Ended)
                 {
-                    if (Input.touchCount == 1)
+                    if (joystickController.JoystickIsActive &&
+                        touch.fingerId == joystickTouchID) 
                         joystickController.EndMove();
                 }
             }
@@ -71,7 +61,6 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
         {
             if (!PossibleToControll())
                 return;
-            moveCameraCallback(0, 0);
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
@@ -82,26 +71,38 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                     if (touch.position.x >= halfWidth)
                     {
                         if (UITouchStateContainer.Instance.PossibleToControll)
+                        {
+                            if (!joystickController.JoystickIsActive)
+                                MovementController.HorizontalMovement(0, 0);
                             CameraInput(touch);
+                        }
                     }
                     else if (touch.position.x < halfWidth)
                     {
+                        PlayerCamera.MoveCamera(0, 0);
                         joystickController.MoveJoystick(touch.position);
                     }
                 }
             }
-            
+
         }
         else
         {
-            moveCameraCallback(0, 0);
-            movePlayerCallback(0, 0);
+            PlayerCamera.MoveCamera(0, 0);
+            MovementController.HorizontalMovement(0, 0);
         }
     }
+    public void ChangeInteractAction(Action interactAction, string actionType)
+    {
+        this.interactAction = interactAction;
+        InputInterface.ChangeInteractAction(interactAction, actionType);
+    }
+
     private bool PossibleToControll()
     {
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
-            UIPanelTurner.Instance.UIPanelCurrentOpen)
+            UIPanelTurner.Instance.UIPanelCurrentOpen ||
+            !UITouchStateContainer.Instance.PossibleToControll)
             return false;
         return true;
     }
@@ -110,43 +111,9 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         Vector2 deltaMove = touch.deltaPosition * touch.deltaTime;
         deltaMove *= -1;
-        moveCameraCallback(deltaMove.x, deltaMove.y);
-    }
-    private void RaycastObject(Vector2 touchPos)
-    {
-        RaycastHit hit;
-
-        int layerMask = (1 << LayerMask.NameToLayer("Resource")) + (1 << LayerMask.NameToLayer("Building")) + (1 << LayerMask.NameToLayer("NPC"));
-        Vector3 screenTouchPos = Camera.main.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, Camera.main.farClipPlane));
-        Debug.DrawRay(PlayerCamera.transform.position, screenTouchPos * 100f, Color.blue, 1f);
-        if (Physics.Raycast(PlayerCamera.transform.position, screenTouchPos, out hit, 100f, layerMask))
-        {
-            string tag = hit.collider.tag;
-            switch (tag)
-            {
-                case "Resource":
-                    hit.collider.transform.parent.GetComponent<ResourceController>().StartIteractWithResource();
-                    break;
-                case "Building":
-                    hit.collider.GetComponent<BuildingController>().StartInteract();
-                    break;
-                case "NPC":
-                    hit.collider.GetComponent<NPC_Controller>().Interact();
-                    break;
-            }
-        }
-    }
-    private void ReleaseDobbleTouch()
-    {
-        touchedBefore = false;
+        PlayerCamera.MoveCamera(deltaMove.x, deltaMove.y);
     }
 
-    public void ExecuteAttack()
-    {
-        PlayerActManager.Instance.ExecuteAttack();
-    }
-    public void ExecuteJump()
-    {
-        jumpCallback();
-    }
+    
+    
 }

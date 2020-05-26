@@ -7,29 +7,34 @@ using UnityEngine.EventSystems;
 
 public class JoystickController : MonoBehaviour
 {
+    // Controller
+    public PlayerMovementController MovementController;
+
     //Data
     public Canvas OverlayCanvas;
     public RectTransform currentRect;
     public RectTransform HandleRect;
     private Vector2 joystickStartPos;
     private bool joystickIsActive;
-    private Action<float, float> moveExecuteCallback;
+    public bool JoystickIsActive
+    {
+        get { return joystickIsActive; }
+    }
 
+    // Resolution
     private float baseCanvas_Width;
     private float baseCanvas_Height;
     private float widthRatio;
     private float heightRatio;
     private readonly float JOYSTICK_RADIUS = 175f;
 
-    public void Initialize(Action<float, float> moveCallback)
+    public void Initialize()
     {
         baseCanvas_Width = OverlayCanvas.GetComponent<RectTransform>().rect.width;
         baseCanvas_Height = OverlayCanvas.GetComponent<RectTransform>().rect.height;
 
         widthRatio = baseCanvas_Width / Screen.width;
         heightRatio = baseCanvas_Height / Screen.height;
-
-        moveExecuteCallback = moveCallback;
     }
     private Vector2 ScreenToCanvasPos(Vector2 touchPos)
     {
@@ -87,7 +92,7 @@ public class JoystickController : MonoBehaviour
         else
             HandleRect.anchoredPosition = stickDir * JOYSTICK_RADIUS / 2;
 
-        moveExecuteCallback(stickDir.x, stickDir.y);
+        MovementController.HorizontalMovement(stickDir.x, stickDir.y);
     }
     public void EndMove()
     {

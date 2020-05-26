@@ -5,20 +5,21 @@ using System;
 
 public class InputSystem_PC : MonoBehaviour, InputSystem
 {
+    // Controller
     public FollowCamera PlayerCamera;
+    public PlayerMovementController MovementController;
+
     // Data
-    private Action<float, float> moveCameraCallback;
-    private Action<float, float> movePlayerCallback;
-    private Action jumpCallback;
-    private bool mouseClicked;
-
-    public void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback)
+    private Action interactAction;
+    public Action InteractAction
     {
-        this.moveCameraCallback = moveCameraCallback;
-        this.movePlayerCallback = movePlayerCallback;
-        this.jumpCallback = jumpCallback;
+        get { return interactAction; }
+        set { interactAction = value; }
+    }
 
-        mouseClicked = false;
+    public void Initialize()
+    {
+
     }
     public void FreeFrame_Update()
     {
@@ -34,6 +35,10 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
         CameraInput();
         PlayerMoveInput();
     }
+    public void ChangeInteractAction(Action interactAction, string actionType)
+    {
+        this.interactAction = interactAction;
+    }
 
     private void CameraInput()
     {
@@ -44,7 +49,7 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
         horAxis *= -1;
         verAxis *= -1;
 
-        moveCameraCallback(horAxis, verAxis);
+        PlayerCamera.MoveCamera(horAxis, verAxis);
     }
 
     private void PlayerMoveInput()
@@ -53,12 +58,12 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
         horMove = Input.GetAxisRaw("Horizontal");
         verMove = Input.GetAxisRaw("Vertical");
 
-        movePlayerCallback(horMove, verMove);
+        MovementController.HorizontalMovement(horMove, verMove);
     }
     private void PlayerJumpInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            jumpCallback();
+            MovementController.Jump();
     }
 
     private void PlayerActionInput()
@@ -67,45 +72,10 @@ public class InputSystem_PC : MonoBehaviour, InputSystem
         {
             PlayerActManager.Instance.ExecuteAttack();
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            if (mouseClicked)
-            {
-                RaycastToObject();
-            }
-            else
-            {
-                mouseClicked = true;
-                Invoke("ReleaseMouseDoubleClickWait", 0.2f);
-            }
+            interactAction?.Invoke();
         }
-    }
-    private void RaycastToObject()
-    {
-        RaycastHit hit;
-
-        int layerMask = (1 << LayerMask.NameToLayer("Resource")) + (1 << LayerMask.NameToLayer("Building")) + (1 << LayerMask.NameToLayer("NPC"));
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
-        Debug.DrawRay(PlayerCamera.transform.position, mousePos * 100f, Color.blue, 1f);
-        if (Physics.Raycast(PlayerCamera.transform.position, mousePos, out hit, 100f, layerMask)) 
-        {
-            string tag = hit.collider.tag;
-            switch(tag)
-            {
-                case "Resource":
-                    hit.collider.transform.parent.GetComponent<ResourceController>().StartIteractWithResource();
-                    break;
-                case "Building":
-                    hit.collider.GetComponent<BuildingController>().StartInteract();
-                    break;
-                case "NPC":
-                    hit.collider.GetComponent<NPC_Controller>().Interact();
-                    break;
-            }
-        }
-    }
-    private void ReleaseMouseDoubleClickWait()
-    {
-        mouseClicked = false;
+        
     }
 }

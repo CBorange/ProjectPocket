@@ -21,15 +21,13 @@ public class BuildingController : MonoBehaviour
     }
     public void StartInteract()
     {
-        if (!IsPossibleToInteract())
-            return;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         UIPanelTurner.Instance.Open_BuildingInteractPanel(currentData, this, screenPos);
     }
     public bool IsPossibleToInteract()
     {
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
-        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
+        if (distanceBetweenPlayer.magnitude - myColliderSize > 1.5f)
             return false;
         return true;
     }

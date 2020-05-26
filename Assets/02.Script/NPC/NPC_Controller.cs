@@ -19,8 +19,7 @@ public class NPC_Controller : MonoBehaviour
 
     public void Interact()
     {
-        if (IsPossibleToInteract())
-            UIPanelTurner.Instance.Open_NPCDialogPanel(npcData, this);
+        UIPanelTurner.Instance.Open_NPCDialogPanel(npcData, this);
     }
     public void Initialize()
     {
@@ -41,7 +40,7 @@ public class NPC_Controller : MonoBehaviour
     public bool IsPossibleToInteract()
     {
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
-        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
+        if (distanceBetweenPlayer.magnitude - myColliderSize > 1.5f)
             return false;
         return true;
     }

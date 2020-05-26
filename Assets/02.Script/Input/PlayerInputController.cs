@@ -12,24 +12,28 @@ public class PlayerInputController : MonoBehaviour
 
     private void Start()
     {
-        //currentInputSystem = GetComponent<InputSystem_Mobile>();
-        //currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
-        //return;
+        currentInputSystem = GetComponent<InputSystem_Mobile>();
+        currentInputSystem.Initialize();
+        return;
 #if UNITY_STANDALONE
         currentInputSystem = GetComponent<InputSystem_PC>();
-        currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
+        currentInputSystem.Initialize();
         return;
 #endif
 #if UNITY_EDITOR
         currentInputSystem = GetComponent<InputSystem_PC>();
-        currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
+        currentInputSystem.Initialize();
         return;
 #endif
 #if UNITY_ANDROID
         currentInputSystem = GetComponent<InputSystem_Mobile>();
-        currentInputSystem.Initialize(followCamera.MoveCamera, movementController.HorizontalMovement, movementController.Jump);
+        currentInputSystem.Initialize();
         return;
 #endif
+    }
+    public void ChangeInteractAction(Action interactAction, string actionType)
+    {
+        currentInputSystem.ChangeInteractAction(interactAction, actionType);
     }
     private void Update()
     {

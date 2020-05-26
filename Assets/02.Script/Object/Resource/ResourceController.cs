@@ -47,8 +47,6 @@ public class ResourceController : MonoBehaviour
             return;
         if (!playerTool.WeaponType.Contains(currentData.CanGatheringTool))
             return;
-        if (!IsPossibleToInteract())
-            return;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         UIPanelTurner.Instance.Open_ResourceInteractPanel(this, screenPos);
     }
@@ -57,7 +55,7 @@ public class ResourceController : MonoBehaviour
         if (!isActivated)
             return false;
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
-        if (distanceBetweenPlayer.magnitude > 0.5f + myColliderSize)
+        if (distanceBetweenPlayer.magnitude - myColliderSize > 1.5f)
             return false;
         return true;
     }

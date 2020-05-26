@@ -5,7 +5,9 @@ using System;
 
 public interface InputSystem
 {
+    Action InteractAction { get; set; }
     void FreeFrame_Update();
     void FixedFrame_Update();
-    void Initialize(Action<float, float> moveCameraCallback, Action<float, float> movePlayerCallback, Action jumpCallback);
+    void Initialize();
+    void ChangeInteractAction(Action interactAction, string actionType);
 }
