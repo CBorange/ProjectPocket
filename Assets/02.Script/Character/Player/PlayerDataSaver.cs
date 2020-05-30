@@ -2,10 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 public class PlayerDataSaver : MonoBehaviour
 {
+    // Controller
+    public SemiLoadingPopup LoadingPopup;
+
     public void SavePlayerData()
+    {
+        SaveProcess();       
+    }
+    private async void SaveProcess()
+    {
+        LoadingPopup.OpenPopup("플레이어 정보를 저장중입니다...");
+        string result = await Task<string>.Factory.StartNew(SendDataToServer);
+        if (result.Equals("Success"))
+        {
+            LoadingPopup.ClosePopup();
+            UIPanelTurner.Instance.Open_UniveralNoticePanel("저장 성공!", "플레이어 정보를 서버에 저장하였습니다!", 2.0f);
+        }
+        else
+        {
+            LoadingPopup.ClosePopup();
+            UIPanelTurner.Instance.Open_UniveralNoticePanel("저장 실패!", $"저장을 실패하였습니다. : {result}", 2.0f);
+        }
+    }
+    private string SendDataToServer()
     {
         try
         {
@@ -16,12 +41,10 @@ public class PlayerDataSaver : MonoBehaviour
             UserQuickSlotProvider.Instance.Save_PlayerQuickSlot_UpdateServerDB();
             UserQuestProvider.Instance.SavePlayerQuest_UpdateServerDB();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            Debug.Log($"저장 실패 : {e.ToString()}");
-            UIPanelTurner.Instance.Open_UniveralNoticePanel("저장 실패!", "저장을 실패하였습니다.", 2.0f);
-            return;
+            return $"Failed : {e.ToString()}";
         }
-        UIPanelTurner.Instance.Open_UniveralNoticePanel("저장 성공!", "플레이어 정보를 서버에 저장하였습니다!", 2.0f);
+        return "Success";
     }
 }

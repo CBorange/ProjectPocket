@@ -146,7 +146,8 @@ public class DBConnector
                                      Convert.ToSingle(row["MaxWorkPoint"]),
                                      (int)row["Gold"],
                                      (int)row["StatPoint"],
-                                     statUsage);
+                                     statUsage,
+                                     (bool)row["FirstLogin"]);
         return "Success";
     }
 
@@ -294,7 +295,8 @@ public class DBConnector
         builder.Append($"Gold='{UserInfoProvider.Instance.Gold}', ");
         builder.Append($"StatPoint='{UserInfoProvider.Instance.StatPoint}', ");
         string statUsageJSON = JsonUtility.ToJson(UserInfoProvider.Instance.StatUsage);
-        builder.Append($"StatUsageJSON='{statUsageJSON}' ");
+        builder.Append($"StatUsageJSON='{statUsageJSON}', ");
+        builder.Append($"FirstLogin='{UserInfoProvider.Instance.FirstLogin}' ");
 
         builder.Append($"WHERE UserAccount='{UserInfoProvider.Instance.UserAccount}'");
 

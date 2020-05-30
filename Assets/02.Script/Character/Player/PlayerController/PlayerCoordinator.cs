@@ -40,6 +40,15 @@ public class PlayerCoordinator : MonoBehaviour
     #endregion
 
     public Transform player;
+    private Vector3 playerPos;
+    public Vector3 PlayerPos
+    {
+        get { return playerPos; }
+    }
+    private void FixedUpdate()
+    {
+        playerPos = player.position;
+    }
     public void SetPlayerPosition(Vector3 pos)
     {
         player.transform.position = pos;

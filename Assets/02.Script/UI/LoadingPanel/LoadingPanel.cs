@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,8 +22,11 @@ public class LoadingPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetLoadingText(string reason)
+    public void SetLoadingText_MapLoading(string mapName)
     {
-        LoadingText.text = $"{reason} 로딩중 입니다.";
+        StringBuilder builder = new StringBuilder();
+        builder.AppendLine("맵을 로딩중입니다...");
+        builder.AppendLine($"<color=orange>{mapName}</color>");
+        LoadingText.text = builder.ToString();
     }
 }

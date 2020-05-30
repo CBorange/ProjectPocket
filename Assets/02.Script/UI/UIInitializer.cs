@@ -30,6 +30,10 @@ public class UIInitializer : MonoBehaviour
         buildingUpgradePanel.Initialize();
         quickSlotPanel.Initialize();
 
-        UIPanelTurner.Instance.Open_TutorialGuidePanel();
+        if (PlayerStat.Instance.FirstLogin)
+        {
+            UIPanelTurner.Instance.Open_TutorialGuidePanel();
+            PlayerStat.Instance.FirstLogin = false;
+        }
     }
 }

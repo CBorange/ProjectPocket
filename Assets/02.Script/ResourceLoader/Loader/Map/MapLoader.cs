@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text;
 
 public class MapLoader : MonoBehaviour
 {
@@ -58,7 +60,7 @@ public class MapLoader : MonoBehaviour
             Destroy(loadedMap.gameObject);
 
         loadingPanel.OpenPanel();
-        loadingPanel.SetLoadingText($"맵 : {mapName}");
+        loadingPanel.SetLoadingText_MapLoading(mapName);
 
         loadedMapName = mapName;
         specificLoadPosIndex = loadPosIdx;
@@ -70,7 +72,7 @@ public class MapLoader : MonoBehaviour
         var request = Resources.LoadAsync<GameObject>($"Map/Map_{loadedMapName}");
         while (!request.isDone)
         {
-            yield return request;
+            yield return null;
         }
         loadedMapPrefab = request.asset as GameObject;
         InstantiateMap();
@@ -100,9 +102,7 @@ public class MapLoader : MonoBehaviour
         }
 
         if (recoveryStatAfterLoad)
-        {
             PlayerStat.Instance.Heal(99999);
-        }
         UserInfoProvider.Instance.LastMap = loadedMapName;
     }
 }

@@ -10,11 +10,17 @@ public class PlayerInputController : MonoBehaviour
     public FollowCamera followCamera;
     private InputSystem currentInputSystem;
 
+    // Data
+    public bool ForceMode_Mobile;
+
     private void Start()
     {
-        currentInputSystem = GetComponent<InputSystem_Mobile>();
-        currentInputSystem.Initialize();
-        return;
+        if (ForceMode_Mobile)
+        {
+            currentInputSystem = GetComponent<InputSystem_Mobile>();
+            currentInputSystem.Initialize();
+            return;
+        }
 #if UNITY_STANDALONE
         currentInputSystem = GetComponent<InputSystem_PC>();
         currentInputSystem.Initialize();

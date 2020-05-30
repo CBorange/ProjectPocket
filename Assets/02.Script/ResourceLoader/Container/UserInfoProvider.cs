@@ -128,10 +128,14 @@ public class UserInfoProvider
     {
         get { return statUsage; }
     }
-
+    private bool firstLogin;
+    public bool FirstLogin
+    {
+        get { return firstLogin; }
+    }
     public void Initialize(string account, string lastMap, string lastPos, float moveSpeed, float jumpSpeed,
         float healthPoint, float maxHealthPoint, float shieldPoint, float attackPoint, float attackSpeed, float gatheringPower, float levelupExperience, float currentExperience, int level,
-        float workPoint, float maxWorkPoint, int gold, int statPoint, PlayerStatUsage statUsage)
+        float workPoint, float maxWorkPoint, int gold, int statPoint, PlayerStatUsage statUsage, bool firstLogin)
     {
         // Account
         userAccount = account;
@@ -157,10 +161,11 @@ public class UserInfoProvider
         this.gold = gold;
         this.statPoint = statPoint;
         this.statUsage = statUsage;
+        this.firstLogin = firstLogin;
     }
     public void SavePlayerInfo_UpdateServerDB()
     {
-        this.lastPos = PlayerActManager.Instance.transform.position;
+        this.lastPos = PlayerCoordinator.Instance.PlayerPos;
 
         this.moveSpeed = PlayerStat.Instance.GetStat("Origin_MoveSpeed");
         this.jumpSpeed = PlayerStat.Instance.GetStat("Origin_JumpSpeed");
@@ -190,6 +195,7 @@ public class UserInfoProvider
         this.gold = (int)PlayerStat.Instance.GetStat("Gold");
         this.statPoint = (int)PlayerStat.Instance.GetStat("StatPoint");
         this.statUsage = PlayerStat.Instance.StatUsage;
+        this.firstLogin = PlayerStat.Instance.FirstLogin;
         PlayerStat.Instance.StatUsage.SaveUsageForServerUpdate();
 
         DBConnector.Instance.Save_PlayerStat();

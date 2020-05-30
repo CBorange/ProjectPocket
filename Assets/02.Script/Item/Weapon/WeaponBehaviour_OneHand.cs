@@ -89,7 +89,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     }
     private void ChangeAttackAnimByIndex()
     {
-        animatorOverrideController["Attack1"] = attackAnimClips[attackAnimIndex];
+        animatorOverrideController["MeleeAttack_Downward"] = attackAnimClips[attackAnimIndex];
     }
     private void ExecuteAttack()
     {

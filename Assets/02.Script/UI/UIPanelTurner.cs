@@ -42,8 +42,6 @@ public class UIPanelTurner : MonoBehaviour
     // Panels
     public GameObject UIPanelTurnerButtons;
     public InventoryPanel InventoryPanel;
-    public GameObject PlayerInfoPanel;
-    public GameObject SettingPanel;
     public LoadingPanel LoadingPanel;
     public NPCDialog_Panel dialog_Panel;
     public NPC_QuestPanel npc_QuestPanel;
@@ -81,16 +79,6 @@ public class UIPanelTurner : MonoBehaviour
     }
 
     // Full Screen Use Panel
-    public void Open_Setting()
-    {
-        SettingPanel.SetActive(true);
-        StartCoroutine(IE_WaitPanelClose(SettingPanel.gameObject));
-    }
-    public void Open_PlayerStatus()
-    {
-        PlayerInfoPanel.SetActive(true);
-        StartCoroutine(IE_WaitPanelClose(PlayerInfoPanel.gameObject));
-    }
     public void Open_Invetory()
     {
         InventoryPanel.OpenPanel();

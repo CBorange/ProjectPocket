@@ -57,6 +57,12 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     {
         get { return statUsage; }
     }
+    private bool firstLogin;
+    public bool FirstLogin
+    {
+        get { return firstLogin; }
+        set { firstLogin = value; }
+    }
 
     // Stat Dictionary
     private Dictionary<string, int> integerStatDic;
@@ -107,6 +113,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         userAccount = userData.UserAccount;
         lastMap = userData.LastMap;
         statUsage = userData.StatUsage;
+        firstLogin = userData.FirstLogin;
         statUsage.Initialize();
     }
     private void InitChangedStatDictionary()
