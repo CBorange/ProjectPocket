@@ -32,7 +32,7 @@ public class StructureBuilder : MonoBehaviour
         currentBuildingStatus = PlayerBuilding.Instance.GetBuildingStatus(buildingCode);
         currentData = BuildingDB.Instance.GetBuildingData(buildingCode);
 
-        GameObject prefab = Resources.Load<GameObject>($"Object/Structure/Building/Building_Grade_{currentBuildingStatus.Grade}");
+        GameObject prefab = AssetBundleCacher.Instance.LoadAndGetAsset("object", $"Building_Grade_{currentBuildingStatus.Grade}") as GameObject;
         currentBuilding = Instantiate(prefab, transform).GetComponent<BuildingController>();
 
         BuildingInfo currentGradeInfo = currentData.StatsByGrade[currentBuildingStatus.Grade];

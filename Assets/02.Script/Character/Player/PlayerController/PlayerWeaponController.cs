@@ -22,7 +22,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         UnEquipWeapon();
 
-        weaponModel = Instantiate(Resources.Load<GameObject>($"Weapon/{weaponData.Name}"), WeaponGrapPosition);
+        LoadWeaponModel(weaponData);
         weaponModel.transform.localPosition = weaponData.GrapPoint;
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
 
@@ -39,6 +39,11 @@ public class PlayerWeaponController : MonoBehaviour
             equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
         }
         equipedWeaponBehaviour.CreateBehaviour(weaponData, EndAttack);
+    }
+    private void LoadWeaponModel(WeaponData data)
+    {
+        GameObject foundModel = AssetBundleCacher.Instance.LoadAndGetAsset("weapon", data.Name) as GameObject;
+        weaponModel = Instantiate(foundModel, WeaponGrapPosition);
     }
     public void UnEquipWeapon()
     {

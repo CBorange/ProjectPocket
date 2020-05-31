@@ -6029,8 +6029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8804dd2edf5dc3142a1f7f082ab4428b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTest: 1
-  TestAccount: test1
+  isTest: 0
+  TestAccount: admin
 --- !u!1 &256783320
 GameObject:
   m_ObjectHideFlags: 0
@@ -29520,8 +29520,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIPanelTurnerButtons: {fileID: 1691839696}
   InventoryPanel: {fileID: 465195905}
-  PlayerInfoPanel: {fileID: 0}
-  SettingPanel: {fileID: 0}
   LoadingPanel: {fileID: 1101066701}
   dialog_Panel: {fileID: 331457746}
   npc_QuestPanel: {fileID: 1014962496}

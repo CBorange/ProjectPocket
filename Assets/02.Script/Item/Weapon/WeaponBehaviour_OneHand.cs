@@ -45,12 +45,17 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         playerAttackBox.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, (weaponData.Range / 2)), weaponData);
         playerAttackBox.gameObject.SetActive(false);
 
-        // Load Attack AnimationClips
+        LoadAttackAnims();
+    }
+    private void LoadAttackAnims()
+    {
         attackAnimClips = new AnimationClip[4];
-        attackAnimClips[0] = Resources.Load<AnimationClip>("Animations/MeleeAttack_Downward");
-        attackAnimClips[1] = Resources.Load<AnimationClip>("Animations/MeleeAttack_Horizontal");
-        attackAnimClips[2] = Resources.Load<AnimationClip>("Animations/MeleeAttack_BackHand");
-        attackAnimClips[3] = Resources.Load<AnimationClip>("Animations/MeleeAttack_360High");
+
+        AssetBundle bundle = AssetBundleCacher.Instance.LoadAndGetBundle("animation");
+        attackAnimClips[0] = bundle.LoadAsset("MeleeAttack_Downward") as AnimationClip;
+        attackAnimClips[1] = bundle.LoadAsset("MeleeAttack_Horizontal") as AnimationClip;
+        attackAnimClips[2] = bundle.LoadAsset("MeleeAttack_BackHand") as AnimationClip;
+        attackAnimClips[3] = bundle.LoadAsset("MeleeAttack_360High") as AnimationClip;
     }
     public void PlayAttack()
     {

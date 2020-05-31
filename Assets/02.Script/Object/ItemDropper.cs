@@ -93,7 +93,7 @@ public class ItemDropper : MonoBehaviour
             for (int createIdx = 0; createIdx < itemDatas[itemIdx].MaxDropCount * createMultiple; ++createIdx)
             {
                 ItemData data = ItemDB.Instance.GetItemData(itemDatas[itemIdx].ItemCode);
-                GameObject foundPrefab = Resources.Load<GameObject>($"DroppedItem/Dropped{data.ItemType}/{data.Name}_Dropped");
+                GameObject foundPrefab = AssetBundleCacher.Instance.LoadAndGetAsset("droppeditem", $"{data.Name}_Dropped") as GameObject;
                 DroppedItem newItem = Instantiate(foundPrefab).GetComponent<DroppedItem>();
                 newItem.transform.parent = droppedItemPoolObj;
                 newItem.gameObject.SetActive(false);
@@ -109,7 +109,7 @@ public class ItemDropper : MonoBehaviour
     {
         for (int i = 0; i < createCount; ++i)
         {
-            GameObject foundPrefab = Resources.Load<GameObject>($"Object/Gold/{goldData.GoldPrefab}");
+            GameObject foundPrefab = AssetBundleCacher.Instance.LoadAndGetAsset("object", goldData.GoldPrefab) as GameObject;
             DroppedCoin newCoin = Instantiate(foundPrefab).GetComponent<DroppedCoin>();
             newCoin.transform.parent = droppedItemPoolObj;
             newCoin.gameObject.SetActive(false);

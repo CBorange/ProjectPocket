@@ -31,8 +31,8 @@ public class EquipmentSelectToggle : MonoBehaviour
 
         try
         {
-            string itemImagePath = $"Image/ItemPreview/{currentItem.ItemType}/{currentItem.Name}";
-            ItemImage.sprite = Resources.Load<Sprite>(itemImagePath);
+            Texture2D tex = AssetBundleCacher.Instance.LoadAndGetAsset("itempreview", currentItem.Name) as Texture2D;
+            ItemImage.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
         catch (Exception)
         {

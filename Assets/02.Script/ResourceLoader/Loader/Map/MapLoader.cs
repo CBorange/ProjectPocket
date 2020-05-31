@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Burst;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Text;
+using UnityEngine.Networking;
 
 public class MapLoader : MonoBehaviour
 {
@@ -65,16 +62,26 @@ public class MapLoader : MonoBehaviour
         loadedMapName = mapName;
         specificLoadPosIndex = loadPosIdx;
         recoveryStatAfterLoad = recoveryStat;
-        StartCoroutine(IE_AsyncLoadMap());
+
+        StartCoroutine(IE_LoadAsset());
     }
-    private IEnumerator IE_AsyncLoadMap()
+    private IEnumerator IE_LoadAsset()
     {
-        var request = Resources.LoadAsync<GameObject>($"Map/Map_{loadedMapName}");
-        while (!request.isDone)
+        AssetBundle bundle = null;
+        string bundleName = "map";
+        if (AssetBundleCacher.Instance.HasAleadyCachingBundle(bundleName))
+            bundle = AssetBundleCacher.Instance.GetBundle(bundleName);
+        else
         {
-            yield return null;
+            var request = AssetBundle.LoadFromFileAsync($"{Application.streamingAssetsPath}/AssetBundles/{bundleName}");
+            yield return request;
+            bundle = request.assetBundle;
+            AssetBundleCacher.Instance.CachingBundle(bundle, bundleName);
         }
-        loadedMapPrefab = request.asset as GameObject;
+        var assetRequest = bundle.LoadAssetAsync<GameObject>($"Map_{loadedMapName}");
+        yield return assetRequest;
+
+        loadedMapPrefab = assetRequest.asset as GameObject;
         InstantiateMap();
     }
     private void InstantiateMap()
@@ -87,8 +94,7 @@ public class MapLoader : MonoBehaviour
         catch(Exception)
         {
             Debug.Log($"{loadedMapName} 맵 Instantiate 실패");
-            GameObject firstVillage = Resources.Load<GameObject>($"Map/Map_FirstVillage");
-            loadedMap = Instantiate(firstVillage).GetComponent<MapController>();
+            return;
         }
 
         if (UserInfoProvider.Instance.LastMap.Equals(loadedMapName))

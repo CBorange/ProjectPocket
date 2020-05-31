@@ -75,8 +75,8 @@ public class QuickSlotButton : MonoBehaviour
             ItemGraphics.gameObject.SetActive(true);
             try
             {
-                string itemImagePath = $"Image/ItemPreview/{slotItem.OriginalItemData.ItemType}/{slotItem.OriginalItemData.Name}";
-                ItemImage.sprite = Resources.Load<Sprite>(itemImagePath);
+                Texture2D tex = AssetBundleCacher.Instance.LoadAndGetAsset("itempreview", slotItem.OriginalItemData.Name) as Texture2D;
+                ItemImage.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
             }
             catch (Exception)
             {

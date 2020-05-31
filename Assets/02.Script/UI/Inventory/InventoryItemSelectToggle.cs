@@ -30,8 +30,9 @@ public class InventoryItemSelectToggle : MonoBehaviour
         currentItem = item;
         try
         {
-            string itemImagePath = $"Image/ItemPreview/{currentItem.OriginalItemData.ItemType}/{currentItem.OriginalItemData.Name}";
-            ItemImage.sprite = Resources.Load<Sprite>(itemImagePath);
+            Texture2D itemTexture = AssetBundleCacher.Instance.LoadAndGetAsset("itempreview", $"{currentItem.OriginalItemData.Name}") as Texture2D;
+            Sprite itemSprite = Sprite.Create(itemTexture, new Rect(0.0f, 0.0f, itemTexture.width, itemTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+            ItemImage.sprite = itemSprite;
         }
         catch(Exception)
         {

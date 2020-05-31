@@ -8,6 +8,6 @@ public class BundleMenu : MonoBehaviour
     [MenuItem("Bundles/Build AssetBundles")]
     static void BuildAllAssetBundles()
     {
-        BuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.Android);
+        BuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}/AssetBundles", BuildAssetBundleOptions.ForceRebuildAssetBundle, BuildTarget.Android);
     }
 }
