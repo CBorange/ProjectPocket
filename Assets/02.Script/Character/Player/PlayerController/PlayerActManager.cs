@@ -38,6 +38,7 @@ public class PlayerActManager : MonoBehaviour, IActController
             Destroy(gameObject);
             return;
         }
+        currentBehaviour = CharacterBehaviour.Idle;
     }
     #endregion
 
@@ -63,14 +64,8 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void ExecuteAttack()
     {
-        if (currentBehaviour == CharacterBehaviour.Death)
-        {
+        if (currentBehaviour != CharacterBehaviour.Idle) 
             return;
-        }
-        if (currentBehaviour == CharacterBehaviour.Gathering)
-        {
-            return;
-        }
         WeaponController.ExecuteAttack();
     }
     public void EndAttack()

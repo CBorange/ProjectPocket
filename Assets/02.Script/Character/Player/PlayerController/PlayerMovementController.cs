@@ -41,7 +41,7 @@ public class PlayerMovementController : MonoBehaviour
     public FollowCamera followCamera;
     public Animator animator;
     public Rigidbody myRigidbody;
-    public bool NowJumping;
+    private bool nowJumping;
 
     private void Start()
     {
@@ -54,7 +54,7 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 point = collision.contacts[0].point;
         if (point.y < transform.position.y + 0.5f) 
         {
-            NowJumping = false;
+            nowJumping = false;
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.speed = 1;
             animator.SetBool("FlyAir", false);
@@ -64,8 +64,10 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack ||
-            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)  
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+        {
             return;
+        }
         if (moveVecX == 0 && moveVecZ == 0)
         {
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
@@ -100,11 +102,11 @@ public class PlayerMovementController : MonoBehaviour
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
             return;
-        if (NowJumping)
+        if (nowJumping)
             return;
 
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.GetStat("JumpSpeed"), ForceMode.Impulse);
-        NowJumping = true;
+        nowJumping = true;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
         animator.speed = 1;
         animator.SetTrigger("Jumped");

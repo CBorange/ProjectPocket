@@ -32,7 +32,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     {
         if (Input.touchCount > 0)
         {
-            if (!PossibleToControll())
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
+                UIPanelTurner.Instance.UIPanelCurrentOpen)
                 return;
             for (int i = 0; i < Input.touches.Length; ++i)
             {
@@ -54,13 +55,20 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                 }
             }
         }
+        if (Input.touchCount == 0)
+        {
+            joystickController.EndMove();
+        }
     }
     public void FixedFrame_Update()
     {
         if (Input.touchCount > 0)
         {
-            if (!PossibleToControll())
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
+                UIPanelTurner.Instance.UIPanelCurrentOpen)
+            {
                 return;
+            }
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
@@ -70,11 +78,15 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                 {
                     if (touch.position.x >= halfWidth)
                     {
-                        if (UITouchStateContainer.Instance.PossibleToControll)
+                        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
+                            !UIPanelTurner.Instance.UIPanelCurrentOpen)
                         {
                             if (!joystickController.JoystickIsActive)
+                            {
                                 MovementController.HorizontalMovement(0, 0);
-                            CameraInput(touch);
+                            }
+                            if (UITouchStateContainer.Instance.PossibleToControll)
+                                CameraInput(touch);
                         }
                     }
                     else if (touch.position.x < halfWidth)
@@ -109,7 +121,7 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     
     private void CameraInput(Touch touch)
     {
-        Vector2 deltaMove = touch.deltaPosition * touch.deltaTime;
+        Vector2 deltaMove = touch.deltaPosition * Time.deltaTime;
         deltaMove *= -1;
         PlayerCamera.MoveCamera(deltaMove.x, deltaMove.y);
     }
