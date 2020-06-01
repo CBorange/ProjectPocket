@@ -18,6 +18,7 @@ public class StructureBuilder : MonoBehaviour
     {
         PlayerBuilding.Instance.RemoveBuildingEffects();
         PlayerBuilding.Instance.ApplyBuildingEffects();
+        PlayerQuest.Instance.UpdateBuildingQuest(buildingCode);
         ConstructBuilding(buildingCode);
         PayCost();
     }
@@ -28,7 +29,6 @@ public class StructureBuilder : MonoBehaviour
             Destroy(currentBuilding.gameObject);
         }
 
-        PlayerQuest.Instance.UpdateBuildingQuest();
         currentBuildingStatus = PlayerBuilding.Instance.GetBuildingStatus(buildingCode);
         currentData = BuildingDB.Instance.GetBuildingData(buildingCode);
 

@@ -170,13 +170,13 @@ public class PlayerInventory : MonoBehaviour, PlayerRuntimeData
         for (int i = 0; i < items.Length; ++i)
         {
             AddItemIntoInventoryProcess(items[i]);
+            PlayerQuest.Instance.UpdateGetItemQuest(items[i].OriginalItemData.ItemCode);
         }
-        PlayerQuest.Instance.UpdateGetItemQuest();
     }
     public void AddItemToInventory(InventoryItem item)
     {
         AddItemIntoInventoryProcess(item);
-        PlayerQuest.Instance.UpdateGetItemQuest();
+        PlayerQuest.Instance.UpdateGetItemQuest(item.OriginalItemData.ItemCode);
     }
     private void AddItemIntoInventoryProcess(InventoryItem item)
     {

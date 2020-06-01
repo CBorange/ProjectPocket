@@ -24,6 +24,22 @@ public class QuestBehaviour_GetItem
         else
             return false;
     }
+    public void NoticeQuestProgress(int itemCode)
+    {
+        for (int i = 0; i < TargetItem.Length; ++i)
+        {
+            InventoryItem needItem = PlayerInventory.Instance.GetItem(itemCode);
+            if (needItem != null)
+            {
+                if (needItem.ItemCount <= TargetItem[i].ItemCount &&
+                    needItem.OriginalItemData.ItemCode == TargetItem[i].ItemCode)   
+                {
+                    QuestNoticePopup.Instance.PrintNotice_GetItem(QuestCode, itemCode, needItem.ItemCount, TargetItem[i].ItemCount);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 

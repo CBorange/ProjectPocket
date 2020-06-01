@@ -21,6 +21,18 @@ public class QuestBehaviour_Building
         else
             return false;
     }
+    public void NoticeQuestProgress(int buildingCode)
+    {
+        for (int i = 0; i < TargetBuilding.Length; ++i)
+        {
+            BuildingStatus currentBuilding = PlayerBuilding.Instance.GetBuildingStatus(TargetBuilding[i].BuildingCode);
+            if (currentBuilding.Grade <= TargetBuilding[i].BuildingGrade) 
+            {
+                QuestNoticePopup.Instance.PrintNotice_Building(QuestCode, buildingCode, currentBuilding.Grade, TargetBuilding[i].BuildingGrade);
+                return;
+            }
+        }
+    }
 }
 
 [System.Serializable]

@@ -121,11 +121,15 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     }
     public void EquipAccesorie_Ring(AccesorieData data)
     {
+        if (equipedRing != null)
+            UnequipAccesorie_Ring();
         equipedRing = data;
         ApplyItemStat(equipedRing.AccesorieStat, equipedRing.ItemCode);
     }
     public void EquipAccesorie_Necklace(AccesorieData data)
     {
+        if (equipedNecklace != null)
+            UnequipAccesorie_Necklace();
         equipedNecklace = data;
         ApplyItemStat(equipedNecklace.AccesorieStat, equipedNecklace.ItemCode);
     }

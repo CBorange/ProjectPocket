@@ -125,10 +125,16 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                         break;
                 }
             }
-            if (completedCategoryCount == currentQuest.QuestCategorys.Length)
+            // 이전에 완료되지 않았고, 새로 완료될 때 실행
+            if (completedCategoryCount == currentQuest.QuestCategorys.Length &&
+                !kvp.Value.Completed)
+            {
+                QuestNoticePopup.Instance.PrintNotice_QuestComplete(currentQuest.QuestCode);
                 kvp.Value.Completed = true;
+            }
+            else if (completedCategoryCount != currentQuest.QuestCategorys.Length)
+                kvp.Value.Completed = false;
         }
-        return;
     }
 
     // 퀘스트에 영향을 주는 행동 Callback
@@ -158,13 +164,40 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             return null;
     }
 
-    public void UpdateGetItemQuest()
+    public void UpdateQuestSellItem()
     {
         UpdateAllQuestProgress();
         NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }
-    public void UpdateBuildingQuest()
+    public void UpdateGetItemQuest(int itemCode)
     {
+        foreach (var kvp in questsInProgress)
+        {
+            QuestData currentQuest = kvp.Value.OriginalQuestData;
+            for (int categoryIdx = 0; categoryIdx < currentQuest.QuestCategorys.Length; ++categoryIdx)
+            {
+                if (currentQuest.QuestCategorys[categoryIdx].Equals("GetItem"))
+                {
+                    currentQuest.Behaviour_GetItem.NoticeQuestProgress(itemCode);
+                }
+            }
+        }
+        UpdateAllQuestProgress();
+        NPC_ControllerGroup.Instance.QuestStateWasChanged();
+    }
+    public void UpdateBuildingQuest(int buildingCode)
+    {
+        foreach (var kvp in questsInProgress)
+        {
+            QuestData currentQuest = kvp.Value.OriginalQuestData;
+            for (int categoryIdx = 0; categoryIdx < currentQuest.QuestCategorys.Length; ++categoryIdx)
+            {
+                if (currentQuest.QuestCategorys[categoryIdx].Equals("Building"))
+                {
+                    currentQuest.Behaviour_Building.NoticeQuestProgress(buildingCode);
+                }
+            }
+        }
         UpdateAllQuestProgress();
         NPC_ControllerGroup.Instance.QuestStateWasChanged();
     }

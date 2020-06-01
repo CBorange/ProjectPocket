@@ -95,11 +95,16 @@ public class QuestProgress_KillMonster
             KillMonsterProgressInfo[] progressInfos = kvp.Value.Progress;
             for (int i = 0; i < progressInfos.Length; ++i)
             {
-                if ((progressInfos[i].TargetMonster == monsterCode) &&
-                    (progressInfos[i].GoalKillCount >= progressInfos[i].CurrentKillCount))
+                if (progressInfos[i].TargetMonster == monsterCode)
                 {
-                    progressInfos[i].CurrentKillCount += 1;
-                    UpdateProgress();
+                    if (progressInfos[i].CurrentKillCount < progressInfos[i].GoalKillCount)
+                    {
+                        progressInfos[i].CurrentKillCount += 1;
+                        QuestNoticePopup.Instance.PrintNotice_KillMonster(kvp.Value.QuestCode, monsterCode,
+                            progressInfos[i].CurrentKillCount, progressInfos[i].GoalKillCount);
+                        UpdateProgress();
+                    }
+                    break;
                 }
             }
         }

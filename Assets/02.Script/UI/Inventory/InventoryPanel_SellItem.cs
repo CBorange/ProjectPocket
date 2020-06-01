@@ -78,6 +78,7 @@ public class InventoryPanel_SellItem : MonoBehaviour
         }
         PlayerInventory.Instance.RemoveItemFromInventory(itemData.ItemCode, sellNum);
         PlayerStat.Instance.AddGold(itemData.SellPrice * sellNum);
+        PlayerQuest.Instance.UpdateQuestSellItem();
         gameObject.SetActive(false);
 
         Inventory_ItemTable.RefreshInventoryPanel();

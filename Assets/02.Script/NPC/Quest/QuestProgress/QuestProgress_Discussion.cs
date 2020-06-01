@@ -75,6 +75,7 @@ public class QuestProgress_Discussion
                 if (progressInfo[i].TargetNPC == npcCode && !progressInfo[i].TalkCompleted)
                 {
                     progressInfo[i].TalkCompleted = true;
+                    QuestNoticePopup.Instance.PrintNotice_Discussion(kvp.Value.QuestCode, npcCode);
                     UpdateProgress();
                     return QuestDB.Instance.GetQuestData(kvp.Value.QuestCode).Behaviour_Discussion.GetChangedDiscussion(npcCode);
                 }

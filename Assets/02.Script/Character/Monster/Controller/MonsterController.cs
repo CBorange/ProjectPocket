@@ -95,12 +95,12 @@ public class MonsterController : MonoBehaviour, IActController
         Dropper.Death();
         currentAI.Death();
         PlayerStat.Instance.GainExperience(Stat.CurrentData.Experience);
+        PlayerQuest.Instance.KilledMonster(MonsterCode);
         Invoke("ExecuteDeathFunction", DeathAnimLength);
     }
     private void ExecuteDeathFunction()
     {
         deathCallback(gameObject);
         gameObject.SetActive(false);
-        PlayerQuest.Instance.KilledMonster(MonsterCode);
     }
 }

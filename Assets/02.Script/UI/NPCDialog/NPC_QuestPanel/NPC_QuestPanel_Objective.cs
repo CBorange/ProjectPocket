@@ -94,47 +94,35 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
             switch (currnetData.QuestCategorys[categoryIdx])
             {
                 case "Discussion":
-                    builder.Append("대화 : ");
-                    builder.AppendLine();
+                    builder.AppendLine("대화 : ");
                     TargetNPCData[] targetNPC = currnetData.Behaviour_Discussion.TargetNPC;
                     for (int i = 0; i < targetNPC.Length; ++i)
                     {
-                        builder.Append($"[{targetNPC[i].NPCName}]");
-                        if (i < targetNPC.Length - 1)
-                            builder.AppendLine();
+                        builder.AppendLine($"[{targetNPC[i].NPCName}]");
                     }
                     break;
                 case "KillMonster":
-                    builder.Append("몬스터 사냥 : ");
-                    builder.AppendLine();
+                    builder.AppendLine("몬스터 사냥 : ");
                     TargetMonsterData[] targetMonster = currnetData.Behaviour_KillMonster.TargetMonster;
                     for (int i = 0; i < targetMonster.Length; ++i)
                     {
-                        builder.Append($"[{targetMonster[i].MonsterName} / {targetMonster[i].KillCount}마리]");
-                        if (i < targetMonster.Length - 1)
-                            builder.AppendLine();
+                        builder.AppendLine($"[{targetMonster[i].MonsterName} / {targetMonster[i].KillCount}마리]");
                     }
                     break;
                 case "Building":
-                    builder.Append("건물 증축 : ");
-                    builder.AppendLine();
+                    builder.AppendLine("건물 증축 : ");
                     TargetBuildingData[] targetBulding = currnetData.Behaviour_Building.TargetBuilding;
                     for (int i = 0; i < targetBulding.Length; ++i)
                     {
-                        builder.Append($"[{targetBulding[i].BuildingName} / {targetBulding[i].BuildingGrade + 1}단계]");
-                        if (i < targetBulding.Length - 1)
-                            builder.AppendLine();
+                        builder.AppendLine($"[{targetBulding[i].BuildingName} / {targetBulding[i].BuildingGrade + 1}단계]");
                     }
                     break;
                 case "GetItem":
-                    builder.Append("아이템 획득 : ");
-                    builder.AppendLine();
+                    builder.AppendLine("아이템 획득 : ");
                     TargetItemData[] targetItem = currnetData.Behaviour_GetItem.TargetItem;
                     for (int i = 0; i < targetItem.Length; ++i)
                     {
-                        builder.Append($"[{targetItem[i].ItemName} / {targetItem[i].ItemCount}개]");
-                        if (i < targetItem.Length - 1)
-                            builder.AppendLine();
+                        builder.AppendLine($"[{targetItem[i].ItemName} / {targetItem[i].ItemCount}개]");
                     }
                     break;
             }
@@ -186,12 +174,12 @@ public class NPC_QuestPanel_Objective : MonoBehaviour
     public void CompleteQuest()
     {
         PlayerQuest.Instance.CompleteQuest(npcCode, currnetData);
-        QuestPanel.RefreshPanel();
-
         StringBuilder builder = new StringBuilder();
         builder.AppendLine($"[<color=orange>{currnetData.QuestName}</color>]");
         builder.AppendLine("퀘스트를 완료하였습니다!");
         AlertPopup.RefreshToAlert(builder.ToString());
         AlertPopup.OpenPopup(1.5f);
+
+        QuestPanel.RefreshPanel();
     }
 }

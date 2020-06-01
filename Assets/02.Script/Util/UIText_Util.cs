@@ -47,6 +47,7 @@ public class UIText_Util
         engItemStatToKor.Add("AttackPoint", "공격력");
         engItemStatToKor.Add("AttackSpeed", "공격속도");
         engItemStatToKor.Add("MoveSpeed", "이동속도");
+        engItemStatToKor.Add("JumpSpeed", "점프속도");
         engItemStatToKor.Add("MaxHealthPoint", "최대 체력");
         engItemStatToKor.Add("MaxWorkPoint", "최대 노동력");
         engItemStatToKor.Add("HealthPoint", "체력 회복");
