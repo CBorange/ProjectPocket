@@ -20,7 +20,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
         set { interactAction = value; }
     }
 
-    private int joystickTouchID = 0;
+    private int joystickTouchID = -1;
+    private int cameraTouchID = -1;
 
     public void Initialize()
     {
@@ -30,6 +31,8 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     }
     public void FreeFrame_Update()
     {
+        if (Input.touchCount > 2)
+            return;
         if (Input.touchCount > 0)
         {
             if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
@@ -41,17 +44,33 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
                 float halfWidth = Screen.width * 0.5f;
                 if (touch.phase == TouchPhase.Began)
                 {
-                    if (touch.position.x < halfWidth && joystickController.IsPossibleToMoveJoystick(touch.position))
+                    if (touch.position.x < halfWidth && joystickController.IsPossibleToMoveJoystick(touch.position) &&
+                        !IsPointerOverUIObject(touch.position))
                     {
                         joystickController.StartMove(touch.position);
                         joystickTouchID = touch.fingerId;
+                    }
+                    else if (touch.position.x >= halfWidth) 
+                    {
+                        if (!IsPointerOverUIObject(touch.position))
+                        {
+                            cameraTouchID = touch.fingerId;
+                        }
                     }
                 }
                 else if (touch.phase == TouchPhase.Ended)
                 {
                     if (joystickController.JoystickIsActive &&
-                        touch.fingerId == joystickTouchID) 
+                        touch.fingerId == joystickTouchID)
+                    {
+                        MovementController.HorizontalMovement(0, 0);
                         joystickController.EndMove();
+                        joystickTouchID = -1;
+                    }
+                    else if (touch.fingerId == cameraTouchID)
+                    {
+                        cameraTouchID = -1;
+                    }
                 }
             }
         }
@@ -60,43 +79,50 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
             joystickController.EndMove();
         }
     }
+    private bool IsPointerOverUIObject(Vector2 touchPos)
+    {
+        PointerEventData eventDataCurrentPosition
+            = new PointerEventData(EventSystem.current);
+
+        eventDataCurrentPosition.position = touchPos;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+
+
+        EventSystem.current
+        .RaycastAll(eventDataCurrentPosition, results);
+
+        return results.Count > 0;
+    }
     public void FixedFrame_Update()
     {
+        if (Input.touchCount > 2)
+            return;
         if (Input.touchCount > 0)
         {
             if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
                 UIPanelTurner.Instance.UIPanelCurrentOpen)
-            {
                 return;
-            }
+            Vector2 camDeltaPos = Vector2.zero;
             for (int i = 0; i < Input.touches.Length; ++i)
             {
                 Touch touch = Input.touches[i];
-                float halfWidth = Screen.width * 0.5f;
                 if (touch.phase == TouchPhase.Moved ||
                     touch.phase == TouchPhase.Stationary)
                 {
-                    if (touch.position.x >= halfWidth)
+                    if (touch.fingerId == cameraTouchID)
                     {
-                        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
-                            !UIPanelTurner.Instance.UIPanelCurrentOpen)
-                        {
-                            if (!joystickController.JoystickIsActive)
-                            {
-                                MovementController.HorizontalMovement(0, 0);
-                            }
-                            if (UITouchStateContainer.Instance.PossibleToControll)
-                                CameraInput(touch);
-                        }
+                        camDeltaPos = touch.deltaPosition;
                     }
-                    else if (touch.position.x < halfWidth)
+                    else if (touch.fingerId == joystickTouchID) 
                     {
-                        PlayerCamera.MoveCamera(0, 0);
+                        if (cameraTouchID == -1)
+                            camDeltaPos = Vector2.zero;
                         joystickController.MoveJoystick(touch.position);
                     }
                 }
             }
-
+            CameraInput(camDeltaPos);
         }
         else
         {
@@ -109,19 +135,10 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
         this.interactAction = interactAction;
         InputInterface.ChangeInteractAction(interactAction, actionType);
     }
-
-    private bool PossibleToControll()
-    {
-        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death ||
-            UIPanelTurner.Instance.UIPanelCurrentOpen ||
-            !UITouchStateContainer.Instance.PossibleToControll)
-            return false;
-        return true;
-    }
     
-    private void CameraInput(Touch touch)
+    private void CameraInput(Vector2 deltaPos)
     {
-        Vector2 deltaMove = touch.deltaPosition * Time.deltaTime;
+        Vector2 deltaMove = deltaPos * Time.deltaTime;
         deltaMove *= -1;
         PlayerCamera.MoveCamera(deltaMove.x, deltaMove.y);
     }

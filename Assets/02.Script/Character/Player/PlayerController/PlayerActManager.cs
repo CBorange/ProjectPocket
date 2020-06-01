@@ -64,8 +64,6 @@ public class PlayerActManager : MonoBehaviour, IActController
     }
     public void ExecuteAttack()
     {
-        if (currentBehaviour != CharacterBehaviour.Idle) 
-            return;
         WeaponController.ExecuteAttack();
     }
     public void EndAttack()

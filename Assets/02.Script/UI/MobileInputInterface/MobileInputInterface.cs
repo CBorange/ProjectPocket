@@ -24,7 +24,7 @@ public class MobileInputInterface : MonoBehaviour
         interactSpriteDic.Add("NPC", InteractSprties[0]);
         interactSpriteDic.Add("Building", InteractSprties[1]);
         interactSpriteDic.Add("Resource_Axe", InteractSprties[2]);
-        interactSpriteDic.Add("Resoucre_Pickaxe", InteractSprties[3]);
+        interactSpriteDic.Add("Resource_Pickaxe", InteractSprties[3]);
     }
     public void ChangeInteractAction(Action interactAction, string actionType)
     {

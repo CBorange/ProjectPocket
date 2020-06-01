@@ -77,14 +77,15 @@ public class ShopPanel_ItemTable : MonoBehaviour
 
         for (int i = 0; i < itemTogglePool.Count; ++i)
         {
+            itemTogglePool[i].GetComponent<Toggle>().isOn = false;
             itemTogglePool[i].gameObject.SetActive(false);
         }
         for (int i = 0; i < currentItems.Length; ++i)
-        {
             itemTogglePool[i].Refresh(currentItems[i]);
-        }
         if (currentItems.Length > 0)
-            itemTogglePool[0].SelectToggle(true);
+        {
+            itemTogglePool[0].GetComponent<Toggle>().isOn = true;
+        }
     }
     // Callback
     public void ChangeItemCategory(string type)

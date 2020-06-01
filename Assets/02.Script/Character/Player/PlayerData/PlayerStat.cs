@@ -96,7 +96,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
         floatStatDic.Add("MoveSpeed", GetStat("Origin_MoveSpeed"));
         floatStatDic.Add("JumpSpeed", GetStat("Origin_JumpSpeed"));
         floatStatDic.Add("MaxHealthPoint", GetStat("Origin_MaxHealthPoint"));
-        floatStatDic.Add("HealthPoint", GetStat("MaxHealthPoint"));
+        floatStatDic.Add("HealthPoint", userData.HealthPoint);
         floatStatDic.Add("ShieldPoint", GetStat("Origin_ShieldPoint"));
         floatStatDic.Add("AttackPoint", GetStat("Origin_AttackPoint"));
         floatStatDic.Add("AttackSpeed", GetStat("Origin_AttackSpeed"));

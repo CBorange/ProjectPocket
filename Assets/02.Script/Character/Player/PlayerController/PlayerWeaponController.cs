@@ -15,7 +15,6 @@ public class PlayerWeaponController : MonoBehaviour
     public Transform WeaponGrapPosition;
     public Animator animator;
     private GameObject weaponModel;
-    private bool nowAttacking;
 
     // Method
     public void EquipWeapon(WeaponData weaponData)
@@ -57,25 +56,17 @@ public class PlayerWeaponController : MonoBehaviour
     }
     public void ExecuteAttack()
     {
-        if (nowAttacking)
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Idle ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Move)
         {
-            return;
+            if (equipedWeaponBehaviour == null)
+                return;
+            PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Attack;
+            equipedWeaponBehaviour.PlayAttack();
         }
-        if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
-        {
-            return;
-        }
-        if (equipedWeaponBehaviour == null)
-        {
-            return;
-        }
-        nowAttacking = true;
-        PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Attack;
-        equipedWeaponBehaviour.PlayAttack();
     }
     public void EndAttack()
     {
-        nowAttacking = false;
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
     }
 }

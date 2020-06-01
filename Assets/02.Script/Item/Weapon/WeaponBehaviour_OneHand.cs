@@ -105,6 +105,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         checkElapsedTime = true;
         StartCoroutine(IE_WaitLinkageAttackTime());
 
+        playerAnimator.speed = 1;
         trailRenderer.gameObject.SetActive(false);
         attackEnd_SendToAttackController();
     }
