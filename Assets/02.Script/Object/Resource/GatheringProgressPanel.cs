@@ -68,6 +68,8 @@ public class GatheringProgressPanel : MonoBehaviour
             yield return new WaitForEndOfFrame();
             if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
             {
+                PlayerAnimator.SetBool(GetAnimatorParameterByResourceType(), false);
+                ClosePanel();
                 yield break;
             }
             progressValue += PlayerStat.Instance.GetStat("GatheringPower") * Time.deltaTime;
