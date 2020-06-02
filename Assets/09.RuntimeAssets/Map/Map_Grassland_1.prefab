@@ -994,7 +994,7 @@ MonoBehaviour:
   SpawnArea: 3
   SpawnHeight: 2
   SpawnDelay: 5
-  MaxSpawnCount: 5
+  MaxSpawnCount: 1
   deactiveMobPool: []
   activeMobPool: []
 --- !u!1 &5248498850080566768

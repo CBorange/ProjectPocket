@@ -39,6 +39,7 @@ public class DroppedItem : MonoBehaviour
             InventoryItem inventoryItem = new InventoryItem(currentItem, 1);
             PlayerInventory.Instance.AddItemToInventory(inventoryItem);
             gameObject.SetActive(false);
+            PlayerActManager.Instance.GetItem();
             collisionCallback(this, currentItem.ItemCode);
         }
     }

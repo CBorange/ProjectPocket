@@ -20,7 +20,7 @@ public class MapController : MonoBehaviour
     {
         if (PlayerActManager.Instance.transform.position.y < FallingLimit)
         {
-            PlayerStat.Instance.GetDamage(20);
+            PlayerActManager.Instance.GetDamage(20);
             PlayerActManager.Instance.transform.position = PlayerStartPos.position;
         }
     }

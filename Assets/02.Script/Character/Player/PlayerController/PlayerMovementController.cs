@@ -38,6 +38,8 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
     #endregion
+    // Controller
+    public SoundManager MySoundManager;
     public FollowCamera followCamera;
     public Animator animator;
     public Rigidbody myRigidbody;
@@ -55,6 +57,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.speed = 1;
+            animator.SetBool("Walk", false);
             animator.SetBool("FlyAir", false);
         }
     }
@@ -63,11 +66,13 @@ public class PlayerMovementController : MonoBehaviour
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
         {
+            MySoundManager.StopAudioLoop("Movement");
             return;
         }
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack)
         {
             animator.SetBool("Walk", false);
+            MySoundManager.StopAudioLoop("Movement");
             return;
         }
         if ((moveVecX == 0 && moveVecZ == 0) && PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Move) 
@@ -75,18 +80,23 @@ public class PlayerMovementController : MonoBehaviour
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.speed = 1;
             animator.SetBool("Walk", false);
+            MySoundManager.StopAudioLoop("Movement");
         }
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Idle ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Move ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Jump)
         {
-            if (moveVecX == 0 && moveVecZ == 0)
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Jump)
+                MySoundManager.StopAudioLoop("Movement");
+            if (moveVecX == 0 && moveVecZ == 0) 
                 return;
+
             MovePlayerByCamAngle(moveVecX, moveVecZ);
             animator.speed = PlayerStat.Instance.GetStat("MoveSpeed") / 2;
             if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Jump)
             {
                 animator.SetBool("Walk", true);
+                MySoundManager.StartAudioLoop("Movement", "Walk", (0.44f / (PlayerStat.Instance.GetStat("MoveSpeed") / 4)));
                 PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Move;
             }
         }
@@ -112,6 +122,14 @@ public class PlayerMovementController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, inputVecAngle, 0);
         transform.Translate(transform.forward * PlayerStat.Instance.GetStat("MoveSpeed") * Time.deltaTime, Space.World);
     }
+    private float CorrectAngleToSigned(float angle)
+    {
+        if (angle <= 90)
+            angle *= -2;
+        else if (angle <= 180)
+            angle = 360 + (angle * -2);
+        return angle;
+    }
     public void Jump()
     {
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Gathering ||
@@ -121,19 +139,12 @@ public class PlayerMovementController : MonoBehaviour
         {
             return;
         }
+        MySoundManager.PlayOneShot("Walk");
         myRigidbody.AddForce(Vector3.up * PlayerStat.Instance.GetStat("JumpSpeed"), ForceMode.Impulse);
         PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Jump;
         animator.speed = 1;
         animator.SetTrigger("Jumped");
         animator.SetBool("FlyAir", true);
-    }
-    private float CorrectAngleToSigned(float angle)
-    {
-        if (angle <= 90)
-            angle *= -2;
-        else if (angle <= 180)
-            angle = 360 + (angle * -2);
-        return angle;
     }
     public void LookTarget(GameObject target)
     {

@@ -38,6 +38,7 @@ public class DroppedCoin : MonoBehaviour
         {
             PlayerStat.Instance.AddGold(coinAmount);
             gameObject.SetActive(false);
+            PlayerActManager.Instance.GetItem();
             collisionCallback(this);
         }
     }

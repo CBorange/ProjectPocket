@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropper: {fileID: 8310360467954311279}
+  MySoundManager: {fileID: 0}
   ResourceCode: 90001
   livingResource: {fileID: 4482601923205708173}
   deathResource: {fileID: 0}

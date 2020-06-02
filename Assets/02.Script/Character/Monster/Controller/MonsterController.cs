@@ -17,6 +17,8 @@ public class MonsterController : MonoBehaviour, IActController
     public MonsterStat Stat;
     public MonsterPanelController PanelController;
     public Collider MyCollider;
+    public EffectManager MyEffectManager;
+    public SoundManager MySoundManager;
     public Animator MobAnimator;
     public ItemDropper Dropper;
     private MonsterAttackSystem[] attackSystems;
@@ -26,6 +28,7 @@ public class MonsterController : MonoBehaviour, IActController
     {
         this.deathCallback = deathCallback;
         Stat.Initialize();
+        MyEffectManager.UseTextEffect();
         Dropper.Initialize(transform.parent, Stat.CurrentData.DropItemDatas, Stat.CurrentData.GoldData);
         PanelController.Initialize();
         InitializeAttackSystems();
@@ -85,7 +88,9 @@ public class MonsterController : MonoBehaviour, IActController
     // Method Communicate With MonsterStat
     public void GetDamage(float ap)
     {
-        Stat.GetDamage(ap);
+        MyEffectManager.PlayHitTextEffect(Stat.GetDamage(ap), Color.red);
+        MyEffectManager.PlayParticle("GetHit");
+        MySoundManager.PlayOneShot("GetHit");
     }
     public void CharacterDeath()
     {

@@ -13,6 +13,7 @@ public class ResourceController : MonoBehaviour
     public GameObject livingResource;
     public GameObject deathResource;
     private bool isActivated;
+    private bool nowGathering;
     private float myColliderSize;
     private ResourceData currentData;
     public ResourceData CurrentData

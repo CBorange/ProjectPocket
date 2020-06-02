@@ -49,7 +49,7 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
     }
     public void Death()
     {
-
+        aiState = AI_TraceAndAttack_State.Death;
     }
     private void StartAI()
     {
@@ -140,6 +140,8 @@ public class AIBehaviour_TraceAndAttack : MonoBehaviour, IAIBehaviour
             NavAgent.ResetPath();
             NavAgent.velocity = Vector3.zero;
             MobAnimator.SetBool("Move", false);
+            if (aiState == AI_TraceAndAttack_State.Death)
+                yield break;
             MobAnimator.SetBool("Attack", true);
             Controller.ExecuteAttack();
             yield return new WaitForSeconds(AttackActionLength);

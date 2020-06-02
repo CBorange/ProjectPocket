@@ -128,7 +128,7 @@ public class MonsterStat : MonoBehaviour
         changedStatusCallback();
     }
     // Method
-    public void GetDamage(float ap)
+    public float GetDamage(float ap)
     {
         float damage = ap - shieldPoint;
         if (damage < 0)
@@ -140,5 +140,6 @@ public class MonsterStat : MonoBehaviour
             Controller.CharacterDeath();
         }
         changedStatusCallback();
+        return damage;
     }
 }

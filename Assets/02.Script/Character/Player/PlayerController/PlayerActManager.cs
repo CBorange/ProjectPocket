@@ -50,9 +50,15 @@ public class PlayerActManager : MonoBehaviour, IActController
         set { currentBehaviour = value; }
     }
     // Controller
+    public EffectManager MyEffectManager;
+    public SoundManager MySoundManager;
     public Animator MyAnimator;
     public PlayerWeaponController WeaponController;
 
+    private void Start()
+    {
+        MyEffectManager.UseTextEffect();
+    }
     // Weapon, Attack Method
     public void EquipWeapon(WeaponData weaponData)
     {
@@ -70,12 +76,31 @@ public class PlayerActManager : MonoBehaviour, IActController
     {
         WeaponController.EndAttack();
     }
+    public void GetItem()
+    {
+        MySoundManager.PlayOneShot("GetItem");
+    }
+    public void GatheringHit()
+    {
+        string weaponType = PlayerEquipment.Instance.EquipedWeapon.WeaponType;
+        if (weaponType.Contains("Pickaxe"))
+        {
+            MySoundManager.PlayOneShot("Mining");
+        }
+        else if (weaponType.Contains("Axe"))
+        {
+            MySoundManager.PlayOneShot("WoodCutting");
+        }
+    }
 
     // GetDamage Method
     public void GetDamage(float ap)
     {
-        PlayerStat.Instance.GetDamage(ap);
-        // 공격받은 action 취함
+        MyEffectManager.PlayParticle("GetHit");
+        MySoundManager.PlayOneShot("GetHit");
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
+            return;
+        MyEffectManager.PlayHitTextEffect(PlayerStat.Instance.GetDamage(ap), Color.yellow);
     }
     public void CharacterDeath()
     {

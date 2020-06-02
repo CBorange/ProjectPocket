@@ -14,6 +14,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     private AnimationClip[] attackAnimClips;
 
     // Controller
+    private SoundManager mySoundManager;
     private Animator playerAnimator;
     private AnimatorOverrideController animatorOverrideController;
     private PlayerAttack_Instant playerAttackBox;
@@ -36,6 +37,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         playerAnimator = playerTransform.GetComponent<Animator>();
         animatorOverrideController = new AnimatorOverrideController(playerAnimator.runtimeAnimatorController);
         playerAnimator.runtimeAnimatorController = animatorOverrideController;
+        mySoundManager = transform.GetChild(1).GetComponent<SoundManager>();
 
         // Create ColiderBox
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
@@ -65,7 +67,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         animEndTime = (attackAnimClips[attackAnimIndex].length / 2) / attackSpeed;
         playerAnimator.SetTrigger("Attack");
         trailRenderer.gameObject.SetActive(true);
-
+        
         Invoke("ExecuteAttack", weaponData.TriggerDelay / attackSpeed);
         Invoke("SendEndAttack", animEndTime);
 
@@ -98,6 +100,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     }
     private void ExecuteAttack()
     {
+        mySoundManager.PlayOneShot("WeaponSwing");
         playerAttackBox.Execute();
     }
     private void SendEndAttack()

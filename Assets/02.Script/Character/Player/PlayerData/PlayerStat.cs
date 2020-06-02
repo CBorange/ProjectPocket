@@ -149,10 +149,8 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     #region Status Change Method
 
     // Special Stat Callback
-    public void GetDamage(float ap)
+    public float GetDamage(float ap)
     {
-        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Death)
-            return;
         float damage = ap - GetStat("ShieldPoint");
         if (damage < 0)
             damage = 1;
@@ -164,6 +162,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
             PlayerActManager.Instance.CharacterDeath();
         }
         changedStatusCallback();
+        return damage;
     }
     public void Heal(float amount)
     {

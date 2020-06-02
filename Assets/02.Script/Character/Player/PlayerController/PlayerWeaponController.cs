@@ -25,18 +25,7 @@ public class PlayerWeaponController : MonoBehaviour
         weaponModel.transform.localPosition = weaponData.GrapPoint;
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
 
-        // WeaponType에 따른 Behaviour 클래스 생성
-        string weaponType = string.Empty;
-        if (weaponData.WeaponType.Contains("Tool"))
-            weaponType = "OneHand";
-        else
-            weaponType = weaponData.WeaponType;
-        Type behaviourType = Type.GetType($"WeaponBehaviour_{weaponType}");
-        if (behaviourType != null)
-        {
-            weaponModel.AddComponent(behaviourType);
-            equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
-        }
+        equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
         equipedWeaponBehaviour.CreateBehaviour(weaponData, EndAttack);
     }
     private void LoadWeaponModel(WeaponData data)
