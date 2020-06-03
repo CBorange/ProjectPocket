@@ -138,7 +138,7 @@ public class InputSystem_Mobile : MonoBehaviour, InputSystem
     
     private void CameraInput(Vector2 deltaPos)
     {
-        Vector2 deltaMove = deltaPos * Time.deltaTime;
+        Vector2 deltaMove = deltaPos * Time.deltaTime * 2;
         deltaMove *= -1;
         PlayerCamera.MoveCamera(deltaMove.x, deltaMove.y);
     }

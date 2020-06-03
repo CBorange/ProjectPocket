@@ -59,7 +59,7 @@ public class PlayerActManager : MonoBehaviour, IActController
     {
         MyEffectManager.UseTextEffect();
     }
-    // Weapon, Attack Method
+    // Callback
     public void EquipWeapon(WeaponData weaponData)
     {
         WeaponController.EquipWeapon(weaponData);
@@ -91,6 +91,11 @@ public class PlayerActManager : MonoBehaviour, IActController
         {
             MySoundManager.PlayOneShot("WoodCutting");
         }
+    }
+    public void UsePotion()
+    {
+        MyEffectManager.PlayParticle("Potion");
+        MySoundManager.PlayOneShot("Potion");
     }
 
     // GetDamage Method

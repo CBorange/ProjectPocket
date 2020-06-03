@@ -38,6 +38,9 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         }
     }
     #endregion
+    // Controller
+    public InteractCheckBox InteractChecker;
+
     //Data 
     private WeaponData equipedWeapon;
     public WeaponData EquipedWeapon
@@ -78,6 +81,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
     // UnEquip
     public void UnequipWeapon()
     {
+        InteractChecker.UnEquipWeapon();
         PlayerActManager.Instance.UnEquipWeapon();
         RemoveItemStat(equipedWeapon.WeaponStat, equipedWeapon.ItemCode);
         equipedWeapon = null;
@@ -117,6 +121,7 @@ public class PlayerEquipment : MonoBehaviour, PlayerRuntimeData
         equipedWeapon = weaponData;
 
         PlayerActManager.Instance.EquipWeapon(equipedWeapon);
+        InteractChecker.EquipWeapon();
         ApplyItemStat(equipedWeapon.WeaponStat, equipedWeapon.ItemCode);
     }
     public void EquipAccesorie_Ring(AccesorieData data)

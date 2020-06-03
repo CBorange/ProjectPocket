@@ -50,6 +50,8 @@ public class BuildingUpgrade_ViewPanel : MonoBehaviour
     {
         for (int i = 0; i < 5; ++i)
             togglePool[i].Refresh(currentData, i);
+        for (int i = 0; i < 5; ++i)
+            togglePool[i].GetComponent<Toggle>().isOn = false;
         togglePool[0].GetComponent<Toggle>().isOn = true;
 
     }

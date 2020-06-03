@@ -5,10 +5,10 @@ using UnityEngine;
 public class EffectManager : MonoBehaviour
 {
     // Data
-    public GameObject HitDamageTextPrefab;
+    public GameObject TextEffectPrefab;
     private Transform worldCanvas;
-    private List<HitDamageText> deActiveHitDamageTextPool;
-    private List<HitDamageText> activeHitDamageTextPool;
+    private List<TextEffect> deActiveHitDamageTextPool;
+    private List<TextEffect> activeHitDamageTextPool;
     private Dictionary<string, List<ParticleEffect>> deactiveParticlePoolDic;
     private Dictionary<string, List<ParticleEffect>> activeParticlePoolDic;
 
@@ -65,15 +65,15 @@ public class EffectManager : MonoBehaviour
     public void UseTextEffect()
     {
         worldCanvas = GameObject.Find("UICanvas_World").transform;
-        deActiveHitDamageTextPool = new List<HitDamageText>();
+        deActiveHitDamageTextPool = new List<TextEffect>();
         for (int i = 0; i < 5; ++i)
         {
-            HitDamageText newText = Instantiate(HitDamageTextPrefab, worldCanvas).GetComponent<HitDamageText>();
+            TextEffect newText = Instantiate(TextEffectPrefab, worldCanvas).GetComponent<TextEffect>();
             newText.gameObject.SetActive(false);
             newText.Initialize(OverHitTextReturnToPool, transform.parent);
             deActiveHitDamageTextPool.Add(newText);
         }
-        activeHitDamageTextPool = new List<HitDamageText>();
+        activeHitDamageTextPool = new List<TextEffect>();
     }
     public void PlayHitTextEffect(float damage, Color color)
     {
@@ -104,7 +104,7 @@ public class EffectManager : MonoBehaviour
         deActivePool.Add(effect);
         activePool.Remove(effect);
     }
-    private void OverHitTextReturnToPool(HitDamageText text)
+    private void OverHitTextReturnToPool(TextEffect text)
     {
         deActiveHitDamageTextPool.Add(text);
         activeHitDamageTextPool.Remove(text);

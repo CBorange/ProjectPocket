@@ -6,15 +6,40 @@ public class InteractCheckBox : MonoBehaviour
 {
     // Controller
     public PlayerInputController InputController;
+    private ResourceController interactableResource;
 
+    public void UnEquipWeapon()
+    {
+        InputController.ChangeInteractAction(null, string.Empty);
+    }
+    public void EquipWeapon()
+    {
+        if (interactableResource != null)
+        {
+            if (!interactableResource.IsPossibleToInteract())
+                InputController.ChangeInteractAction(null, string.Empty);
+            else
+            {
+                InputController.ChangeInteractAction(interactableResource.StartIteractWithResource,
+                    $"Resource_{interactableResource.CurrentData.CanGatheringTool}");
+            }
+        }
+    }
+    public void ResetInteractAction()
+    {
+        interactableResource = null;
+        InputController.ChangeInteractAction(null, string.Empty);
+    }
     private void OnTriggerEnter(Collider other)
     {
         switch(other.tag)
         {
             case "Resource":
-                ResourceController controller = other.transform.parent.GetComponent<ResourceController>();
-                InputController.ChangeInteractAction(controller.StartIteractWithResource,
-                    $"Resource_{controller.CurrentData.CanGatheringTool}");
+                interactableResource = other.transform.parent.GetComponent<ResourceController>();
+                if (!interactableResource.IsPossibleToInteract())
+                    return;
+                InputController.ChangeInteractAction(interactableResource.StartIteractWithResource,
+                    $"Resource_{interactableResource.CurrentData.CanGatheringTool}");
                 break;
             case "Building":
                 InputController.ChangeInteractAction(other.GetComponent<BuildingController>().StartInteract,
@@ -28,6 +53,6 @@ public class InteractCheckBox : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        InputController.ChangeInteractAction(null, string.Empty);
+        ResetInteractAction();
     }
 }

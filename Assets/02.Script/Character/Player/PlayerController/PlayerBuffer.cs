@@ -54,5 +54,6 @@ public class PlayerBuffer : MonoBehaviour
                     break;
             }
         }
+        PlayerActManager.Instance.UsePotion();
     }
 }

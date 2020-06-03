@@ -141,8 +141,13 @@ public class UserInfoProvider
         userAccount = account;
         this.lastMap = lastMap;
 
-        string[] splitedPos = lastPos.Split(',');
-        this.lastPos = new Vector3(float.Parse(splitedPos[0]), float.Parse(splitedPos[1]), float.Parse(splitedPos[2]));
+        if (!string.IsNullOrEmpty(lastPos))
+        {
+            string[] splitedPos = lastPos.Split(',');
+            this.lastPos = new Vector3(float.Parse(splitedPos[0]), float.Parse(splitedPos[1]), float.Parse(splitedPos[2]));
+        }
+        else
+            this.lastPos = Vector3.zero;
 
         // Stat
         this.moveSpeed = moveSpeed;

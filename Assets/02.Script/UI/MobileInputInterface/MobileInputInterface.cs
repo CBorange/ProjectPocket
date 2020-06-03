@@ -33,7 +33,6 @@ public class MobileInputInterface : MonoBehaviour
             InteractButton.gameObject.SetActive(false);
             return;
         }
-
         this.interactAction = interactAction;
         Sprite foundSprite;
         if (interactSpriteDic.TryGetValue(actionType, out foundSprite))

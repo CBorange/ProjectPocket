@@ -43,11 +43,6 @@ public class ResourceController : MonoBehaviour
     }
     public void StartIteractWithResource()
     {
-        WeaponData playerTool = PlayerEquipment.Instance.EquipedWeapon;
-        if (playerTool == null || !playerTool.WeaponType.Contains("Tool"))
-            return;
-        if (!playerTool.WeaponType.Contains(currentData.CanGatheringTool))
-            return;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         UIPanelTurner.Instance.Open_ResourceInteractPanel(this, screenPos);
     }
@@ -55,6 +50,13 @@ public class ResourceController : MonoBehaviour
     {
         if (!isActivated)
             return false;
+
+        WeaponData playerTool = PlayerEquipment.Instance.EquipedWeapon;
+        if (playerTool == null || !playerTool.WeaponType.Contains("Tool"))
+            return false;
+        if (!playerTool.WeaponType.Contains(currentData.CanGatheringTool))
+            return false;
+
         Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
         if (distanceBetweenPlayer.magnitude - myColliderSize > 1.5f)
             return false;

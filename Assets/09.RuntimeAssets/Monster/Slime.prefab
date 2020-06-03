@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a194c9066e831b448bba41cb9a2b6e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitDamageTextPrefab: {fileID: 2307196400642262570, guid: 0bc691e528a41f3428a3328c3e4f05f5,
+  TextEffectPrefab: {fileID: 2307196400642262570, guid: 0bc691e528a41f3428a3328c3e4f05f5,
     type: 3}
 --- !u!1 &2115210853798019339
 GameObject:

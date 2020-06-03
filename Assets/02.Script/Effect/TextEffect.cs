@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HitDamageText : MonoBehaviour
+public class TextEffect : MonoBehaviour
 {
     // Data
     private Transform baseObject;
     private Vector3 basePos;
     private Text myText;
     private bool isActive;
-    private Action<HitDamageText> returnToPoolCallback;
+    private Action<TextEffect> returnToPoolCallback;
     private float elapsedTime;
 
     private void Update()
@@ -23,7 +23,7 @@ public class HitDamageText : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, myAngle.y + 180, 0);
         transform.position = basePos + new Vector3(0, 2 + elapsedTime * 3f, 0);
     }
-    public void Initialize(Action<HitDamageText> returnToPoolCallback, Transform baseObj)
+    public void Initialize(Action<TextEffect> returnToPoolCallback, Transform baseObj)
     {
         baseObject = baseObj;
         myText = GetComponent<Text>();

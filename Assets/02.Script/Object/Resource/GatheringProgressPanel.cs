@@ -12,6 +12,7 @@ public class GatheringProgressPanel : MonoBehaviour
     public Slider ProgressSlider;
 
     // Controller
+    public InteractCheckBox InteractChecker;
     private ResourceController resourceController;
     public Animator PlayerAnimator;
 
@@ -70,6 +71,7 @@ public class GatheringProgressPanel : MonoBehaviour
             {
                 PlayerAnimator.SetBool(GetAnimatorParameterByResourceType(), false);
                 ClosePanel();
+                InteractChecker.ResetInteractAction();
                 yield break;
             }
             progressValue += PlayerStat.Instance.GetStat("GatheringPower") * Time.deltaTime;
@@ -80,6 +82,7 @@ public class GatheringProgressPanel : MonoBehaviour
                 PlayerAnimator.SetBool(GetAnimatorParameterByResourceType(), false);
                 resourceController.EndGathering();
                 ClosePanel();
+                InteractChecker.ResetInteractAction();
                 yield break;
             }
         }
