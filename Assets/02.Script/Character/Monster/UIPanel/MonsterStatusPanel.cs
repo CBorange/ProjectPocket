@@ -14,6 +14,7 @@ public class MonsterStatusPanel : MonoBehaviour
     // UI
     public Slider HPSlider;
     public Text HPText;
+    public Text MonsterNameText;
 
     public void Initialize(MonsterStat stat, GameObject monsterObj)
     {
@@ -26,6 +27,7 @@ public class MonsterStatusPanel : MonoBehaviour
     public void Respawn()
     {
         gameObject.SetActive(true);
+        MonsterNameText.text = monsterStat.CurrentData.MonsterKorName;
         ChangedStatus();
     }
     public void Death()

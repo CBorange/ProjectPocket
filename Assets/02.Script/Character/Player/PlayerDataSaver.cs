@@ -11,11 +11,22 @@ public class PlayerDataSaver : MonoBehaviour
     // Controller
     public SemiLoadingPopup LoadingPopup;
 
-    public void SavePlayerData()
+    public void SaveAndPrintResult()
     {
-        SaveProcess();       
+        SaveAndPrintProcess();
     }
-    private async void SaveProcess()
+    public string SavePlayerData()
+    {
+        var task = SaveProcess();
+        string result = task.Result;
+        return result;
+    }
+    private async Task<string> SaveProcess()
+    {
+        string result = await Task<string>.Factory.StartNew(SendDataToServer);
+        return result;
+    }
+    private async void SaveAndPrintProcess()
     {
         LoadingPopup.OpenPopup("플레이어 정보를 저장중입니다...");
         string result = await Task<string>.Factory.StartNew(SendDataToServer);
