@@ -39,7 +39,7 @@ public class NPC_Controller : MonoBehaviour
     }
     public bool IsPossibleToInteract()
     {
-        Vector3 distanceBetweenPlayer = PlayerActManager.Instance.transform.position - transform.position;
+        Vector3 distanceBetweenPlayer = PlayerCoordinator.Instance.PlayerPos - transform.position;
         if (distanceBetweenPlayer.magnitude - myColliderSize > 1.5f)
             return false;
         return true;

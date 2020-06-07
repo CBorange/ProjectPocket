@@ -14,6 +14,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     public Transform WeaponGrapPosition;
     public Animator animator;
+
     private GameObject weaponModel;
 
     // Method

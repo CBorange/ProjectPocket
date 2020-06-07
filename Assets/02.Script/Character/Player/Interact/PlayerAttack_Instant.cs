@@ -44,7 +44,6 @@ public class PlayerAttack_Instant : MonoBehaviour
         if (other.tag.Equals("Monster"))
         {
             other.GetComponent<MonsterController>().GetDamage(PlayerStat.Instance.GetStat("AttackPoint"));
-            //gameObject.SetActive(false);
         }
     }
 }

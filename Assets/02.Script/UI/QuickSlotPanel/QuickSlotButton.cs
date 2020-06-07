@@ -104,42 +104,45 @@ public class QuickSlotButton : MonoBehaviour
 
     public void SelectSlot()
     {
-        if (PlayerActManager.Instance.CurrentBehaviour != CharacterBehaviour.Idle)
-            return;
-        switch(currentMode)
+        if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Idle ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Move ||
+            PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Jump)
         {
-            case QuickSlotMode.AttachItem:
-                SlotPanel.FoundSameItemAndEmpty(waitAttachItem.OriginalItemData.ItemCode);
-                slotItem = waitAttachItem;
-                PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex] = slotItem.OriginalItemData.ItemCode;
-                SlotPanel.CancelAttachItem();
-                Refresh();
-                break;
-            case QuickSlotMode.UseItem:
-                if (slotItem == null)
-                    return;
-                ItemData data = slotItem.OriginalItemData;
-                switch (data.ItemType)
-                {
-                    case "Weapon":
-                        PlayerEquipment.Instance.EquipWeapon(data.ItemCode);
-                        break;
-                    case "Accesorie":
-                        AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(data.ItemCode);
+            switch (currentMode)
+            {
+                case QuickSlotMode.AttachItem:
+                    SlotPanel.FoundSameItemAndEmpty(waitAttachItem.OriginalItemData.ItemCode);
+                    slotItem = waitAttachItem;
+                    PlayerQuickSlot.Instance.ItemsInSlot[SlotIndex] = slotItem.OriginalItemData.ItemCode;
+                    SlotPanel.CancelAttachItem();
+                    Refresh();
+                    break;
+                case QuickSlotMode.UseItem:
+                    if (slotItem == null)
+                        return;
+                    ItemData data = slotItem.OriginalItemData;
+                    switch (data.ItemType)
+                    {
+                        case "Weapon":
+                            PlayerEquipment.Instance.EquipWeapon(data.ItemCode);
+                            break;
+                        case "Accesorie":
+                            AccesorieData accesorieData = ItemDB.Instance.GetAccesorieData(data.ItemCode);
 
-                        if (accesorieData.AccesorieType.Equals("Ring"))
-                            PlayerEquipment.Instance.EquipAccesorie_Ring(accesorieData);
-                        else if (accesorieData.AccesorieType.Equals("Necklace"))
-                            PlayerEquipment.Instance.EquipAccesorie_Necklace(accesorieData);
-                        break;
-                    case "Expendable":
-                        ExpendableData expendableData = ItemDB.Instance.GetExpendableData(data.ItemCode);
-                        PlayerBuffer.Instance.ApplyStatEffectByExpendable(expendableData);
-                        PlayerInventory.Instance.RemoveItemFromInventory(expendableData.ItemCode, 1);
-                        break;
-                }
-                SlotPanel.Refresh();
-                break;
+                            if (accesorieData.AccesorieType.Equals("Ring"))
+                                PlayerEquipment.Instance.EquipAccesorie_Ring(accesorieData);
+                            else if (accesorieData.AccesorieType.Equals("Necklace"))
+                                PlayerEquipment.Instance.EquipAccesorie_Necklace(accesorieData);
+                            break;
+                        case "Expendable":
+                            ExpendableData expendableData = ItemDB.Instance.GetExpendableData(data.ItemCode);
+                            PlayerBuffer.Instance.ApplyStatEffectByExpendable(expendableData);
+                            PlayerInventory.Instance.RemoveItemFromInventory(expendableData.ItemCode, 1);
+                            break;
+                    }
+                    SlotPanel.Refresh();
+                    break;
+            }
         }
     }
 }

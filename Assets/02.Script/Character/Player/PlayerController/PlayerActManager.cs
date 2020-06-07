@@ -59,7 +59,7 @@ public class PlayerActManager : MonoBehaviour, IActController
     {
         MyEffectManager.UseTextEffect();
     }
-    // Callback
+    // PlayerAct Callback
     public void EquipWeapon(WeaponData weaponData)
     {
         WeaponController.EquipWeapon(weaponData);

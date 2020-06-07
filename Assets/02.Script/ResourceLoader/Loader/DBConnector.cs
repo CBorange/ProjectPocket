@@ -9,7 +9,7 @@ using System.Text;
 
 public class DBConnector
 {
-    // Singleton
+    #region Singleton
     private DBConnector()
     {
     }
@@ -23,6 +23,7 @@ public class DBConnector
             return instance;
         }
     }
+    #endregion
 
     private SqlCommand sqlCommand;
     private SqlConnection sqlConnection;

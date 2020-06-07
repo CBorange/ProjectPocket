@@ -18,10 +18,10 @@ public class MapController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (PlayerActManager.Instance.transform.position.y < FallingLimit)
+        if (PlayerCoordinator.Instance.PlayerPos.y < FallingLimit)
         {
             PlayerActManager.Instance.GetDamage(20);
-            PlayerActManager.Instance.transform.position = PlayerStartPos.position;
+            PlayerCoordinator.Instance.SetPlayerPosition(PlayerStartPos.position);
         }
     }
 }
