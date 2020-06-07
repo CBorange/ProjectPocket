@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Net.Http.Headers;
 
-public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
+public class WeaponBehaviour_Melee : MonoBehaviour, IWeaponBehaviour
 {
     // Attack Animations
     private const float CAN_LINKAGE_ATTACK_TIME = 1f;
@@ -17,7 +17,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     private SoundManager mySoundManager;
     private Animator playerAnimator;
     private AnimatorOverrideController animatorOverrideController;
-    private PlayerAttack_Instant playerAttackBox;
+    private InstantAttackController instantAttack;
     private TrailRenderer trailRenderer;
 
     // Data
@@ -42,10 +42,9 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
         // Create ColiderBox
         GameObject newColiderBox = new GameObject("PlayerWeaponColiderBox");
         newColiderBox.transform.parent = PlayerActManager.Instance.transform;
-        playerAttackBox = newColiderBox.AddComponent<PlayerAttack_Instant>();
-        playerAttackBox.tag = "Player_WeaponColBox";
-        playerAttackBox.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, (weaponData.Range / 2)), weaponData);
-        playerAttackBox.gameObject.SetActive(false);
+        instantAttack = newColiderBox.AddComponent<InstantAttackController>();
+        instantAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, (weaponData.Range / 2)), weaponData);
+        instantAttack.gameObject.SetActive(false);
 
         LoadAttackAnims();
     }
@@ -101,7 +100,7 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     private void ExecuteAttack()
     {
         mySoundManager.PlayOneShot("WeaponSwing");
-        playerAttackBox.Execute();
+        instantAttack.Execute();
     }
     private void SendEndAttack()
     {
@@ -114,6 +113,6 @@ public class WeaponBehaviour_OneHand : MonoBehaviour, IWeaponBehaviour
     }
     public void ReleaseBehaviour()
     {
-        Destroy(playerAttackBox.gameObject);
+        Destroy(instantAttack.gameObject);
     }
 }

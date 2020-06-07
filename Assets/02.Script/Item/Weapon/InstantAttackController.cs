@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Data;
 
-public class PlayerAttack_Instant : MonoBehaviour
+public class InstantAttackController : MonoBehaviour
 {
     private Transform playerTransform;
     private Vector3 colliderSize;
