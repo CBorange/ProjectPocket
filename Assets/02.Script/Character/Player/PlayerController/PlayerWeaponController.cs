@@ -6,40 +6,37 @@ using System;
 public class PlayerWeaponController : MonoBehaviour
 {
     // Data
-    private IWeaponBehaviour equipedWeaponBehaviour;
-    public IWeaponBehaviour EquipedWeaponBehaviour
-    {
-        get { return equipedWeaponBehaviour; }
-    }
-
-    public Transform WeaponGrapPosition;
-    public Animator animator;
-
+    public Transform WeaponGrapTarget;
+    private WeaponData weaponData;
     private GameObject weaponModel;
+
+    // Attack Strategy
+    private AttackStrategy currentAttackStrategy;
 
     // Method
     public void EquipWeapon(WeaponData weaponData)
     {
         UnEquipWeapon();
 
+        this.weaponData = weaponData;
         LoadWeaponModel(weaponData);
         weaponModel.transform.localPosition = weaponData.GrapPoint;
         weaponModel.transform.localRotation = Quaternion.Euler(weaponData.GrapRotation);
-
-        equipedWeaponBehaviour = weaponModel.GetComponent<IWeaponBehaviour>();
-        equipedWeaponBehaviour.CreateBehaviour(weaponData, EndAttack);
     }
     private void LoadWeaponModel(WeaponData data)
     {
         GameObject foundModel = AssetBundleCacher.Instance.LoadAndGetAsset("weapon", data.Name) as GameObject;
-        weaponModel = Instantiate(foundModel, WeaponGrapPosition);
+        weaponModel = Instantiate(foundModel, WeaponGrapTarget);
+
+        currentAttackStrategy = weaponModel.GetComponent<AttackStrategy>();
+        currentAttackStrategy.Initialize(weaponData, EndAttack);
     }
     public void UnEquipWeapon()
     {
         if (weaponModel != null)
         {
-            equipedWeaponBehaviour.ReleaseBehaviour();
-            equipedWeaponBehaviour = null;
+            currentAttackStrategy.ReleaseAttackStrategy();
+            currentAttackStrategy = null;
             Destroy(weaponModel);
             weaponModel = null;
         }
@@ -49,10 +46,10 @@ public class PlayerWeaponController : MonoBehaviour
         if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Idle ||
             PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Move)
         {
-            if (equipedWeaponBehaviour == null)
+            if (currentAttackStrategy == null)
                 return;
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Attack;
-            equipedWeaponBehaviour.PlayAttack();
+            currentAttackStrategy.PlayAttack();
         }
     }
     public void EndAttack()

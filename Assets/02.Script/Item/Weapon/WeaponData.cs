@@ -9,7 +9,5 @@ public class WeaponData : ItemData
     public float Range;
     public Vector3 GrapPoint;
     public Vector3 GrapRotation;
-    public float TriggerDelay;
-    public float TriggerHold;
     public StatAdditional[] WeaponStat;
 }

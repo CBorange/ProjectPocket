@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 3992727372769674018}
   - component: {fileID: 2101119958007419457}
   - component: {fileID: 5202074223194063750}
-  - component: {fileID: -1655616004144902837}
+  - component: {fileID: 7960474904799145559}
   m_Layer: 14
   m_Name: "\uB2E8\uAC80"
   m_TagString: Untagged
@@ -208,7 +208,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &-1655616004144902837
+--- !u!114 &7960474904799145559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4017518250150009398}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36563c8c70ea29e47bb89ca487d9e2f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d5a6fefb66de2445895b5b4618967f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5641897739746002493

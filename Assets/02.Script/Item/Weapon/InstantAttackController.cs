@@ -10,12 +10,14 @@ public class InstantAttackController : MonoBehaviour
     private Vector3 colliderSize;
     private Vector3 colliderPosition;
     private WeaponData data;
+    private float lifeTime;
 
-    public void Execute()
+    public void Execute(float lifeTime)
     {
         Refresh();
+        this.lifeTime = lifeTime;
         gameObject.SetActive(true);
-        Invoke("TriggerOver", data.TriggerHold / PlayerStat.Instance.GetStat("AttackSpeed"));
+        Invoke("TriggerOver", lifeTime / PlayerStat.Instance.GetStat("AttackSpeed"));
     }
     public void Initialize(Transform playerTrans, Vector3 colPos, WeaponData data)
     {

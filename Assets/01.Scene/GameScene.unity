@@ -49336,7 +49336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb61cf3aa97cafe4487f177272879b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponGrapPosition: {fileID: 1502424543}
+  WeaponGrapTarget: {fileID: 1502424543}
   animator: {fileID: 4656040125746333894}
 --- !u!114 &4656040125746333898
 MonoBehaviour:
