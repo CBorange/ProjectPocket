@@ -10,9 +10,9 @@ public class QuestNoticeText : MonoBehaviour
     public Text Contents;
 
     // Data
-    private Action<QuestNoticeText> returnToPoolCallback;
+    private Action returnToPoolCallback;
 
-    public void Initialize(Action<QuestNoticeText> returnCallback )
+    public void Initialize(Action returnCallback )
     {
         returnToPoolCallback = returnCallback;
     }
@@ -29,6 +29,6 @@ public class QuestNoticeText : MonoBehaviour
         if (!gameObject.activeSelf)
             return;
         gameObject.SetActive(false);
-        returnToPoolCallback(this);
+        returnToPoolCallback();
     }
 }

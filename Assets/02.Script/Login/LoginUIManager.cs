@@ -33,7 +33,8 @@ public class LoginUIManager : MonoBehaviour
         string pw = PW_AccountInput.text;
 
         ShowLoadingPopup();
-        Task<string> accountTask = Task<string>.Factory.StartNew(() => DBConnector.Instance.ValiadeAccountOnDB(id, pw));
+        Task<string> accountTask = Task<string>.Factory.StartNew(
+            () => DBConnector.Instance.ValiadeAccountOnDB(id, pw));
         await accountTask;
         string accountResult = accountTask.Result;
         if (accountResult.Equals("Success"))

@@ -3,8 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestProgress_Discussion
+public class QuestProgress_Discussion : QuestUpdater
 {
+    #region Observer
+    private List<QuestObserver> questObservers;
+    public void AddObserver(QuestObserver observer)
+    {
+        questObservers.Add(observer);
+    }
+    public void DeleteObserver(QuestObserver observer)
+    {
+        questObservers.Remove(observer);
+    }
+    #endregion
+
     // Data
     public TotalDiscussionProgress[] TotalProgress;
     private Dictionary<int, TotalDiscussionProgress> totalProgressDic;
@@ -43,6 +55,7 @@ public class QuestProgress_Discussion
     // Method
     public void Initiailize()
     {
+        questObservers = new List<QuestObserver>();
         totalProgressDic = new Dictionary<int, TotalDiscussionProgress>();
         if (TotalProgress == null)
             return;
@@ -70,12 +83,15 @@ public class QuestProgress_Discussion
         foreach(var kvp in totalProgressDic)
         {
             DiscussionProgressInfo[] progressInfo = kvp.Value.Progress;
-            for (int i = 0; i < progressInfo.Length; ++i)
+            for (int discIdx = 0; discIdx < progressInfo.Length; ++discIdx)
             {
-                if (progressInfo[i].TargetNPC == npcCode && !progressInfo[i].TalkCompleted)
+                if (progressInfo[discIdx].TargetNPC == npcCode && !progressInfo[discIdx].TalkCompleted)
                 {
-                    progressInfo[i].TalkCompleted = true;
-                    QuestNoticePopup.Instance.PrintNotice_Discussion(kvp.Value.QuestCode, npcCode);
+                    progressInfo[discIdx].TalkCompleted = true;
+
+                    for (int i = 0; i < questObservers.Count; ++i)
+                        questObservers[i].Update_Discussion(kvp.Value.QuestCode, npcCode);
+
                     UpdateProgress();
                     return QuestDB.Instance.GetQuestData(kvp.Value.QuestCode).Behaviour_Discussion.GetChangedDiscussion(npcCode);
                 }

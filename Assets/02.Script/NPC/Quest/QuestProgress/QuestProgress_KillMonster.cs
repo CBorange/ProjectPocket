@@ -4,8 +4,20 @@ using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
 [System.Serializable]
-public class QuestProgress_KillMonster
+public class QuestProgress_KillMonster : QuestUpdater
 {
+    #region Observer
+    private List<QuestObserver> questObservers;
+    public void AddObserver(QuestObserver observer)
+    {
+        questObservers.Add(observer);
+    }
+    public void DeleteObserver(QuestObserver observer)
+    {
+        questObservers.Remove(observer);
+    }
+    #endregion
+    
     // Data
     public TotalKillMonsterProgress[] TotalProgress;
     private Dictionary<int, TotalKillMonsterProgress> totalProgressDic;
@@ -27,7 +39,6 @@ public class QuestProgress_KillMonster
             return false;
         }
     }
-
     public KillMonsterProgressInfo[] GetDetailedKillMonsterProgresses(int questCode)
     {
         TotalKillMonsterProgress totalProgress = null;
@@ -45,6 +56,7 @@ public class QuestProgress_KillMonster
     // Method
     public void Initialize()
     {
+        questObservers = new List<QuestObserver>();
         totalProgressDic = new Dictionary<int, TotalKillMonsterProgress>();
         if (TotalProgress == null)
             return;
@@ -93,15 +105,17 @@ public class QuestProgress_KillMonster
         foreach (var kvp in totalProgressDic)
         {
             KillMonsterProgressInfo[] progressInfos = kvp.Value.Progress;
-            for (int i = 0; i < progressInfos.Length; ++i)
+            for (int killIdx = 0; killIdx < progressInfos.Length; ++killIdx)
             {
-                if (progressInfos[i].TargetMonster == monsterCode)
+                if (progressInfos[killIdx].TargetMonster == monsterCode)
                 {
-                    if (progressInfos[i].CurrentKillCount < progressInfos[i].GoalKillCount)
+                    if (progressInfos[killIdx].CurrentKillCount < progressInfos[killIdx].GoalKillCount)
                     {
-                        progressInfos[i].CurrentKillCount += 1;
-                        QuestNoticePopup.Instance.PrintNotice_KillMonster(kvp.Value.QuestCode, monsterCode,
-                            progressInfos[i].CurrentKillCount, progressInfos[i].GoalKillCount);
+                        progressInfos[killIdx].CurrentKillCount += 1;
+
+                        for (int i = 0; i < questObservers.Count; ++i)
+                            questObservers[i].Update_KillMonster(kvp.Value.QuestCode, monsterCode,
+                            progressInfos[killIdx].CurrentKillCount, progressInfos[killIdx].GoalKillCount);
                         UpdateProgress();
                     }
                     break;

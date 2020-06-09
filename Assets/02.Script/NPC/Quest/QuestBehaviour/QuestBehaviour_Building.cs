@@ -3,10 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestBehaviour_Building
+public class QuestBehaviour_Building : QuestUpdater
 {
+    #region Observer
+    private List<QuestObserver> questObservers;
+    public void AddObserver(QuestObserver observer)
+    {
+        questObservers.Add(observer);
+    }
+    public void DeleteObserver(QuestObserver observer)
+    {
+        questObservers.Remove(observer);
+    }
+    #endregion
+
     public int QuestCode;
     public TargetBuildingData[] TargetBuilding;
+
+    public void Initialize()
+    {
+        questObservers = new List<QuestObserver>();
+    }
     public bool GetHasCompletedAllBuildingConstruct()
     {
         int constructComleteCount = 0;
@@ -23,13 +40,13 @@ public class QuestBehaviour_Building
     }
     public void NoticeQuestProgress(int buildingCode)
     {
-        for (int i = 0; i < TargetBuilding.Length; ++i)
+        for (int buildIdx = 0; buildIdx < TargetBuilding.Length; ++buildIdx)
         {
-            BuildingStatus currentBuilding = PlayerBuilding.Instance.GetBuildingStatus(TargetBuilding[i].BuildingCode);
-            if (currentBuilding.Grade <= TargetBuilding[i].BuildingGrade) 
+            BuildingStatus currentBuilding = PlayerBuilding.Instance.GetBuildingStatus(TargetBuilding[buildIdx].BuildingCode);
+            if (currentBuilding.Grade <= TargetBuilding[buildIdx].BuildingGrade) 
             {
-                QuestNoticePopup.Instance.PrintNotice_Building(QuestCode, buildingCode, currentBuilding.Grade, TargetBuilding[i].BuildingGrade);
-                return;
+                for (int i = 0; i < questObservers.Count; ++i)
+                    questObservers[i].Update_Building(QuestCode, buildingCode, currentBuilding.Grade, TargetBuilding[buildIdx].BuildingGrade);
             }
         }
     }

@@ -3,10 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestBehaviour_GetItem
+public class QuestBehaviour_GetItem : QuestUpdater
 {
+    #region Observer
+    private List<QuestObserver> questObservers;
+    public void AddObserver(QuestObserver observer)
+    {
+        questObservers.Add(observer);
+    }
+    public void DeleteObserver(QuestObserver observer)
+    {
+        questObservers.Remove(observer);
+    }
+    #endregion
+
     public int QuestCode;
     public TargetItemData[] TargetItem;
+
+    public void Initialize()
+    {
+        questObservers = new List<QuestObserver>();
+    }
     public bool GetHasCompletedAllItemGet()
     {
         int getCompleteCount = 0;
@@ -26,16 +43,16 @@ public class QuestBehaviour_GetItem
     }
     public void NoticeQuestProgress(int itemCode)
     {
-        for (int i = 0; i < TargetItem.Length; ++i)
+        for (int itemIdx = 0; itemIdx < TargetItem.Length; ++itemIdx)
         {
             InventoryItem needItem = PlayerInventory.Instance.GetItem(itemCode);
             if (needItem != null)
             {
-                if (needItem.ItemCount <= TargetItem[i].ItemCount &&
-                    needItem.OriginalItemData.ItemCode == TargetItem[i].ItemCode)   
+                if (needItem.ItemCount <= TargetItem[itemIdx].ItemCount &&
+                    needItem.OriginalItemData.ItemCode == TargetItem[itemIdx].ItemCode)   
                 {
-                    QuestNoticePopup.Instance.PrintNotice_GetItem(QuestCode, itemCode, needItem.ItemCount, TargetItem[i].ItemCount);
-                    return;
+                    for (int i = 0; i < questObservers.Count; ++i)
+                        questObservers[i].Update_GetItem(QuestCode, itemCode, needItem.ItemCount, TargetItem[itemIdx].ItemCount);
                 }
             }
         }

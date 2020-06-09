@@ -6428,7 +6428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTest: 1
-  TestAccount: test
+  TestAccount: admin
 --- !u!1 &256783320
 GameObject:
   m_ObjectHideFlags: 0
@@ -49337,7 +49337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponGrapTarget: {fileID: 1502424543}
-  animator: {fileID: 4656040125746333894}
 --- !u!114 &4656040125746333898
 MonoBehaviour:
   m_ObjectHideFlags: 0

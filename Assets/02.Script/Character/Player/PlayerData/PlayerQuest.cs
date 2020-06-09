@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
+public class PlayerQuest : MonoBehaviour, PlayerRuntimeData, QuestUpdater
 {
     #region Singleton
     private static PlayerQuest instance;
@@ -39,6 +39,17 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     }
     #endregion
 
+    #region Observer
+    private List<QuestObserver> questObservers;
+    public void AddObserver(QuestObserver observer)
+    {
+        questObservers.Add(observer);
+    }
+    public void DeleteObserver(QuestObserver observer)
+    {
+        questObservers.Remove(observer);
+    }
+    #endregion
     // Data
     private Dictionary<int, QuestTotalProgress> questsInProgress;
     public Dictionary<int,QuestTotalProgress> QuestsInProgress
@@ -64,11 +75,20 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
     }
     public void Initialize()
     {
+        questObservers = new List<QuestObserver>();
+        questObservers.Add(QuestNoticePopup.Instance.GetComponent<QuestObserver>());
+
         // 퀘스트 진행상황 불러오기
         questsInProgress = new Dictionary<int, QuestTotalProgress>();
+        completedQuests = new Dictionary<int, QuestData>();
+
         questProgress_Discussion = UserQuestProvider.Instance.QuestProgress_Discussion;
         questProgress_KillMonster = UserQuestProvider.Instance.QuestProgress_KillMonster;
-        completedQuests = new Dictionary<int, QuestData>();
+        for (int i = 0; i < questObservers.Count; ++i)
+        {
+            questProgress_Discussion.AddObserver(questObservers[i]);
+            questProgress_KillMonster.AddObserver(questObservers[i]);
+        }
 
         if (UserQuestProvider.Instance.QuestDatasInProgress.Count > 0)
         {
@@ -77,6 +97,23 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                 QuestTotalProgress totalProgress = new QuestTotalProgress();
                 totalProgress.Completed = false;
                 totalProgress.OriginalQuestData = UserQuestProvider.Instance.QuestDatasInProgress[i];
+                for (int questTypeIdx = 0; i < totalProgress.OriginalQuestData.QuestCategorys.Length; ++i)
+                {
+                    switch (totalProgress.OriginalQuestData.QuestCategorys[questTypeIdx])
+                    {
+                        case "GetItem":
+                            totalProgress.OriginalQuestData.Behaviour_GetItem.Initialize();
+                            for (int observerIdx = 0; observerIdx < questObservers.Count; ++observerIdx)
+                                totalProgress.OriginalQuestData.Behaviour_GetItem.AddObserver(questObservers[observerIdx]);
+                            break;
+                        case "Building":
+                            totalProgress.OriginalQuestData.Behaviour_Building.Initialize();
+                            for (int observerIdx = 0; observerIdx < questObservers.Count; ++observerIdx)
+                                totalProgress.OriginalQuestData.Behaviour_Building.AddObserver(questObservers[observerIdx]);
+                            break;
+                    }
+                }
+                
                 questsInProgress.Add(totalProgress.OriginalQuestData.QuestCode, totalProgress);
             }
             UpdateAllQuestProgress();
@@ -129,7 +166,8 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
             if (completedCategoryCount == currentQuest.QuestCategorys.Length &&
                 !kvp.Value.Completed)
             {
-                QuestNoticePopup.Instance.PrintNotice_QuestComplete(currentQuest.QuestCode);
+                for (int i = 0; i < questObservers.Count; ++i)
+                    questObservers[i].Update_QuestComplete(currentQuest.QuestCode);
                 kvp.Value.Completed = true;
             }
             else if (completedCategoryCount != currentQuest.QuestCategorys.Length)
@@ -227,6 +265,16 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                     TargetMonsterData[] monsterDatas = newProgress.OriginalQuestData.Behaviour_KillMonster.TargetMonster;
                     questProgress_KillMonster.StartQuest(questCode, monsterDatas);
                     break;
+                case "GetItem":
+                    newProgress.OriginalQuestData.Behaviour_GetItem.Initialize();
+                    for (int i = 0; i < questObservers.Count; ++i)
+                        newProgress.OriginalQuestData.Behaviour_GetItem.AddObserver(questObservers[i]);
+                    break;
+                case "Building":
+                    newProgress.OriginalQuestData.Behaviour_Building.Initialize();
+                    for (int i = 0; i < questObservers.Count; ++i)
+                        newProgress.OriginalQuestData.Behaviour_Building.AddObserver(questObservers[i]);
+                    break;
             }
         }
 
@@ -282,6 +330,12 @@ public class PlayerQuest : MonoBehaviour, PlayerRuntimeData
                     TargetItemData[] items = data.Behaviour_GetItem.TargetItem;
                     for (int itemIdx = 0; itemIdx < items.Length; ++itemIdx)
                         PlayerInventory.Instance.RemoveItemFromInventory(items[itemIdx].ItemCode, items[itemIdx].ItemCount);
+                    for (int observerIdx = 0; observerIdx < questObservers.Count; ++observerIdx)
+                        data.Behaviour_GetItem.DeleteObserver(questObservers[observerIdx]);
+                    break;
+                case "Building":
+                    for (int observerIdx = 0; observerIdx < questObservers.Count; ++observerIdx)
+                        data.Behaviour_Building.DeleteObserver(questObservers[observerIdx]);
                     break;
             }
         }

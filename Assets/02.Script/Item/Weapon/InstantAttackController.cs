@@ -7,8 +7,6 @@ using System.Data;
 public class InstantAttackController : MonoBehaviour
 {
     private Transform playerTransform;
-    private Vector3 colliderSize;
-    private Vector3 colliderPosition;
     private WeaponData data;
     private float lifeTime;
 
@@ -19,21 +17,16 @@ public class InstantAttackController : MonoBehaviour
         gameObject.SetActive(true);
         Invoke("TriggerOver", lifeTime / PlayerStat.Instance.GetStat("AttackSpeed"));
     }
-    public void Initialize(Transform playerTrans, Vector3 colPos, WeaponData data)
+    public void Initialize(Transform playerTrans, WeaponData data)
     {
         playerTransform = playerTrans;
         this.data = data;
-
-        colliderSize = new Vector3(1, 2, data.Range);
-        colliderPosition = colPos;
-
-        gameObject.AddComponent<BoxCollider>();
-        GetComponent<BoxCollider>().isTrigger = true;
     }
     private void Refresh()
     {
-        transform.localScale = colliderSize;
-        transform.localPosition = colliderPosition;
+        transform.localScale = new Vector3(1.2f, 1.5f, data.Range);
+        transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + 1, playerTransform.position.z)
+            + (playerTransform.forward * data.Range / 2);
         transform.rotation = playerTransform.rotation;
         return;
     }

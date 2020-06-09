@@ -11,7 +11,7 @@ public class AttackStrategy_MeleeInstant : AttackStrategy
 
     // Data
     private const float EXECUTE_REFERENCE_DELAY = 0.4f;
-    private const float INSTANT_REFERENCE_LIFETIME = 0.3f;
+    private const float INSTANT_REFERENCE_LIFETIME = 0.15f;
     private float executeDelay;
     private float attackLifeTime;
 
@@ -56,10 +56,9 @@ public class AttackStrategy_MeleeInstant : AttackStrategy
         mySoundManager = transform.GetChild(1).GetComponent<SoundManager>();
 
         // Create InstantAttack Box
-        GameObject newColiderBox = new GameObject("PlayerInstantAttack");
-        newColiderBox.transform.parent = PlayerActManager.Instance.transform;
-        instantAttack = newColiderBox.AddComponent<InstantAttackController>();
-        instantAttack.Initialize(PlayerActManager.Instance.transform, new Vector3(0, 1, (weaponData.Range / 2)), weaponData);
+        GameObject instantAttackPrefab = AssetBundleCacher.Instance.LoadAndGetAsset("weapon", "InstantAttackColBox") as GameObject;
+        instantAttack = Instantiate(instantAttackPrefab).GetComponent<InstantAttackController>();
+        instantAttack.Initialize(PlayerActManager.Instance.transform, weaponData);
         instantAttack.gameObject.SetActive(false);
     }
     public override void PlayAttack()
