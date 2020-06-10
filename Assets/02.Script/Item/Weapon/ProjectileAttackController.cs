@@ -10,16 +10,16 @@ public class ProjectileAttackController : MonoBehaviour
     private Color projectileTrailColor;
 
     // Pool
-    private List<ProjectileColiderBox> deactiveProjectilePool;
+    private Queue<ProjectileColiderBox> deactiveProjectilePool;
     private List<ProjectileColiderBox> activeProjectilePool;
     public void Execute()
     {
         if (deactiveProjectilePool.Count > 0)
         {
-            deactiveProjectilePool[0].Refresh(playerTransform);
-            deactiveProjectilePool[0].Fire(playerTransform.forward, 20f);
-            activeProjectilePool.Add(deactiveProjectilePool[0]);
-            deactiveProjectilePool.RemoveAt(0);
+            ProjectileColiderBox colBox = deactiveProjectilePool.Dequeue();
+            colBox.Refresh(playerTransform);
+            colBox.Fire(playerTransform.forward, 20f);
+            activeProjectilePool.Add(colBox);
         }
         else
         {
@@ -33,7 +33,7 @@ public class ProjectileAttackController : MonoBehaviour
         this.data = data;
         projectileTrailColor = bladeTrailColor;
 
-        deactiveProjectilePool = new List<ProjectileColiderBox>();
+        deactiveProjectilePool = new Queue<ProjectileColiderBox>();
         activeProjectilePool = new List<ProjectileColiderBox>();
         CreateWavePool();
     }
@@ -45,12 +45,12 @@ public class ProjectileAttackController : MonoBehaviour
             ProjectileColiderBox newProjectile = Instantiate(projectilePrefab).GetComponent<ProjectileColiderBox>();
             newProjectile.transform.parent = transform;
             newProjectile.Initialize(projectileTrailColor, ReturnToPool);
-            deactiveProjectilePool.Add(newProjectile);
+            deactiveProjectilePool.Enqueue(newProjectile);
         }
     }
-    private void ReturnToPool(ProjectileColiderBox box)
+    private void ReturnToPool(ProjectileColiderBox projectile)
     {
-        deactiveProjectilePool.Add(box);
-        activeProjectilePool.Remove(box);
+        activeProjectilePool.Remove(projectile);
+        deactiveProjectilePool.Enqueue(projectile);
     }
 }

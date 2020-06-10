@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Security.Cryptography;
 
 public class AttackStrategy_MeleeWave : AttackStrategy
 {
@@ -115,5 +116,6 @@ public class AttackStrategy_MeleeWave : AttackStrategy
     public override void ReleaseAttackStrategy()
     {
         Destroy(instantAttack.gameObject);
+        Destroy(projectileAttack.gameObject);
     }
 }
