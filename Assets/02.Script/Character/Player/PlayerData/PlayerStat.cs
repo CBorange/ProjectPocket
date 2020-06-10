@@ -152,7 +152,7 @@ public class PlayerStat : MonoBehaviour, PlayerRuntimeData
     public float GetDamage(float ap)
     {
         float damage = ap - GetStat("ShieldPoint");
-        if (damage < 0)
+        if (damage < 1)
             damage = 1;
         floatStatDic["HealthPoint"] -= damage;
 

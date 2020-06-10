@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class NPC_QuestPanel : MonoBehaviour
 {
-    // Child Panels
+    // Controller
     public NPC_QuestPanel_Objective objectivePanel;
     public NPC_QuestPanel_List listPanel;
+    public AlertPopup alertPopup;
 
     // Data
     private NPCData currentNPCData;
@@ -32,6 +33,7 @@ public class NPC_QuestPanel : MonoBehaviour
     public void ClosePanel()
     {
         gameObject.SetActive(false);
+        alertPopup.ClosePopup();
     }
 
     // Method For Comunicate Between Quest List<->Objective Panel

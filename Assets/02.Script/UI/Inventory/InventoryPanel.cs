@@ -13,9 +13,10 @@ public enum InventoryCategory
 };
 public class InventoryPanel : MonoBehaviour
 {
-    // Inventory UI 기능 단위
+    // Controller
     public InventoryPanel_ItemTable itemTable;
     public InventoryPanel_PlayerInfo playerInfo;
+    public AlertPopup alertPopup;
 
     // UI
     public Toggle[] itemCategoryToggles;
@@ -54,6 +55,7 @@ public class InventoryPanel : MonoBehaviour
     public void ClosePanel()
     {
         gameObject.SetActive(false);
+        alertPopup.ClosePopup();
     }
 
 

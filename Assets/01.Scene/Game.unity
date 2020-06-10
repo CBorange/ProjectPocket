@@ -96,7 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
-  m_LightingDataAsset: {fileID: 112000000, guid: 8724d579d9c6aa744950d686da27659d,
+  m_LightingDataAsset: {fileID: 112000000, guid: ff41fcf07983014488127b236af8ab29,
     type: 2}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -6427,7 +6427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8804dd2edf5dc3142a1f7f082ab4428b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTest: 1
+  isTest: 0
   TestAccount: admin
 --- !u!1 &256783320
 GameObject:
@@ -11309,11 +11309,11 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 0.57254905}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.5
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -12369,6 +12369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemTable: {fileID: 1095150131}
   playerInfo: {fileID: 171529513}
+  alertPopup: {fileID: 1388337892}
   itemCategoryToggles:
   - {fileID: 1244320983}
   - {fileID: 576880223}
@@ -24328,6 +24329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectivePanel: {fileID: 464134434}
   listPanel: {fileID: 211741525}
+  alertPopup: {fileID: 1388337892}
 --- !u!1 &1016553673
 GameObject:
   m_ObjectHideFlags: 0
@@ -28200,11 +28202,11 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 0.57254905}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.5
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -33925,6 +33927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemTable: {fileID: 1722293806}
   interactPanel: {fileID: 65871805}
+  alertPopup: {fileID: 1388337892}
   CategoryToggles:
   - {fileID: 1798199184}
   - {fileID: 377417905}

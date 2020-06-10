@@ -9,6 +9,7 @@ public class ShopPanel : MonoBehaviour
     // Controller
     public ShopPanel_ItemTable itemTable;
     public ShopPanel_InteractPanel interactPanel;
+    public AlertPopup alertPopup;
 
     // UI
     public ShopCategoryToggle[] CategoryToggles;
@@ -52,6 +53,7 @@ public class ShopPanel : MonoBehaviour
     public void ClosePanel()
     {
         gameObject.SetActive(false);
+        alertPopup.ClosePopup();
     }
 
     // Method For Transmit Between ItemTable <-> InteractPanel

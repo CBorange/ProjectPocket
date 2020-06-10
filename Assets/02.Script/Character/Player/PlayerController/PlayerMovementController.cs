@@ -55,6 +55,8 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 point = collision.contacts[0].point;
         if (point.y < transform.position.y + 0.5f) 
         {
+            if (PlayerActManager.Instance.CurrentBehaviour == CharacterBehaviour.Attack)
+                return;
             PlayerActManager.Instance.CurrentBehaviour = CharacterBehaviour.Idle;
             animator.speed = 1;
             animator.SetBool("Walk", false);

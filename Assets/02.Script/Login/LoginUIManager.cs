@@ -44,7 +44,7 @@ public class LoginUIManager : MonoBehaviour
             string userResult = userInfoTask.Result;
             if (userResult.Equals("Success"))
             {
-                SceneManager.LoadScene("GameScene");
+                SceneManager.LoadScene("Game");
             }
             else
             {

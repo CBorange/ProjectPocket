@@ -42,11 +42,14 @@ public class QuestBehaviour_Building : QuestUpdater
     {
         for (int buildIdx = 0; buildIdx < TargetBuilding.Length; ++buildIdx)
         {
-            BuildingStatus currentBuilding = PlayerBuilding.Instance.GetBuildingStatus(TargetBuilding[buildIdx].BuildingCode);
-            if (currentBuilding.Grade <= TargetBuilding[buildIdx].BuildingGrade) 
+            if (TargetBuilding[buildIdx].BuildingCode == buildingCode)
             {
-                for (int i = 0; i < questObservers.Count; ++i)
-                    questObservers[i].Update_Building(QuestCode, buildingCode, currentBuilding.Grade, TargetBuilding[buildIdx].BuildingGrade);
+                BuildingStatus currentBuilding = PlayerBuilding.Instance.GetBuildingStatus(TargetBuilding[buildIdx].BuildingCode);
+                if (currentBuilding.Grade <= TargetBuilding[buildIdx].BuildingGrade)
+                {
+                    for (int i = 0; i < questObservers.Count; ++i)
+                        questObservers[i].Update_Building(QuestCode, buildingCode, currentBuilding.Grade, TargetBuilding[buildIdx].BuildingGrade);
+                }
             }
         }
     }
