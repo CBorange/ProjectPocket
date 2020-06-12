@@ -6,7 +6,8 @@
 전투/채집/퀘스트 등 생활컨텐츠 위주의 게임입니다.   
 **1인 개발**로 개발 되었습니다.   
 **개발 기간**은 2020.03 ~ 2020.06 로 약 **3개월** 입니다.   
-[포트폴리오](https://drive.google.com/file/d/1FJix5ud8q9E7WiXRBhIK7230BgnX1NP-/view?usp=sharing)   
+[소개 PDF](https://drive.google.com/file/d/1FJix5ud8q9E7WiXRBhIK7230BgnX1NP-/view?usp=sharing)   
+[영상](https://www.youtube.com/watch?v=OsQzUh0tzYc&t=54s)
 
 ## 핵심기술
 **Unity3D**를 사용하여 개발된 게임입니다.   
