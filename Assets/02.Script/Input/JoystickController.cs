@@ -11,7 +11,6 @@ public class JoystickController : MonoBehaviour
     public PlayerMovementController MovementController;
 
     //Data
-    public Canvas OverlayCanvas;
     public RectTransform currentRect;
     public RectTransform HandleRect;
     private Vector2 joystickStartPos;
@@ -22,26 +21,17 @@ public class JoystickController : MonoBehaviour
     }
 
     // Resolution
-    private float baseCanvas_Width;
-    private float baseCanvas_Height;
-    private float widthRatio;
-    private float heightRatio;
     private readonly float JOYSTICK_RADIUS = 175f;
 
     public void Initialize()
     {
-        baseCanvas_Width = OverlayCanvas.GetComponent<RectTransform>().rect.width;
-        baseCanvas_Height = OverlayCanvas.GetComponent<RectTransform>().rect.height;
-
-        widthRatio = baseCanvas_Width / Screen.width;
-        heightRatio = baseCanvas_Height / Screen.height;
     }
     private Vector2 ScreenToCanvasPos(Vector2 touchPos)
     {
-        touchPos.x = touchPos.x * widthRatio;
-        touchPos.y = touchPos.y * heightRatio;
-        touchPos.x -= (Screen.width / 2) * widthRatio;
-        touchPos.y -= (Screen.height / 2) * heightRatio;
+        touchPos.x = touchPos.x * ResolutionConfigure.Instance.CanvasWidthRatio;
+        touchPos.y = touchPos.y * ResolutionConfigure.Instance.CanvasHeightRatio;
+        touchPos.x -= (Screen.width / 2) * ResolutionConfigure.Instance.CanvasWidthRatio;
+        touchPos.y -= (Screen.height / 2) * ResolutionConfigure.Instance.CanvasHeightRatio;
         return touchPos;
     }
     public void StartMove(Vector2 touchPos)
@@ -55,13 +45,13 @@ public class JoystickController : MonoBehaviour
     }
     public bool IsPossibleToMoveJoystick(Vector2 touchPos)
     {
-        touchPos.x *= widthRatio;
-        touchPos.y *= heightRatio;
-        float letterBoxSize = baseCanvas_Width * ResolutionConfigure.Instance.LetterBoxRatio;
+        touchPos.x *= ResolutionConfigure.Instance.CanvasWidthRatio;
+        touchPos.y *= ResolutionConfigure.Instance.CanvasHeightRatio;
+        float letterBoxSize = ResolutionConfigure.Instance.BaseCanvas_Width * ResolutionConfigure.Instance.LetterBoxRatio;
         letterBoxSize /= 2;
         if (ResolutionConfigure.Instance.CurLetterBoxType == ResolutionConfigure.LetterBoxType.Horizontal)
         {
-            if ((touchPos.x > JOYSTICK_RADIUS + letterBoxSize) && (touchPos.y < baseCanvas_Height - JOYSTICK_RADIUS) &&
+            if ((touchPos.x > JOYSTICK_RADIUS + letterBoxSize) && (touchPos.y < ResolutionConfigure.Instance.BaseCanvas_Height - JOYSTICK_RADIUS) &&
                 (touchPos.y > JOYSTICK_RADIUS))
                 return true;
             else
@@ -69,7 +59,7 @@ public class JoystickController : MonoBehaviour
         }
         else
         {
-            if ((touchPos.x > JOYSTICK_RADIUS + letterBoxSize) && (touchPos.y < baseCanvas_Height - JOYSTICK_RADIUS + letterBoxSize) &&
+            if ((touchPos.x > JOYSTICK_RADIUS + letterBoxSize) && (touchPos.y < ResolutionConfigure.Instance.BaseCanvas_Height - JOYSTICK_RADIUS + letterBoxSize) &&
                 (touchPos.y > JOYSTICK_RADIUS + letterBoxSize))
                 return true;
             else

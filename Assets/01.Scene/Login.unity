@@ -2413,6 +2413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c4306dd2b083e43825f0ea83650c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OverlayCanvas: {fileID: 705950438}
 --- !u!1 &2104792682
 GameObject:
   m_ObjectHideFlags: 0

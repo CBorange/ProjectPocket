@@ -22,6 +22,7 @@ public class BuildingController : MonoBehaviour
     public void StartInteract()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        screenPos.y = (Screen.height / 2);
         UIPanelTurner.Instance.Open_BuildingInteractPanel(currentData, this, screenPos);
     }
     public bool IsPossibleToInteract()

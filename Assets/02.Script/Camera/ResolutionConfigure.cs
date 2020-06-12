@@ -9,6 +9,7 @@ public class ResolutionConfigure : MonoBehaviour
         Horizontal,
         Vertical
     };
+    
     #region Singleton
     private static ResolutionConfigure instance;
     public static ResolutionConfigure Instance
@@ -42,14 +43,42 @@ public class ResolutionConfigure : MonoBehaviour
             return;
         }
         CreateLetterBox();
+        CalculateScreenRatio();
     }
-    void OnPreCull() => GL.Clear(true, true, Color.black);
+    void OnPreCull()
+    {
+        GL.Clear(true, true, Color.black);
+    }
+
     #endregion
+    public Canvas OverlayCanvas;
+    private float baseCanvas_Width;
+    public float BaseCanvas_Width
+    {
+        get { return baseCanvas_Width; }
+    }
+    private float baseCanvas_Height;
+    public float BaseCanvas_Height
+    {
+        get { return baseCanvas_Height; }
+    }
+    private float canvasWidthRatio;
+    public float CanvasWidthRatio
+    {
+        get { return canvasWidthRatio; }
+    }
+    private float canvasHeightRatio;
+    public float CanvasHeightRatio
+    {
+        get { return canvasHeightRatio; }
+    }
+
     private LetterBoxType letterBoxType;
     public LetterBoxType CurLetterBoxType
     {
         get { return letterBoxType; }
     }
+
     private float letterboxRatio;
     public float LetterBoxRatio
     {
@@ -80,8 +109,14 @@ public class ResolutionConfigure : MonoBehaviour
             }
             camera[i].rect = rect;
         }
-        
     }
+    private void CalculateScreenRatio()
+    {
+        baseCanvas_Width = OverlayCanvas.GetComponent<RectTransform>().rect.width;
+        baseCanvas_Height = OverlayCanvas.GetComponent<RectTransform>().rect.height;
 
+        canvasWidthRatio = baseCanvas_Width / Screen.width;
+        canvasHeightRatio = baseCanvas_Height / Screen.height;
+    }
     
 }

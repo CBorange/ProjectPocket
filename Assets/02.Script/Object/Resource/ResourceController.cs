@@ -43,7 +43,9 @@ public class ResourceController : MonoBehaviour
     }
     public void StartIteractWithResource()
     {
+
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        screenPos.y = (Screen.height / 2);
         UIPanelTurner.Instance.Open_ResourceInteractPanel(this, screenPos);
     }
     public bool IsPossibleToInteract()
